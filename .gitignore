@@ -1,0 +1,7 @@
+#ignore compile file
+
+
+.project
+*.exe
+*.exe~
+.vscode/
