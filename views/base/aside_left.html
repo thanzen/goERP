@@ -15,21 +15,28 @@
           {{end}}
         </div>
       </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
-        <li class="active treeview">
+        <li class="header text-center">MAIN NAVIGATION</li>
+          <li class="treeview active">
+            <a href="#">
+              <i class="fa fa-gears"></i>
+              <span>设置</span>
+            </a>
+            <ul class="treeview-menu">
+              <li class="treeview active"><a href="#"><i class="fa fa-arrow-circle-right"></i>个人资料</a>
+              <ul class="treeview-menu">
+                <li class ="active"><a href="#"><i class="fa fa-arrow-circle-right"></i>个人资料</a></li>
+                <li><a href="#"><i class="fa fa-arrow-circle-right"></i>密码修改</a></li>
+                <li><a href="#"><i class="fa fa-arrow-circle-right"></i>登录记录</a></li>
+              </ul>
+              </li>
+              <li><a href="#"><i class="fa fa-arrow-circle-right"></i>公司管理</a></li>
+              <li><a href="#"><i class="fa fa-arrow-circle-right"></i>用户管理</a></li>
+              <li><a href="#"><i class="fa fa-arrow-circle-right"></i>地址管理</a></li>
+            </ul>
+        </li>
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
             <span class="pull-right-container">
