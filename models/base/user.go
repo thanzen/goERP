@@ -2,24 +2,24 @@ package base
 
 import (
 	"pms/utils"
-	"time"
 
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
 type User struct {
 	Base
-	Name      string    `orm:"size(20)" xml:"name"`                 //用户名
-	NameZh    string    `orm:"size(20)" `                           //中文用户名
-	Email     string    `orm:"size(20)" xml:"email"`                //邮箱
-	Mobile    string    `orm:"size(20);default(\"\")" xml:"mobile"` //手机号码
-	Tel       string    `orm:"size(20);default(\"\")"`              //固定号码
-	Password  string    `xml:"password"`                            //密码
-	Group     []*Group  `orm:"rel(m2m);rel_table(user_groups)"`
-	IsAdmin   bool      `orm:"default(false)" xml:"isAdmin"` //是否为超级用户
-	LastLogin time.Time `orm:"null"`                         //上次登录时间
-	Active    bool      `orm:"default(true)" xml:"active"`   //有效
-	Ip        string    //上次登录IP
+	Name       string        `orm:"size(20)" xml:"name"`                 //用户名
+	NameZh     string        `orm:"size(20)" `                           //中文用户名
+	Email      string        `orm:"size(20)" xml:"email"`                //邮箱
+	Mobile     string        `orm:"size(20);default(\"\")" xml:"mobile"` //手机号码
+	Tel        string        `orm:"size(20);default(\"\")"`              //固定号码
+	Password   string        `xml:"password"`                            //密码
+	Group      []*Group      `orm:"rel(m2m);rel_table(user_groups)"`
+	IsAdmin    bool          `orm:"default(false)" xml:"isAdmin"` //是否为超级用户
+	Active     bool          `orm:"default(true)" xml:"active"`   //有效
+	Department []*Department `orm:"reverse(many)"`                //团队
+
 }
 
 //多字段唯一
@@ -37,6 +37,38 @@ func (u *User) TableIndex() [][]string {
 }
 func (u *User) TableName() string {
 	return "auth_user"
+}
+func ListUser(condArr map[string]string, user User, page, offset int) (int64, error, []User) {
+	if page < 1 {
+		page = 1
+	}
+	if offset < 1 {
+		offset, _ = beego.AppConfig.Int("pageoffset")
+	}
+	start := (page - 1) * offset
+	o := orm.NewOrm()
+	o.Using("default")
+	qs := o.QueryTable(new(User))
+	// qs = qs.RelatedSel()
+	cond := orm.NewCondition()
+	if active, ok := condArr["active"]; ok {
+		cond = cond.And("active", active)
+
+	} else {
+		cond = cond.And("active", true)
+	}
+	var (
+		users []User
+		num   int64
+		err   error
+	)
+	if user.IsAdmin {
+		num, err = qs.Limit(offset, start).All(&users)
+	} else {
+
+	}
+	return num, err, users
+
 }
 
 //添加用户
