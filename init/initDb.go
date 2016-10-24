@@ -20,16 +20,18 @@ func InitDb() {
 		split = "/"
 	}
 	if xmDir, err := os.Getwd(); err == nil {
-		xmDir += split + "init_xml" + split
-		initUser(xmDir + "Users.xml")
-		if user, err := GetUser(1); err == nil {
-			initGroup(xmDir+"Groups.xml", user)
-			initCountry(xmDir+"Countries.xml", user)
-			initProvince(xmDir+"Provinces.xml", user)
-			initCity(xmDir+"Cities.xml", user)
-			initDistrict(xmDir+"Districts.xml", user)
-		}
+		if _, err := GetUser(1); err != nil {
 
+			xmDir += split + "init_xml" + split
+			initUser(xmDir + "Users.xml")
+			if user, err := GetUser(1); err == nil {
+				initGroup(xmDir+"Groups.xml", user)
+				initCountry(xmDir+"Countries.xml", user)
+				initProvince(xmDir+"Provinces.xml", user)
+				initCity(xmDir+"Cities.xml", user)
+				initDistrict(xmDir+"Districts.xml", user)
+			}
+		}
 	}
 
 }

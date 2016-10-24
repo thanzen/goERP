@@ -5,7 +5,8 @@ package main
 import (
 	_ "pms/db"
 	. "pms/init"
-	// . "pms/models/base"
+	// "pms/models/base"
+	. "pms/models/base"
 	_ "pms/routers"
 
 	"github.com/astaxie/beego"
@@ -50,18 +51,17 @@ func init() {
 	//自动建表
 	orm.RunSyncdb(dbAlias, coverDb, true)
 	InitApp()
-	InitDb()
+	// InitDb()
 	// filter.FilterInit()
 	beego.AddFuncMap("i18n", i18n.Tr)
 
 }
 func main() {
-	// var user User
-	// user.Name = "admin"
-	// user.Mobile = "123123"
-	// o := orm.NewOrm()
-	// o.Using("default")
-	// id, err := o.Insert(&user)
+
+	o := orm.NewOrm()
+	o.Using("default")
+	user := User{Base: Base{Id: 1}}
+	o.Read(&user)
 	// fmt.Println(id)
 	// fmt.Println(err)
 	beego.Run()

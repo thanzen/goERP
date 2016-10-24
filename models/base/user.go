@@ -1,6 +1,7 @@
 package base
 
 import (
+	"fmt"
 	"pms/utils"
 	"time"
 
@@ -33,6 +34,9 @@ func (u *User) TableIndex() [][]string {
 		[]string{"Id", "Email", "Mobile"},
 	}
 }
+func (u *User) TableName() string {
+	return "auth_user"
+}
 
 //添加用户
 func AddUser(obj User, cUser User) (int64, error) {
@@ -58,5 +62,20 @@ func GetUser(id int64) (User, error) {
 	o.Using("default")
 	user := User{Base: Base{Id: id}}
 	err := o.Read(&user)
+	return user, err
+}
+func GetUserByName(name string) (User, error) {
+	o := orm.NewOrm()
+	var user User
+	//7LR8ZC-855575-64657756081974692
+	o.Using("default")
+	cond := orm.NewCondition()
+	cond = cond.And("mobile", name).Or("email", name)
+	qs := o.QueryTable(&user)
+	fmt.Println(qs.Count())
+	qs = qs.SetCond(cond)
+	err := qs.Limit(1).One(&user)
+	fmt.Println(user)
+	fmt.Println(err)
 	return user, err
 }

@@ -36,19 +36,20 @@
     <p class="login-box-msg">{{i18n .Lang "login.title"}}</p>
 
     <form action="/login/in" method="post">
+     {{ .xsrf }}
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder={{i18n .Lang "global.email"}}>
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <input type="text" class="form-control"  name="loginName" placeholder={{i18n .Lang "global.loginName"}}>
+         
       </div>
       <div class="form-group has-feedback">
-        <input type="password" id="password" class="form-control" placeholder={{i18n .Lang "global.password"}}>
+        <input type="password" id="password" name="password" class="form-control" placeholder={{i18n .Lang "global.password"}}>
         <!--<span class="glyphicon glyphicon-lock form-control-feedback"></span>-->
       </div>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> {{i18n .Lang "global.rememberMe"}}
+              <input name="remember" type="checkbox"> {{i18n .Lang "global.rememberMe"}}
             </label>
           </div>
         </div>

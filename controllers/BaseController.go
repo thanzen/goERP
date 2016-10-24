@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"fmt"
+	"html/template"
+	. "pms/init"
 	. "pms/models/base"
+	. "pms/utils"
 	"strings"
 	"time"
-. "pms/utils"
-	. "pms/init"
 
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
@@ -30,11 +32,12 @@ func (this *BaseController) Prepare() {
 	// Setting properties.
 	this.Data["AppVer"] = AppVer
 	this.Data["IsPro"] = IsPro
-
+	this.Data["xsrf"] = template.HTML(this.XSRFFormHTML())
 	this.Data["PageStartTime"] = time.Now()
 
 	// Redirect to make URL clean.
 	if this.setLangVer() {
+		fmt.Println(1231233)
 		i := strings.Index(this.Ctx.Request.RequestURI, "?")
 		this.Redirect(this.Ctx.Request.RequestURI[:i], 302)
 		return

@@ -1,11 +1,10 @@
 package controllers
 
 import (
-	. "pms/models/base"
+	"fmt"
+	"pms/models/base"
 	"pms/utils"
 	"time"
-
-	"github.com/jinzhu/gorm"
 )
 
 type LoginController struct {
@@ -20,33 +19,30 @@ func (this *LoginController) Get() {
 	this.Redirect("/", 302)
 }
 func (this *LoginController) Post() {
+	fmt.Println(1232)
 	this.Layout = "base/base.html"
 	this.TplName = "base/base.html"
-	LoginName := this.GetString("LoginName")
-	Password := this.GetString("PassWord")
-	Remember := this.GetString("Remember")
+	loginName := this.GetString("loginName")
+	password := this.GetString("password")
+	rememberMe := this.GetString("remember")
 
-	if LoginName == "" {
-		return
+	if loginName == "" {
+		this.Redirect("/", 302)
 	}
-	if Password == "" {
-		return
+	if password == "" {
+		this.Redirect("/", 302)
 	}
+
 	var (
-		db *gorm.DB
-		// err  error
-		user User
+		user base.User
+		err  error
 	)
-	//创建数据库的连接
-	// if db, err = GormDbConnect(); err != nil {
-	// 	return
-	// }
-	defer db.Close()
-	if db.Where("name = ?", LoginName).Or("mobile = ?", LoginName).Or("email = ?", LoginName).First(&user).Error != nil {
-		return
+	if user, err = base.GetUserByName(loginName); err != nil {
+		this.Redirect("/", 302)
 	}
+
 	//判断密码是否正确，若正确设置session
-	if utils.PasswordMD5(Password, user.Email) != user.Password {
+	if utils.PasswordMD5(password, user.Email) != user.Password {
 		return
 	} else {
 		this.SetSession("UserId", user.Id)
@@ -54,8 +50,7 @@ func (this *LoginController) Post() {
 		this.SetSession("LastLogin", user.LastLogin)
 		this.SetSession("IsAdmin", user.IsAdmin)
 		user.LastLogin = time.Now()
-		db.Save(&user)
-		if Remember != "" {
+		if rememberMe != "" {
 			this.Ctx.SetCookie("Remember", "on", 31536000, "/")
 		} else {
 			this.Ctx.SetCookie("Remember", "off", 31536000, "/")
