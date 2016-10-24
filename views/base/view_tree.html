@@ -5,7 +5,7 @@
 	{{/*获得tree视图的标题*/}}
 	{{$TitleName:=.DataTree.Title.TitleName}}
 	{{/*tree视图标题长度*/}}
-	{{$Len:=.DataTree.Title.TitleName|len|Len2Index}}
+	{{$Len:=.DataTree.Title.TitleName|len}}
 	{{/*tree视图标题内容和位置信息*/}}
 	{{range $index,$cell:=$TitleName}}
 		{{if eq 0 $index }}

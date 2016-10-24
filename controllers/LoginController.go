@@ -1,11 +1,6 @@
 package controllers
 
-import (
-	"fmt"
-	"pms/models/base"
-	"pms/utils"
-	"time"
-)
+import "pms/models/base"
 
 type LoginController struct {
 	BaseController
@@ -15,53 +10,54 @@ func (this *LoginController) Get() {
 	action := this.GetString(":action")
 	if action == "out" {
 		this.Logout()
+		this.Redirect("/login/in", 302)
+	} else if action == "in" {
+		this.TplName = "user/login.html"
 	}
-	this.Redirect("/", 302)
+
 }
 func (this *LoginController) Post() {
-	fmt.Println(1232)
+
 	this.Layout = "base/base.html"
-	this.TplName = "base/base.html"
+	this.TplName = "test.html"
 	loginName := this.GetString("loginName")
 	password := this.GetString("password")
 	rememberMe := this.GetString("remember")
 
-	if loginName == "" {
-		this.Redirect("/", 302)
-	}
-	if password == "" {
-		this.Redirect("/", 302)
+	if loginName == "" && password == "" {
+		this.Redirect("/login/in", 302)
 	}
 
 	var (
-		user base.User
-		err  error
+		user  base.User
+		err   error
+		login base.LoginLog
 	)
-	if user, err = base.GetUserByName(loginName); err != nil {
-		this.Redirect("/", 302)
+	if user, err = base.CheckUserByName(loginName, password); err != nil {
+		this.Redirect("/login/in", 302)
 	}
+	this.Data["user"] = user
+	if login, err = base.GetLoginLog(user); err == nil {
+		this.Data["LastLogin"] = login.CreateDate
+		this.Data["LastIp"] = login.Ip
+		this.SetSession("LastLogin", login.CreateDate)
+		this.SetSession("LastIp", login.Ip)
+	}
+	base.AddLoginLog(user, this.Ctx.Input.IP())
+	this.SetSession("User", user)
 
-	//判断密码是否正确，若正确设置session
-	if utils.PasswordMD5(password, user.Email) != user.Password {
-		return
-	} else {
-		this.SetSession("UserId", user.Id)
-		this.SetSession("UserName", user.Name)
-		this.SetSession("LastLogin", user.LastLogin)
-		this.SetSession("IsAdmin", user.IsAdmin)
-		user.LastLogin = time.Now()
-		if rememberMe != "" {
-			this.Ctx.SetCookie("Remember", "on", 31536000, "/")
-		} else {
-			this.Ctx.SetCookie("Remember", "off", 31536000, "/")
-		}
-	}
+	this.Ctx.SetCookie("Remember", rememberMe, 31536000, "/")
 	//通过验证跳转到主界面
 	this.Redirect("/", 302)
 }
 
 //登出
 func (this *LoginController) Logout() {
+
+	if user := this.GetSession("user"); user != nil {
+
+		// base.UpdateLoginLog(user)
+	}
 
 	this.SetSession("UserName", nil)
 	this.SetSession("LastLogin", nil)

@@ -1,13 +1,13 @@
 package db
 
 import (
-	. "pms/models/base"
+	"pms/models/base"
 
 	"github.com/astaxie/beego/orm"
 )
 
 func init() {
-	orm.RegisterModel(new(User))
-	orm.RegisterModel(new(Group))
-	orm.RegisterModel(new(Country), new(Province), new(City), new(District))
+	orm.RegisterModel(new(base.User), new(base.LoginLog))
+	orm.RegisterModel(new(base.Group))
+	orm.RegisterModel(new(base.Country), new(base.Province), new(base.City), new(base.District))
 }

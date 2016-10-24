@@ -30,18 +30,33 @@ type BaseController struct {
 // Prepare implemented Prepare method for baseRouter.
 func (this *BaseController) Prepare() {
 	// Setting properties.
+	this.StartSession()
 	this.Data["AppVer"] = AppVer
 	this.Data["IsPro"] = IsPro
 	this.Data["xsrf"] = template.HTML(this.XSRFFormHTML())
 	this.Data["PageStartTime"] = time.Now()
-
+	fmt.Println(this.Ctx.Request.RequestURI)
 	// Redirect to make URL clean.
 	if this.setLangVer() {
-		fmt.Println(1231233)
 		i := strings.Index(this.Ctx.Request.RequestURI, "?")
 		this.Redirect(this.Ctx.Request.RequestURI[:i], 302)
 		return
 	}
+	user := this.GetSession("User")
+	if user == nil {
+		if this.Ctx.Request.RequestURI != "/login/in" {
+			this.Redirect("/login/in", 302)
+		}
+
+	}
+	this.Data["user"] = user
+	this.Data["LastLogin"] = this.GetSession("LastLogin")
+	this.Data["LastIp"] = this.GetSession("LastIp")
+
+	// if this.Ctx.Request.RequestURI == "/login/in" {
+	// 	this.Redirect("/", 302)
+	// }
+
 }
 
 // setLangVer sets site language version.

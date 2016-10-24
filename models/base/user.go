@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 	"time"
 
@@ -10,15 +9,17 @@ import (
 
 type User struct {
 	Base
-	Name      string    `orm:"size(60)" xml:"name"`                 //用户名
-	Email     string    `xml:"email"`                               //邮箱
+	Name      string    `orm:"size(20)" xml:"name"`                 //用户名
+	NameZh    string    `orm:"size(20)" `                           //中文用户名
+	Email     string    `orm:"size(20)" xml:"email"`                //邮箱
 	Mobile    string    `orm:"size(20);default(\"\")" xml:"mobile"` //手机号码
-	Tel       string    `orm:"default(\"\")"`                       //固定号码
+	Tel       string    `orm:"size(20);default(\"\")"`              //固定号码
 	Password  string    `xml:"password"`                            //密码
 	Group     []*Group  `orm:"rel(m2m);rel_table(user_groups)"`
 	IsAdmin   bool      `orm:"default(false)" xml:"isAdmin"` //是否为超级用户
 	LastLogin time.Time `orm:"null"`                         //上次登录时间
 	Active    bool      `orm:"default(true)" xml:"active"`   //有效
+	Ip        string    //上次登录IP
 }
 
 //多字段唯一
@@ -72,10 +73,32 @@ func GetUserByName(name string) (User, error) {
 	cond := orm.NewCondition()
 	cond = cond.And("mobile", name).Or("email", name)
 	qs := o.QueryTable(&user)
-	fmt.Println(qs.Count())
 	qs = qs.SetCond(cond)
-	err := qs.Limit(1).One(&user)
-	fmt.Println(user)
-	fmt.Println(err)
+	err := qs.One(&user)
 	return user, err
+}
+func CheckUserByName(name, password string) (User, error) {
+	o := orm.NewOrm()
+	var (
+		user User
+		err  error
+	)
+
+	//7LR8ZC-855575-64657756081974692
+	o.Using("default")
+	cond := orm.NewCondition()
+	cond = cond.And("active", true).And("mobile", name).Or("email", name)
+	qs := o.QueryTable(&user)
+	qs = qs.SetCond(cond)
+	if err = qs.One(&user); err == nil {
+		if user.Password == utils.PasswordMD5(password, user.Mobile) {
+			return user, err
+		}
+	}
+	return user, err
+
+}
+func UpdateUser(user User) (int64, error) {
+	o := orm.NewOrm()
+	return o.Update(&user)
 }
