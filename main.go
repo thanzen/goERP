@@ -5,7 +5,6 @@ package main
 import (
 	_ "pms/db"
 	. "pms/init"
-	. "pms/models/base"
 	_ "pms/routers"
 
 	"github.com/astaxie/beego"
