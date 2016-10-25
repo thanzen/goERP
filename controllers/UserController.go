@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"fmt"
 	"pms/models/base"
+	"pms/utils"
 	"strconv"
 )
 
@@ -27,13 +27,27 @@ func (this *UserController) List() {
 	condArr["active"] = true
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")
-	var err error
-	pageInt, _ := strconv.Atoi(page)
-	offsetInt, _ := strconv.Atoi(offset)
+	var (
+		err         error
+		pageInt64   int64
+		offsetInt64 int64
+	)
+	if pageInt, ok := strconv.Atoi(page); ok == nil {
+		pageInt64 = int64(pageInt)
+	}
+	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
+		offsetInt64 = int64(offsetInt)
+	}
 	var users []base.User
-	num, err, users := base.ListUser(condArr, this.User, pageInt, offsetInt)
-	fmt.Println(num)
-	fmt.Println(err)
-	fmt.Println(users)
+	paginator, err, users := base.ListUser(condArr, this.User, pageInt64, offsetInt64)
+	tableLineInfo := new(utils.TableLineInfo)
+	tableLineInfo.Url = "/user/list"
+	tableTitle := make(map[string]interface{})
+	if err == nil {
+		for i, user := range users {
+
+		}
+	}
+	this.Data["Paginator"] = paginator
 
 }

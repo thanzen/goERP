@@ -40,12 +40,14 @@ func (u *User) TableIndex() [][]string {
 func (u *User) TableName() string {
 	return "auth_user"
 }
-func ListUser(condArr map[string]interface{}, user User, page, offset int) (int64, error, []User) {
+func ListUser(condArr map[string]interface{}, user User, page, offset int64) (utils.Paginator, error, []User) {
+
 	if page < 1 {
 		page = 1
 	}
+
 	if offset < 1 {
-		offset, _ = beego.AppConfig.Int("pageoffset")
+		offset, _ = beego.AppConfig.Int64("pageoffset")
 	}
 	start := (page - 1) * offset
 	o := orm.NewOrm()
@@ -67,9 +69,18 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int) (int6
 		num   int64
 		err   error
 	)
+	var paginator utils.Paginator
+
 	//后面再考虑查看权限的问题
-	num, err = qs.Limit(offset, start).All(&users)
-	return num, err, users
+	qs = qs.RelatedSel()
+	if cnt, err := qs.Count(); err == nil {
+		paginator = utils.GenPaginator(page, offset, cnt)
+	}
+	if num, err = qs.Limit(offset, start).All(&users); err == nil {
+		paginator.CurrentPageSize = num
+	}
+
+	return paginator, err, users
 }
 
 //添加用户
