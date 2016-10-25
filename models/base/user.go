@@ -19,8 +19,8 @@ type User struct {
 	IsAdmin    bool        `orm:"default(false)" xml:"isAdmin"`        //是否为超级用户
 	Active     bool        `orm:"default(true)" xml:"active"`          //有效
 	Department *Department `orm:"rel(fk);null"`                        //部门
-	Qq         string      `orm:"null"`                                //QQ
-	WeChart    string      `orm:"null"`                                //微信
+	Qq         string      `orm:"null" xml:"qq"`                       //QQ
+	WeChat     string      `orm:"null" xml:"wechat"`                   //微信
 
 }
 
