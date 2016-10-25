@@ -15,5 +15,6 @@ func (this *UserController) Get() {
 	}
 }
 func (this *UserController) List() {
-
+	this.Layout = "base/base.html"
+	this.TplName = "user/user_list.html"
 }

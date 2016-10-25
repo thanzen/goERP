@@ -110,13 +110,14 @@ func GetUserByName(name string) (User, error) {
 	err := qs.One(&user)
 	return user, err
 }
-func CheckUserByName(name, password string) (User, error) {
+func CheckUserByName(name, password string) (User, error, bool) {
 	o := orm.NewOrm()
 	var (
 		user User
 		err  error
+		ok   bool
 	)
-
+	ok = false
 	//7LR8ZC-855575-64657756081974692
 	o.Using("default")
 	cond := orm.NewCondition()
@@ -125,10 +126,10 @@ func CheckUserByName(name, password string) (User, error) {
 	qs = qs.SetCond(cond)
 	if err = qs.One(&user); err == nil {
 		if user.Password == utils.PasswordMD5(password, user.Mobile) {
-			return user, err
+			ok = true
 		}
 	}
-	return user, err
+	return user, err, ok
 
 }
 func UpdateUser(user User) (int64, error) {

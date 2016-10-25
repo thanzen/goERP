@@ -12,7 +12,11 @@ func (this *LoginController) Get() {
 		this.Logout()
 		this.Redirect("/login/in", 302)
 	} else if action == "in" {
-		this.TplName = "user/login.html"
+		user := this.GetSession("User")
+		if user != nil {
+			this.Redirect("/", 302)
+		}
+		this.TplName = "login.html"
 	}
 
 }
@@ -32,8 +36,9 @@ func (this *LoginController) Post() {
 		user  base.User
 		err   error
 		login base.LoginLog
+		ok    bool
 	)
-	if user, err = base.CheckUserByName(loginName, password); err != nil {
+	if user, err, ok = base.CheckUserByName(loginName, password); ok != true {
 		this.Redirect("/login/in", 302)
 	}
 	this.Data["user"] = user
@@ -54,18 +59,7 @@ func (this *LoginController) Post() {
 //登出
 func (this *LoginController) Logout() {
 
-	if user := this.GetSession("user"); user != nil {
+	this.SetSession("User", nil)
+	this.DelSession("User")
 
-		// base.UpdateLoginLog(user)
-	}
-
-	this.SetSession("UserName", nil)
-	this.SetSession("LastLogin", nil)
-	this.SetSession("IsAdmin", nil)
-	// this.SetSession("Group", nil)
-
-	this.DelSession("UserName")
-	this.DelSession("LastLogin")
-	this.DelSession("IsAdmin")
-	// this.DelSession("Group")
 }
