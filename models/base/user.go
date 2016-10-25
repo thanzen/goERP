@@ -9,16 +9,18 @@ import (
 
 type User struct {
 	Base
-	Name       string        `orm:"size(20)" xml:"name"`                 //用户名
-	NameZh     string        `orm:"size(20)" `                           //中文用户名
-	Email      string        `orm:"size(20)" xml:"email"`                //邮箱
-	Mobile     string        `orm:"size(20);default(\"\")" xml:"mobile"` //手机号码
-	Tel        string        `orm:"size(20);default(\"\")"`              //固定号码
-	Password   string        `xml:"password"`                            //密码
-	Group      []*Group      `orm:"rel(m2m);rel_table(user_groups)"`
-	IsAdmin    bool          `orm:"default(false)" xml:"isAdmin"` //是否为超级用户
-	Active     bool          `orm:"default(true)" xml:"active"`   //有效
-	Department []*Department `orm:"reverse(many)"`                //团队
+	Name       string      `orm:"size(20)" xml:"name"`                 //用户名
+	NameZh     string      `orm:"size(20)" `                           //中文用户名
+	Email      string      `orm:"size(20)" xml:"email"`                //邮箱
+	Mobile     string      `orm:"size(20);default(\"\")" xml:"mobile"` //手机号码
+	Tel        string      `orm:"size(20);default(\"\")"`              //固定号码
+	Password   string      `xml:"password"`                            //密码
+	Group      []*Group    `orm:"rel(m2m);rel_table(user_groups)"`     //权限组
+	IsAdmin    bool        `orm:"default(false)" xml:"isAdmin"`        //是否为超级用户
+	Active     bool        `orm:"default(true)" xml:"active"`          //有效
+	Department *Department `orm:"rel(fk);null"`                        //部门
+	Qq         string      `orm:"null"`                                //QQ
+	WeChart    string      `orm:"null"`                                //微信
 
 }
 
@@ -57,18 +59,17 @@ func ListUser(condArr map[string]string, user User, page, offset int) (int64, er
 	} else {
 		cond = cond.And("active", true)
 	}
+	if departmentId, ok := condArr["departmentId"]; ok {
+		cond = cond.And("department__id", departmentId)
+	}
 	var (
 		users []User
 		num   int64
 		err   error
 	)
-	if user.IsAdmin {
-		num, err = qs.Limit(offset, start).All(&users)
-	} else {
-
-	}
+	//后面再考虑查看权限的问题
+	num, err = qs.Limit(offset, start).All(&users)
 	return num, err, users
-
 }
 
 //添加用户

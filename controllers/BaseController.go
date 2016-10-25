@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	. "pms/init"
-	. "pms/models/base"
+	"pms/models/base"
 	. "pms/utils"
 	"strings"
 	"time"
@@ -23,7 +23,7 @@ type BaseController struct {
 	IsAdmin   bool
 	UserName  string
 	LastLogin time.Time
-	User      *User
+	User      *base.User
 	i18n.Locale
 }
 

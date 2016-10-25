@@ -5,7 +5,6 @@ package main
 import (
 	_ "pms/db"
 	. "pms/init"
-	// "pms/models/base"
 	. "pms/models/base"
 	_ "pms/routers"
 
@@ -57,12 +56,5 @@ func init() {
 
 }
 func main() {
-
-	o := orm.NewOrm()
-	o.Using("default")
-	user := User{Base: Base{Id: 1}}
-	o.Read(&user)
-	// fmt.Println(id)
-	// fmt.Println(err)
 	beego.Run()
 }
