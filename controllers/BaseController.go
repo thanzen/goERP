@@ -23,7 +23,7 @@ type BaseController struct {
 	IsAdmin   bool
 	UserName  string
 	LastLogin time.Time
-	User      *base.User
+	User      base.User
 	i18n.Locale
 }
 
@@ -42,20 +42,18 @@ func (this *BaseController) Prepare() {
 		this.Redirect(this.Ctx.Request.RequestURI[:i], 302)
 		return
 	}
+
 	user := this.GetSession("User")
-	if user == nil {
+	if user != nil {
+		this.User = user.(base.User)
+	} else {
 		if this.Ctx.Request.RequestURI != "/login/in" {
 			this.Redirect("/login/in", 302)
 		}
-
+		this.Data["user"] = user
+		this.Data["LastLogin"] = this.GetSession("LastLogin")
+		this.Data["LastIp"] = this.GetSession("LastIp")
 	}
-	this.Data["user"] = user
-	this.Data["LastLogin"] = this.GetSession("LastLogin")
-	this.Data["LastIp"] = this.GetSession("LastIp")
-
-	// if this.Ctx.Request.RequestURI == "/login/in" {
-	// 	this.Redirect("/", 302)
-	// }
 
 }
 

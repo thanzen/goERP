@@ -40,7 +40,7 @@ func (u *User) TableIndex() [][]string {
 func (u *User) TableName() string {
 	return "auth_user"
 }
-func ListUser(condArr map[string]string, user User, page, offset int) (int64, error, []User) {
+func ListUser(condArr map[string]interface{}, user User, page, offset int) (int64, error, []User) {
 	if page < 1 {
 		page = 1
 	}
