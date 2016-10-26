@@ -1,45 +1,50 @@
 
 <table class="table table-bordered table-hover table-condensed table-striped">
 <thead>
-	<tr  class="info">
-	{{/*获得tree视图的标题*/}}
-	{{$TitleName:=.DataTree.Title.TitleName}}
-	{{/*tree视图标题长度*/}}
-	{{$Len:=.DataTree.Title.TitleName|len}}
-	{{/*tree视图标题内容和位置信息*/}}
-	{{range $index,$cell:=$TitleName}}
+	<tr class="info">
+		{{/*获得list视图的标题*/}}
+		{{$titleName := .tableInfo.Title.titleName}}
+		{{/*list视图标题长度*/}}
+		{{$TitleLen:=.tableInfo.TitleLen}}
+		{{range $index,$cell:=$titleName}}
 		{{if eq 0 $index }}
-			<th><input class="checkbox-top" type="checkbox">&nbsp;&nbsp;{{$cell}}</th>
+			<th class="text-center"><input class="checkbox-top pull-left" type="checkbox">&nbsp;&nbsp;{{$cell}}</th>
 		{{else}}
-			<th>{{$cell}}</th>
+			<th class="text-center">{{$cell}}</th>
 		{{end}}
 	{{end}}
 	</tr>
+	
 </thead>
 <tbody>
-	{{$DataBody:=.DataTree.Body}}
-	
-	{{range $BodyLine:=$DataBody.BodyLines}}
-		{{$lineCell:=$BodyLine.lineCell}}
-		{{$lineInfo := $BodyLine.lineInfo}}
+	{{$Body := .tableInfo.Body}}
+	{{$Url:=.tableInfo.Url}}
+	{{$TitleIndexLen := .tableInfo.TitleIndexLen}}
+	{{range $bodyLine := $Body.bodyLines}}
+		{{$oneLine:=$bodyLine.oneLine}}
+		{{$lineInfo := $bodyLine.lineInfo}}
 		<tr data-id="{{$lineInfo.id}}">
-			{{range $index,$cell:=$lineCell}}
+			{{range $index,$cell:=$oneLine}}
+			 
 				{{if eq 0 $index}}
 					<td data-id="{{$lineInfo.id}}">
 				{{else}}
-					<td>
+					<td class="text-center">
 				{{end}}
 					{{if eq 0 $index}}
-						<input data-id="{{$lineInfo.id}}" class="checkbox-data" type="checkbox">&nbsp;&nbsp;{{$cell}}
-					{{else if eq $Len $index}}
+						<input data-id="{{$lineInfo.id}}" class="checkbox-data" type="checkbox">&nbsp;&nbsp;<a href="{{$Url}}/{{$lineInfo.id}}" >{{$cell}}</a>
+					{{else if eq $TitleIndexLen $index}}
 						{{if $cell.detail}}
-							<span><a href="{{$cell.detail.url}}" class="btn-xs btn-primary glyphicon glyphicon-zoom-in">{{$cell.detail.name}}</a></span>
+							<span><a href="{{$cell.detail.url}}" class="btn-xs btn-primary glyphicon glyphicon-new-window list-btn-action">{{$cell.detail.name}}</a></span>
 						{{end}}
 						{{if $cell.edit}}
-							<span><a href="{{$cell.edit.url}}" class="btn-xs btn-success glyphicon glyphicon-pencil">{{$cell.edit.name}}</a></span>
+							<span><a href="{{$cell.edit.url}}" class="btn-xs btn-success glyphicon glyphicon-pencil list-btn-action">{{$cell.edit.name}}</a></span>
+						{{end}}
+						{{if $cell.disable}}
+							<span><a href="{{$cell.disable.url}}" class="btn-xs btn-success glyphicon glyphicon-off list-btn-action">{{$cell.disable.name}}</a></span>
 						{{end}}
 						{{if $cell.remove}}
-							<span><a href="{{$cell.remove.url}}" class="btn-xs btn-danger glyphicon glyphicon-remove">{{$cell.remove.name}}</a></span>
+							<span><a href="{{$cell.remove.url}}" class="btn-xs btn-danger glyphicon glyphicon-remove list-btn-action">{{$cell.remove.name}}</a></span>
 						{{end}}
 					{{else}}
 						{{$cell}}
@@ -50,3 +55,23 @@
 	{{end}}
 </tbody>
 </table>
+ <nav class="text-center">
+  <ul class="pagination">
+	{{if eq .Paginator.CurrentPage 1}}
+    	<li class="disabled"><a  class="page-link" href="#">&laquo;</a></li>
+	{{else}}
+		<li ><a class="page-link" href="#">&laquo;</a></li>
+	{{end}}
+    <li class="active"><a class="page-link" href="#">1</a></li>
+    <li><a class="page-link" href="#">2</a></li>
+    <li><a class="page-link" href="#">3</a></li>
+    <li><a class="page-link" href="#">4</a></li>
+    <li><a class="page-link" href="#">5</a></li>
+	{{if eq .Paginator.CurrentPage .Paginator.TotalPage}}
+    	<li class="disabled"><a class="page-link" href="#">&raquo;</a></li>
+	{{else}}
+		<li ><a class="page-link" href="#">&raquo;</a></li>
+	{{end}}
+     
+  </ul>
+</nav>

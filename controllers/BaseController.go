@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"html/template"
 	. "pms/init"
 	"pms/models/base"
@@ -35,7 +34,6 @@ func (this *BaseController) Prepare() {
 	this.Data["IsPro"] = IsPro
 	this.Data["xsrf"] = template.HTML(this.XSRFFormHTML())
 	this.Data["PageStartTime"] = time.Now()
-	fmt.Println(this.Ctx.Request.RequestURI)
 	// Redirect to make URL clean.
 	if this.setLangVer() {
 		i := strings.Index(this.Ctx.Request.RequestURI, "?")

@@ -3,7 +3,6 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 )
 
 func PasswordMD5(passwd, salt string) string {
@@ -11,6 +10,5 @@ func PasswordMD5(passwd, salt string) string {
 	h.Write([]byte(passwd + salt))
 	cipherStr := h.Sum(nil)
 	result := hex.EncodeToString(cipherStr)
-	fmt.Println(result)
 	return result
 }

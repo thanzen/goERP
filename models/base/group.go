@@ -2,6 +2,7 @@ package base
 
 import "github.com/astaxie/beego/orm"
 
+//权限组
 type Group struct {
 	Base
 	Name          string  `orm:"unique" xml:"name"` //组名称

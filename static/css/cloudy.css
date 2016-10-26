@@ -28,3 +28,10 @@
 .list-page div{
     display: inline-block;
 }
+.list-filter{
+    position: relative;
+    clear: both;
+}
+.list-btn-action{
+    margin-bottom: 2px;
+}

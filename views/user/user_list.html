@@ -1,1 +1,9 @@
-{{template "base/view_list_head.html".}}
+{{template "base/view_list_head_top.html" .}}
+<!--在此处增加过滤选项-->
+<div class="list-filter">
+     <p class="text-center">在此处增加过滤选项</p>
+</div>
+{{template "base/view_list_head_bottom.html" .}}
+<div class="row">
+{{template "base/view_list.html" .}}
+</div>

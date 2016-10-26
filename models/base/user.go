@@ -11,6 +11,7 @@ type User struct {
 	Base
 	Name       string      `orm:"size(20)" xml:"name"`                 //用户名
 	NameZh     string      `orm:"size(20)" `                           //中文用户名
+	Department *Department `orm:"rel(fk);null;"`                       //部门
 	Email      string      `orm:"size(20)" xml:"email"`                //邮箱
 	Mobile     string      `orm:"size(20);default(\"\")" xml:"mobile"` //手机号码
 	Tel        string      `orm:"size(20);default(\"\")"`              //固定号码
@@ -18,9 +19,8 @@ type User struct {
 	Group      []*Group    `orm:"rel(m2m);rel_table(user_groups)"`     //权限组
 	IsAdmin    bool        `orm:"default(false)" xml:"isAdmin"`        //是否为超级用户
 	Active     bool        `orm:"default(true)" xml:"active"`          //有效
-	Department *Department `orm:"rel(fk);null"`                        //部门
-	Qq         string      `orm:"null" xml:"qq"`                       //QQ
-	WeChat     string      `orm:"null" xml:"wechat"`                   //微信
+	Qq         string      `orm:"default(\"\")" xml:"qq"`              //QQ
+	WeChat     string      `orm:"default(\"\")" xml:"wechat"`          //微信
 
 }
 
