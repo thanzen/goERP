@@ -2,11 +2,29 @@
     text-align: left;
 }
 .content-wrapper{
-    padding:20px 30px;; 
+    padding:10px 30px;; 
 
 }
 #list-title{
     margin:0 0;
     height:30px;
     line-height:30px;
+}
+.list-view-title{
+    margin-bottom:10px; 
+}
+.action{
+    position: absolute;
+    display: inline;
+    left: 50%;
+}
+.btn-action{
+    padding-top:4px;
+    padding-bottom:4px;  
+}
+.list-page{
+    display: inline-block;
+}
+.list-page div{
+    display: inline-block;
 }

@@ -1,6 +1,10 @@
-package base
+package address
 
-import "github.com/astaxie/beego/orm"
+import (
+	. "pms/models/base"
+
+	"github.com/astaxie/beego/orm"
+)
 
 type City struct {
 	Base

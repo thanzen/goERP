@@ -2,6 +2,7 @@ package init
 
 import (
 	"encoding/xml"
+	. "pms/models/address"
 	. "pms/models/base"
 )
 

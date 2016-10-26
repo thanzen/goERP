@@ -1,6 +1,10 @@
-package base
+package address
 
-import "github.com/astaxie/beego/orm"
+import (
+	. "pms/models/base"
+
+	"github.com/astaxie/beego/orm"
+)
 
 type Province struct {
 	Base
@@ -11,13 +15,13 @@ type Province struct {
 }
 
 //添加省份
-func AddProvince(obj Province,user User) (int64, error) {
+func AddProvince(obj Province, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	province := new(Province)
 	province.Name = obj.Name
 	province.Country = obj.Country
-    province.CreateUser = &user
+	province.CreateUser = &user
 	province.UpdateUser = &user
 	id, err := o.Insert(province)
 	return id, err

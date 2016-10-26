@@ -4,8 +4,9 @@ import "github.com/astaxie/beego/orm"
 
 type Group struct {
 	Base
-	Name    string  `orm:"unique" xml:"name"` //组名称
-	Members []*User `orm:"reverse(many)"`     //组员
+	Name          string  `orm:"unique" xml:"name"` //组名称
+	Members       []*User `orm:"reverse(many)"`     //组员
+	GlobalLoation string  `orm:"unique" `           //全局定位
 }
 
 func AddGroup(obj Group, user User) (int64, error) {

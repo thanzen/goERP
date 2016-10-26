@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"pms/models/base"
 	"pms/utils"
 	"strconv"
@@ -42,10 +43,11 @@ func (this *UserController) List() {
 	paginator, err, users := base.ListUser(condArr, this.User, pageInt64, offsetInt64)
 	tableLineInfo := new(utils.TableLineInfo)
 	tableLineInfo.Url = "/user/list"
-	tableTitle := make(map[string]interface{})
+	// tableTitle := make(map[string]interface{})
 	if err == nil {
 		for i, user := range users {
-
+			fmt.Println(i)
+			fmt.Println(user)
 		}
 	}
 	this.Data["Paginator"] = paginator
