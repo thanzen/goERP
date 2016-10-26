@@ -40,4 +40,44 @@
 		<qq>272685110</qq>
 		<wechat>18129971404</wechat>
 	</user>
+	<user>
+		<name>cloudy4</name>
+		<email>27268512114@qq.com</email>
+		<mobile>181129971407</mobile>
+		<passWord>cloudy</passWord>
+		<isAdmin>1</isAdmin>
+		<active>1</active>
+		<qq>272685110</qq>
+		<wechat>18129971404</wechat>
+	</user>
+	<user>
+		<name>cloudy5</name>
+		<email>27268511123@qq.com</email>
+		<mobile>1181292971408</mobile>
+		<passWord>cloudy</passWord>
+		<isAdmin>1</isAdmin>
+		<active>1</active>
+		<qq>272685110</qq>
+		<wechat>18129971404</wechat>
+	</user>
+	<user>
+		<name>cloudy7</name>
+		<email>272268512114@qq.com</email>
+		<mobile>128129971407</mobile>
+		<passWord>cloudy</passWord>
+		<isAdmin>1</isAdmin>
+		<active>1</active>
+		<qq>272685110</qq>
+		<wechat>18129971404</wechat>
+	</user>
+	<user>
+		<name>cloudy8</name>
+		<email>272685121123@qq.com</email>
+		<mobile>1781299712408</mobile>
+		<passWord>cloudy</passWord>
+		<isAdmin>1</isAdmin>
+		<active>1</active>
+		<qq>272685110</qq>
+		<wechat>18129971404</wechat>
+	</user>
 </Users>

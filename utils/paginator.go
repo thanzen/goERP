@@ -27,5 +27,15 @@ func GenPaginator(page, offset, count int64) Paginator {
 	} else {
 		paginator.LastPage = false
 	}
+	if page >= 3 {
+		paginator.PageList = []int64{page - 2, page - 1, page, page + 1, page + 2}
+	} else {
+		list := make([]int64, 0, 1)
+		for index := 1; index < int(paginator.TotalPage+1); index++ {
+			list = append(list, int64(index))
+		}
+		paginator.PageList = list
+	}
 	return paginator
+
 }

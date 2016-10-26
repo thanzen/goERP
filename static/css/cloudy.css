@@ -13,11 +13,7 @@
 .list-view-title{
     margin-bottom:10px; 
 }
-.action{
-    position: absolute;
-    display: inline;
-    left: 50%;
-}
+
 .btn-action{
     padding-top:4px;
     padding-bottom:4px;  
