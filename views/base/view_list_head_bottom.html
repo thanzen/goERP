@@ -21,15 +21,15 @@
 				<span >{{.Paginator.CurrentPage}}/{{.Paginator.TotalPage}}</span>
 			</div>
 			<div  class="btn-group btn-group-sm">
-				{{if eq .Paginator.CurrentPage 1}}
-					<a type="button"  class="fa fa-chevron-left btn btn-default page-link disabled"></a>
+				{{if le .Paginator.CurrentPage 1}}
+					<a type="button"  class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
 				{{else}}
-					<a type="button" class="fa fa-chevron-left btn btn-default page-link"></a>
+					<a type="button" class="fa fa-chevron-left btn btn-default page-link" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
 				{{end}}
-				{{if eq .Paginator.CurrentPage .Paginator.TotalPage}}
-					<a type="button" class="fa fa-chevron-right btn btn-default page-link disabled"></a>
+				{{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
+					<a type="button" class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
 				{{else}}
-					<a type="button" class="fa fa-chevron-right btn btn-default page-link "></a>
+					<a type="button" class="fa fa-chevron-right btn btn-default page-link " href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
 				{{end}}
 			</div>
 		</div>

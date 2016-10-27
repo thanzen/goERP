@@ -49,7 +49,7 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int64) (ut
 	if offset < 1 {
 		offset, _ = beego.AppConfig.Int64("pageoffset")
 	}
-	start := (page - 1) * offset
+
 	o := orm.NewOrm()
 	o.Using("default")
 	qs := o.QueryTable(new(User))
@@ -76,6 +76,10 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int64) (ut
 	if cnt, err := qs.Count(); err == nil {
 		paginator = utils.GenPaginator(page, offset, cnt)
 	}
+	if page > paginator.TotalPage {
+		page = paginator.TotalPage
+	}
+	start := (page - 1) * offset
 	if num, err = qs.Limit(offset, start).All(&users); err == nil {
 		paginator.CurrentPageSize = num
 	}

@@ -57,20 +57,24 @@
 </table>
  <nav class="text-center">
   <ul class="pagination">
-	{{if eq .Paginator.CurrentPage 1}}
-    	<li class="disabled"><a  class="page-link" href="#">&laquo;</a></li>
+	{{if le .Paginator.CurrentPage 1}}
+    	<li class="disabled"><a  class="page-link fa fa-backward" href="?page=1&offset={{$.Paginator.PageSize}}"></a></li>
 	{{else}}
-		<li ><a class="page-link" href="#">&laquo;</a></li>
+		<li ><a class="page-link fa fa-backward" href="?page=1&offset={{$.Paginator.PageSize}}"></a></li>
 	{{end}}
-    <li class="active"><a class="page-link" href="#">1</a></li>
-    <li><a class="page-link" href="#">2</a></li>
-    <li><a class="page-link" href="#">3</a></li>
-    <li><a class="page-link" href="#">4</a></li>
-    <li><a class="page-link" href="#">5</a></li>
-	{{if eq .Paginator.CurrentPage .Paginator.TotalPage}}
-    	<li class="disabled"><a class="page-link" href="#">&raquo;</a></li>
+	 
+    {{range $Page:= .Paginator.PageList}}
+		{{if eq $.Paginator.CurrentPage $Page}}
+			<li class="active"><a class="page-link" href="?page={{$Page}}&offset={{$.Paginator.PageSize}}">{{$Page}}</a></li>
+		{{else}}
+			<li ><a class="page-link" href="?page={{$Page}}&offset={{$.Paginator.PageSize}}">{{$Page}}</a></li>
+		{{end}}
+	{{end}}
+	 
+	{{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
+    	<li class="disabled"><a class="page-link fa fa-forward" href="?page={{$.Paginator.TotalPage}}&offset={{$.Paginator.PageSize}}"></a></li>
 	{{else}}
-		<li ><a class="page-link" href="#">&raquo;</a></li>
+		<li ><a class="page-link fa fa-forward" href="?page={{$.Paginator.TotalPage}}&offset={{$.Paginator.PageSize}}"></a></li>
 	{{end}}
      
   </ul>

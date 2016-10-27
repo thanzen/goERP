@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"pms/models/base"
 	"pms/utils"
 	"strconv"
@@ -113,9 +112,6 @@ func (this *UserController) List() {
 		tableInfo.TitleLen = listCellLength
 		tableInfo.TitleIndexLen = listCellLength - 1
 		tableInfo.BodyLen = paginator.CurrentPageSize
-		fmt.Println(tableInfo.TitleLen)
-		fmt.Println(tableInfo.BodyLen)
-
 		this.Data["tableInfo"] = tableInfo
 	}
 
