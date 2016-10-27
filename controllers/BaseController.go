@@ -45,6 +45,7 @@ func (this *BaseController) Prepare() {
 	if user != nil {
 		this.User = user.(base.User)
 		this.Data["user"] = user
+		this.Data["LastLogin"] = this.GetSession("LastLogin")
 	} else {
 		if this.Ctx.Request.RequestURI != "/login/in" {
 			this.Redirect("/login/in", 302)

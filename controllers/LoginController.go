@@ -33,23 +33,19 @@ func (this *LoginController) Post() {
 	}
 
 	var (
-		user  base.User
-		err   error
-		login base.LoginLog
-		ok    bool
+		user   base.User
+		err    error
+		record *base.Record
+		ok     bool
 	)
 	if user, err, ok = base.CheckUserByName(loginName, password); ok != true {
 		this.Redirect("/login/in", 302)
 	} else {
-
-		this.Data["user"] = user
-		if login, err = base.GetLoginLog(user); err == nil {
-			this.Data["LastLogin"] = login.CreateDate
-			this.Data["LastIp"] = login.Ip
-			this.SetSession("LastLogin", login.CreateDate)
-			this.SetSession("LastIp", login.Ip)
+		if record, err = base.GetRecord(user); err == nil {
+			this.SetSession("LastLogin", record.CreateDate)
+			this.SetSession("LastIp", record.Ip)
 		}
-		base.AddLoginLog(user, this.Ctx.Input.IP())
+		base.AddRecord(user, this.Ctx.Input.IP())
 		this.SetSession("User", user)
 
 		this.Ctx.SetCookie("Remember", rememberMe, 31536000, "/")
@@ -60,7 +56,7 @@ func (this *LoginController) Post() {
 
 //登出
 func (this *LoginController) Logout() {
-	base.UpdateLoginLog(this.User.Id)
+	base.UpdateRecord(this.User.Id)
 	this.SetSession("User", nil)
 	this.DelSession("User")
 

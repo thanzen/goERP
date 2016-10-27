@@ -8,7 +8,7 @@ import (
 
 //列表视图列数-1，第一列为checkbox
 const (
-	listCellLength = 11
+	userListCellLength = 11
 )
 
 type UserController struct {
@@ -44,19 +44,20 @@ func (this *UserController) List() {
 	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
 		offsetInt64 = int64(offsetInt)
 	}
-	var users []base.User
+
 	paginator, err, users := base.ListUser(condArr, this.User, pageInt64, offsetInt64)
+	paginator.Url = "/user"
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
-	tableInfo.Url = "/user/detail"
+	tableInfo.Url = "/user"
 	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [listCellLength]string{"用户名", "中文用户名", "部门", "邮箱", "手机号码", "固定号码", "超级用户", "有效", "QQ", "微信", "操作"}
+	tableTitle["titleName"] = [userListCellLength]string{"用户名", "中文用户名", "部门", "邮箱", "手机号码", "固定号码", "超级用户", "有效", "QQ", "微信", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
 	bodyLines := make([]interface{}, 0, 20)
 	if err == nil {
 		for _, user := range users {
-			oneLine := make([]interface{}, listCellLength, listCellLength)
+			oneLine := make([]interface{}, userListCellLength, userListCellLength)
 			lineInfo := make(map[string]interface{})
 			action := map[string]map[string]string{}
 			edit := make(map[string]string)
@@ -109,8 +110,8 @@ func (this *UserController) List() {
 		}
 		tableBody["bodyLines"] = bodyLines
 		tableInfo.Body = tableBody
-		tableInfo.TitleLen = listCellLength
-		tableInfo.TitleIndexLen = listCellLength - 1
+		tableInfo.TitleLen = userListCellLength
+		tableInfo.TitleIndexLen = userListCellLength - 1
 		tableInfo.BodyLen = paginator.CurrentPageSize
 		this.Data["tableInfo"] = tableInfo
 	}

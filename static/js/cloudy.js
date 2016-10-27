@@ -4,8 +4,9 @@ $(function(){
         var offset = $("#page-offset");
         if(page && offset){
             page = page[0].value;
+            var url = offset[0].dataset.url;
             offset = offset[0].value;
-            location.replace("/user/list/?page="+page+"&offset="+offset) ;
+            location.replace(url+"/list/?page="+page+"&offset="+offset) ;
         }
         
     });

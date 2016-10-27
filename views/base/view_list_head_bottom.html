@@ -15,30 +15,32 @@
 			<li><a href="#">Separated link</a></li>
 		</ul>
 	</div>
-	{{if ge .Paginator.TotalPage 1}}
-		<div  class="list-page pull-right">
-			<div class="pagesize">
-				<label >总数:</label><span class="total-count">{{.Paginator.TotalCount}}</span>
-				<label for="pagesize">每页数量</label>
-				<input class="list-page-info" type="number" id="page-offset" name="pagesize" value="{{.Paginator.PageSize}}" min="1" max="{{.Paginator.Max}}">
-				<label for="go-page">跳转</label>
-				<input  class="list-page-info" type="number" id="page-page"  value="{{.Paginator.CurrentPage}}" min="1" max="{{.Paginator.TotalPage}}">
+	{{if .Paginator}}
+		{{if ge .Paginator.TotalPage 1}}
+			<div  class="list-page pull-right">
+				<div class="pagesize">
+					<label >总数:</label><span class="total-count">{{.Paginator.TotalCount}}</span>
+					<label for="pagesize">每页数量</label>
+					<input class="list-page-info" type="number" id="page-offset" data-url="{{.Paginator.Url}}" name="pagesize" value="{{.Paginator.PageSize}}" min="1" max="{{.Paginator.Max}}">
+					<label for="go-page">跳转</label>
+					<input  class="list-page-info" type="number" id="page-page"  value="{{.Paginator.CurrentPage}}" min="1" max="{{.Paginator.TotalPage}}">
+				</div>
+				<div >
+					<span >{{.Paginator.CurrentPage}}/{{.Paginator.TotalPage}}</span>
+				</div>
+				<div  class="btn-group btn-group-sm">
+					{{if le .Paginator.CurrentPage 1}}
+						<a type="button"  class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
+					{{else}}
+						<a type="button" class="fa fa-chevron-left btn btn-default page-link" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
+					{{end}}
+					{{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
+						<a type="button" class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
+					{{else}}
+						<a type="button" class="fa fa-chevron-right btn btn-default page-link " href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
+					{{end}}
+				</div>
 			</div>
-			<div >
-				<span >{{.Paginator.CurrentPage}}/{{.Paginator.TotalPage}}</span>
-			</div>
-			<div  class="btn-group btn-group-sm">
-				{{if le .Paginator.CurrentPage 1}}
-					<a type="button"  class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
-				{{else}}
-					<a type="button" class="fa fa-chevron-left btn btn-default page-link" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
-				{{end}}
-				{{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
-					<a type="button" class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
-				{{else}}
-					<a type="button" class="fa fa-chevron-right btn btn-default page-link " href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
-				{{end}}
-			</div>
-		</div>
+		{{end}}
 	{{end}}
 </div>

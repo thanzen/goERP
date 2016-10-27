@@ -12,5 +12,7 @@ func init() {
 	beego.Router("/login/:action([A-Za-z]+)/", &controllers.LoginController{})
 	//用户
 	beego.Router("/user/:action([A-Za-z]+)/", &controllers.UserController{})
+	//登录日志
+	beego.Router("/record/:action([A-Za-z]+)/", &controllers.RecordController{})
 
 }

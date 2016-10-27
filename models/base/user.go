@@ -72,6 +72,7 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int64) (ut
 	var paginator utils.Paginator
 
 	//后面再考虑查看权限的问题
+	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
 		paginator = utils.GenPaginator(page, offset, cnt)
