@@ -38,3 +38,6 @@
     color: red;
     font-size: 18px;
 }
+.list-top-action{
+    display: none;
+}

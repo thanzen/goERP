@@ -6,8 +6,22 @@ $(function(){
             page = page[0].value;
             offset = offset[0].value;
             location.replace("/user/list/?page="+page+"&offset="+offset) ;
-             
         }
         
     });
+    
+	//tree视图下checkbox选择操作
+	$(".checkbox-top").bind("click",function(e){
+         var checked = e.currentTarget.checked;
+		//显示顶部操作按钮
+		if (checked){
+			$(".list-top-action").css("display","block");
+            $(".checkbox-data").attr("checked","checked");
+		}else{
+			$(".list-top-action").css("display","none");
+            $(".checkbox-data").attr("checked","");
+		}
+		 
+	});
+	 
 });
