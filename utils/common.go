@@ -10,5 +10,6 @@ func PasswordMD5(passwd, salt string) string {
 	h.Write([]byte(passwd + salt))
 	cipherStr := h.Sum(nil)
 	result := hex.EncodeToString(cipherStr)
+
 	return result
 }

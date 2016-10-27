@@ -24,11 +24,11 @@
               <span>设置</span>
             </a>
             <ul class="treeview-menu">
-              <li class="treeview active"><a href="#"><i class="fa fa-bars"></i>个人资料</a>
+              <li class="treeview active"><a href="#"><i class="fa  fa-user"></i>个人资料</a>
                 <ul class="treeview-menu">
-                  <li class ="active"><a href="#"><i class="fa fa-check-circle-o"></i>个人信息</a></li>
-                  <li><a href="#"><i class="fa fa-arrow-circle-right"></i>密码修改</a></li>
-                  <li><a href="#"><i class="fa fa-arrow-circle-right"></i>登录记录</a></li>
+                  <li class ="active"><a href="/user/detail/{{.user.Id}}"><i class="fa fa-check-circle-o"></i>个人信息</a></li>
+                  <li><a href="#"><i class="fa fa-unlock"></i>密码修改</a></li>
+                  <li><a href="#"><i class="fa fa-list-ol"></i>登录记录</a></li>
                 </ul>
               </li>
               <li><a href="#"><i class="fa fa-bars" ></i>权限管理</a></li>
@@ -50,9 +50,9 @@
               </li>
             </ul>
         </li>
-         <li class="treeview active">
+         <li class="treeview">
             <a href="#">
-              <i class="fa fa-gears"></i>
+              <i class="fa fa-list"></i>
               <span>产品管理</span>
             </a>
             <ul class="treeview-menu">

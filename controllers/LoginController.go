@@ -40,25 +40,27 @@ func (this *LoginController) Post() {
 	)
 	if user, err, ok = base.CheckUserByName(loginName, password); ok != true {
 		this.Redirect("/login/in", 302)
-	}
-	this.Data["user"] = user
-	if login, err = base.GetLoginLog(user); err == nil {
-		this.Data["LastLogin"] = login.CreateDate
-		this.Data["LastIp"] = login.Ip
-		this.SetSession("LastLogin", login.CreateDate)
-		this.SetSession("LastIp", login.Ip)
-	}
-	base.AddLoginLog(user, this.Ctx.Input.IP())
-	this.SetSession("User", user)
+	} else {
 
-	this.Ctx.SetCookie("Remember", rememberMe, 31536000, "/")
-	//通过验证跳转到主界面
-	this.Redirect("/", 302)
+		this.Data["user"] = user
+		if login, err = base.GetLoginLog(user); err == nil {
+			this.Data["LastLogin"] = login.CreateDate
+			this.Data["LastIp"] = login.Ip
+			this.SetSession("LastLogin", login.CreateDate)
+			this.SetSession("LastIp", login.Ip)
+		}
+		base.AddLoginLog(user, this.Ctx.Input.IP())
+		this.SetSession("User", user)
+
+		this.Ctx.SetCookie("Remember", rememberMe, 31536000, "/")
+		//通过验证跳转到主界面
+		this.Redirect("/", 302)
+	}
 }
 
 //登出
 func (this *LoginController) Logout() {
-
+	base.UpdateLoginLog(this.User.Id)
 	this.SetSession("User", nil)
 	this.DelSession("User")
 

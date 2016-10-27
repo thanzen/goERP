@@ -32,12 +32,9 @@ func GetLoginLog(user User) (LoginLog, error) {
 		login LoginLog
 		err   error
 	)
+
 	o.Using("default")
-	cond := orm.NewCondition()
-	cond = cond.And("user_id", user.Id)
-	qs := o.QueryTable(&login)
-	qs = qs.SetCond(cond).OrderBy("-id").Limit(1)
-	err = qs.One(&login)
+	err = o.QueryTable(&login).Filter("User", user.Id).RelatedSel().OrderBy("-id").Limit(1).One(&login)
 	return login, err
 }
 
@@ -46,18 +43,16 @@ func UpdateLoginLog(userId int64) {
 	o := orm.NewOrm()
 	var (
 		login LoginLog
+		err   error
 	)
 	o.Using("default")
-	cond := orm.NewCondition()
-	cond = cond.And("user_id", userId)
-	qs := o.QueryTable(&login)
-	qs = qs.SetCond(cond).OrderBy("-id").Limit(1)
-	if qs.One(&login) != nil {
+	err = o.QueryTable(&login).Filter("User", userId).RelatedSel().OrderBy("-id").Limit(1).One(&login)
+
+	if err == nil {
 		login.Logout = time.Now()
 		if user, err := GetUser(userId); err == nil {
 			login.UpdateUser = &user
+			o.Update(&login)
 		}
-		o.Insert(login)
 	}
-
 }

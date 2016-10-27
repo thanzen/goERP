@@ -101,6 +101,7 @@ func AddUser(obj User, cUser User) (int64, error) {
 	user.CreateUser = &cUser
 	user.UpdateUser = &cUser
 	user.Password = utils.PasswordMD5(obj.Password, obj.Mobile)
+
 	id, err := o.Insert(user)
 	return id, err
 }
@@ -140,6 +141,7 @@ func CheckUserByName(name, password string) (User, error, bool) {
 	qs := o.QueryTable(&user)
 	qs = qs.SetCond(cond)
 	if err = qs.One(&user); err == nil {
+
 		if user.Password == utils.PasswordMD5(password, user.Mobile) {
 			ok = true
 		}

@@ -45,7 +45,6 @@ func initUser(filename string) {
 			if xml.Unmarshal(data, &initUsers) == nil {
 				for _, k := range initUsers.Users {
 					//admin系统管理员
-
 					AddUser(k, k)
 				}
 			}
