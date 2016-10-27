@@ -17,6 +17,13 @@
 		</div>
 	{{if gt .Paginator.TotalPage 1}}
 		<div  class="list-page pull-right">
+			<div class="pagesize">
+				<label >总数:</label><span class="total-count">{{.Paginator.TotalCount}}</span>
+				<label for="pagesize">每页数量</label>
+				<input class="list-page-info" type="number" id="page-offset" name="pagesize" value="{{.Paginator.PageSize}}" min="1" max="{{.Paginator.Max}}">
+				<label for="go-page">跳转</label>
+				<input  class="list-page-info" type="number" id="page-page"  value="{{.Paginator.CurrentPage}}" min="1" max="{{.Paginator.TotalPage}}">
+			</div>
 			<div >
 				<span >{{.Paginator.CurrentPage}}/{{.Paginator.TotalPage}}</span>
 			</div>

@@ -1,11 +1,13 @@
-// $(function(){
-//     $(".action").each(function(i,action){
-//         console.log($(this));
-//         var parentWidth = action.parentNode.clientWidth;
-//         var nodeWidth = action.clientWidth;
-//         var left = (parentWidth+nodeWidth+230)/2;
-//         $(this).css("left",left+"px");
+$(function(){
+    $(".list-page-info").change(function(){
+        var page = $("#page-page");
+        var offset = $("#page-offset");
+        if(page && offset){
+            page = page[0].value;
+            offset = offset[0].value;
+            location.replace("/user/list/?page="+page+"&offset="+offset) ;
+             
+        }
         
-//     });
-  
-// });
+    });
+});

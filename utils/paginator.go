@@ -11,6 +11,7 @@ type Paginator struct {
 	FirstPage       bool    //为第一页
 	LastPage        bool    //为最后一页
 	PageList        []int64 //显示的页
+	Max             int64
 }
 
 func GenPaginator(page, offset, count int64) Paginator {
@@ -49,6 +50,7 @@ func GenPaginator(page, offset, count int64) Paginator {
 	}
 	paginator.NextPage = page + 1
 	paginator.PrePage = page - 1
+	paginator.Max = paginator.TotalCount / paginator.CurrentPage
 	return paginator
 
 }

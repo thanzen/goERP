@@ -31,3 +31,10 @@
 .list-btn-action{
     margin-bottom: 2px;
 }
+.pagesize input{
+    width: 50px;
+}
+.total-count{
+    color: red;
+    font-size: 18px;
+}

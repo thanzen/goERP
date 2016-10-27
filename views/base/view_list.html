@@ -62,7 +62,6 @@
 	{{else}}
 		<li ><a class="page-link fa fa-backward" href="?page=1&offset={{$.Paginator.PageSize}}"></a></li>
 	{{end}}
-	 
     {{range $Page:= .Paginator.PageList}}
 		{{if eq $.Paginator.CurrentPage $Page}}
 			<li class="active"><a class="page-link" href="?page={{$Page}}&offset={{$.Paginator.PageSize}}">{{$Page}}</a></li>
@@ -70,12 +69,10 @@
 			<li ><a class="page-link" href="?page={{$Page}}&offset={{$.Paginator.PageSize}}">{{$Page}}</a></li>
 		{{end}}
 	{{end}}
-	 
 	{{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
     	<li class="disabled"><a class="page-link fa fa-forward" href="?page={{$.Paginator.TotalPage}}&offset={{$.Paginator.PageSize}}"></a></li>
 	{{else}}
 		<li ><a class="page-link fa fa-forward" href="?page={{$.Paginator.TotalPage}}&offset={{$.Paginator.PageSize}}"></a></li>
 	{{end}}
-     
   </ul>
 </nav>
