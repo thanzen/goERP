@@ -1,8 +1,7 @@
-package address
+package base
 
 import (
 	"fmt"
-	. "pms/models/base"
 	"pms/utils"
 
 	"github.com/astaxie/beego"

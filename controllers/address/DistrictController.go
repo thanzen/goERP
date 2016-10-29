@@ -2,8 +2,9 @@ package address
 
 import (
 	"pms/controllers/base"
-	"pms/models/address"
+	. "pms/models/base"
 	"pms/utils"
+
 	"strconv"
 )
 
@@ -52,8 +53,8 @@ func (this *DistrictController) List() {
 	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
 		offsetInt64 = int64(offsetInt)
 	}
-	var districts []address.District
-	paginator, err, districts := address.ListDistrict(condArr, pageInt64, offsetInt64)
+	var districts []District
+	paginator, err, districts := ListDistrict(condArr, pageInt64, offsetInt64)
 	paginator.Url = "/district"
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
