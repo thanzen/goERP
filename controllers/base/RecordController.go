@@ -19,13 +19,19 @@ type RecordController struct {
 
 func (this *RecordController) Get() {
 	action := this.GetString(":action")
+	viewType := this.Input().Get("view_type")
 	switch action {
 	case "list":
-		this.List()
+		switch viewType {
+		case "list":
+			this.List()
+		default:
+			this.List()
+		}
 	default:
 		this.List()
-
 	}
+	this.Data["searchKeyWords"] = "邮箱/手机号码"
 }
 func (this *RecordController) List() {
 

@@ -13,7 +13,9 @@
 .list-view-title{
     margin-bottom:10px; 
 }
-
+#top-search{
+     width: 350px;
+}
 .btn-action{
     padding-top:4px;
     padding-bottom:4px;  
