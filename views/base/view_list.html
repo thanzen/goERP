@@ -59,7 +59,7 @@
 	</tbody>
 	</table>
 {{end}}
-{{if .Paginator}}
+{{if ge .Paginator.TotalPage 1}}
 	<nav class="text-center">
 		<ul class="pagination">
 			{{if le .Paginator.CurrentPage 1}}
@@ -81,4 +81,7 @@
 			{{end}}
 		</ul>
 	</nav>
+{{end}}
+{{if eq .Paginator.TotalPage 0}}
+<p class="text-center">暂无<mark>{{.listName}}</mark>数据</p>
 {{end}}

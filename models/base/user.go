@@ -77,9 +77,6 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int64) (ut
 	if cnt, err := qs.Count(); err == nil {
 		paginator = utils.GenPaginator(page, offset, cnt)
 	}
-	if page > paginator.TotalPage {
-		page = paginator.TotalPage
-	}
 	start := (page - 1) * offset
 	if num, err = qs.Limit(offset, start).All(&users); err == nil {
 		paginator.CurrentPageSize = num

@@ -35,6 +35,9 @@ func (this *CountryController) List() {
 	this.Data["listName"] = "国家信息"
 	this.Layout = "base/base.html"
 	this.TplName = "user/record_list.html"
+	this.Data["settingRootActive"] = "active"
+	this.Data["addressManageActive"] = "active"
+	this.Data["addressCountryActive"] = "active"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")
@@ -66,7 +69,6 @@ func (this *CountryController) List() {
 			lineInfo := make(map[string]interface{})
 			action := map[string]map[string]string{}
 			edit := make(map[string]string)
-			remove := make(map[string]string)
 			detail := make(map[string]string)
 			id := int(country.Id)
 
@@ -75,12 +77,9 @@ func (this *CountryController) List() {
 
 			edit["name"] = "编辑"
 			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
-			remove["name"] = "删除"
-			remove["url"] = tableInfo.Url + "/remove/" + strconv.Itoa(id)
 			detail["name"] = "详情"
 			detail["url"] = tableInfo.Url + "/detail/" + strconv.Itoa(id)
 			action["edit"] = edit
-			action["remove"] = remove
 			action["detail"] = detail
 
 			oneLine[1] = action

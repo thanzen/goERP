@@ -36,6 +36,8 @@ func (this *UserController) List() {
 	this.Data["listName"] = "用户信息"
 	this.Layout = "base/base.html"
 	this.TplName = "user/user_list.html"
+	this.Data["settingRootActive"] = "active"
+	this.Data["userListActive"] = "active"
 	condArr := make(map[string]interface{})
 	condArr["active"] = true
 	page := this.Input().Get("page")

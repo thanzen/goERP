@@ -1,6 +1,7 @@
 package address
 
 import (
+	"fmt"
 	. "pms/models/base"
 	"pms/utils"
 
@@ -42,11 +43,10 @@ func ListDistrict(condArr map[string]interface{}, page, offset int64) (utils.Pag
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
+		fmt.Println(offset)
 		paginator = utils.GenPaginator(page, offset, cnt)
 	}
-	if page > paginator.TotalPage {
-		page = paginator.TotalPage
-	}
+
 	start := (page - 1) * offset
 	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&districts); err == nil {
 		paginator.CurrentPageSize = num

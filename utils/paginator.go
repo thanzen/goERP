@@ -1,5 +1,7 @@
 package utils
 
+import "fmt"
+
 type Paginator struct {
 	CurrentPage     int64   //当前页
 	NextPage        int64   //下一页
@@ -18,8 +20,13 @@ type Paginator struct {
 func GenPaginator(page, offset, count int64) Paginator {
 	var paginator Paginator
 	paginator.TotalCount = count
+	fmt.Println("====================")
+	fmt.Println(offset)
 	paginator.TotalPage = (count + offset - 1) / offset
 	paginator.PageSize = offset
+	if page < 1 {
+		page = 1
+	}
 	if page == 1 {
 		paginator.FirstPage = true
 	} else {
@@ -34,6 +41,8 @@ func GenPaginator(page, offset, count int64) Paginator {
 		page = paginator.TotalPage
 	}
 	paginator.CurrentPage = page
+	fmt.Println("paginator.CurrentPage")
+	fmt.Println(paginator.CurrentPage)
 	list := make([]int64, 0, 1)
 	if paginator.TotalPage <= 5 {
 		for index := 1; index <= int(paginator.TotalPage); index++ {
@@ -51,7 +60,13 @@ func GenPaginator(page, offset, count int64) Paginator {
 	}
 	paginator.NextPage = page + 1
 	paginator.PrePage = page - 1
-	paginator.Max = paginator.TotalCount / paginator.CurrentPage
+	fmt.Println("paginator.CurrentPage")
+	fmt.Println(paginator.CurrentPage)
+	if paginator.TotalCount > 0 && paginator.CurrentPage > 0 {
+		paginator.Max = paginator.TotalCount / paginator.CurrentPage
+	} else {
+		paginator.Max = 0
+	}
 	return paginator
 
 }

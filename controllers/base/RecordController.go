@@ -38,6 +38,8 @@ func (this *RecordController) List() {
 	this.Data["listName"] = "登录日志"
 	this.Layout = "base/base.html"
 	this.TplName = "user/record_list.html"
+	this.Data["settingRootActive"] = "active"
+	this.Data["recordListActive"] = "active"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")

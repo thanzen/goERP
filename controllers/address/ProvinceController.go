@@ -35,6 +35,9 @@ func (this *ProvinceController) List() {
 	this.Data["listName"] = "省份信息"
 	this.Layout = "base/base.html"
 	this.TplName = "user/record_list.html"
+	this.Data["settingRootActive"] = "active"
+	this.Data["addressManageActive"] = "active"
+	this.Data["addressProvinceActive"] = "active"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")
@@ -56,7 +59,7 @@ func (this *ProvinceController) List() {
 	tableInfo := new(utils.TableInfo)
 	tableInfo.Url = "/province"
 	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [provinceListCellLength]string{"国家", "省份", "操作"}
+	tableTitle["titleName"] = [provinceListCellLength]string{"省份", "国家", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
 	bodyLines := make([]interface{}, 0, 20)
@@ -66,7 +69,6 @@ func (this *ProvinceController) List() {
 			lineInfo := make(map[string]interface{})
 			action := map[string]map[string]string{}
 			edit := make(map[string]string)
-			remove := make(map[string]string)
 			detail := make(map[string]string)
 			id := int(province.Id)
 
@@ -75,15 +77,12 @@ func (this *ProvinceController) List() {
 			oneLine[1] = province.Country.Name
 			edit["name"] = "编辑"
 			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
-			remove["name"] = "删除"
-			remove["url"] = tableInfo.Url + "/remove/" + strconv.Itoa(id)
 			detail["name"] = "详情"
 			detail["url"] = tableInfo.Url + "/detail/" + strconv.Itoa(id)
 			action["edit"] = edit
-			action["remove"] = remove
 			action["detail"] = detail
 
-			oneLine[3] = action
+			oneLine[2] = action
 			lineData := make(map[string]interface{})
 			lineData["oneLine"] = oneLine
 			lineData["lineInfo"] = lineInfo
