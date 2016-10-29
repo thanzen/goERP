@@ -35,18 +35,20 @@
 						{{if eq 0 $index}}
 							<input data-id="{{$lineInfo.id}}" class="checkbox-data" type="checkbox">&nbsp;&nbsp;<a href="{{$Url}}/detail/{{$lineInfo.id}}" >{{$cell}}</a>
 						{{else if eq $TitleIndexLen $index}}
-							{{if $cell.detail}}
-								<span><a href="{{$cell.detail.url}}" class="btn-xs btn-primary glyphicon glyphicon-new-window list-btn-action">{{$cell.detail.name}}</a></span>
-							{{end}}
-							{{if $cell.edit}}
-								<span><a href="{{$cell.edit.url}}" class="btn-xs btn-success glyphicon glyphicon-pencil list-btn-action">{{$cell.edit.name}}</a></span>
-							{{end}}
-							{{if $cell.disable}}
-								<span><a href="{{$cell.disable.url}}" class="btn-xs btn-success glyphicon glyphicon-off list-btn-action">{{$cell.disable.name}}</a></span>
-							{{end}}
-							{{if $cell.remove}}
-								<span><a href="{{$cell.remove.url}}" class="btn-xs btn-danger glyphicon glyphicon-remove list-btn-action">{{$cell.remove.name}}</a></span>
-							{{end}}
+							<div class="table-action">
+								{{with $cell.detail}}
+									<span class="table-action-list"><a href="{{$cell.detail.url}}" class="btn-xs btn-primary glyphicon glyphicon-new-window list-btn-action">{{$cell.detail.name}}</a></span>
+								{{end}}
+								{{with $cell.edit}}
+									<span class="table-action-list"><a href="{{$cell.edit.url}}" class="btn-xs btn-success glyphicon glyphicon-pencil list-btn-action">{{$cell.edit.name}}</a></span>
+								{{end}}
+								{{with $cell.disable}}
+									<span class="table-action-list"><a href="{{$cell.disable.url}}" class="btn-xs btn-success glyphicon glyphicon-off list-btn-action">{{$cell.disable.name}}</a></span>
+								{{end}}
+								{{with $cell.remove}}
+									<span class="table-action-list"><a href="{{$cell.remove.url}}" class="btn-xs btn-danger glyphicon glyphicon-remove list-btn-action">{{$cell.remove.name}}</a></span>
+								{{end}}
+							</div>
 						{{else}}
 							{{$cell}}
 						{{end}}
