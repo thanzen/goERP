@@ -22,8 +22,6 @@ func (this *LoginController) Get() {
 }
 func (this *LoginController) Post() {
 
-	this.Layout = "base/base.html"
-	this.TplName = "test.html"
 	loginName := this.GetString("loginName")
 	password := this.GetString("password")
 	rememberMe := this.GetString("remember")
