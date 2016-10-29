@@ -1,5 +1,5 @@
 //访问用户登录日志信息
-package controllers
+package base
 
 import (
 	"pms/models/base"

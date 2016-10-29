@@ -1,4 +1,4 @@
-package controllers
+package base
 
 type IndexController struct {
 	BaseController

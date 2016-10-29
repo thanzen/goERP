@@ -1,4 +1,4 @@
-package controllers
+package base
 
 import "pms/models/base"
 
