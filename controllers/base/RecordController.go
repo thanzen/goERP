@@ -39,6 +39,7 @@ func (this *RecordController) List() {
 	this.Layout = "base/base.html"
 	this.TplName = "user/record_list.html"
 	this.Data["settingRootActive"] = "active"
+	this.Data["personInfoActive"] = "active"
 	this.Data["recordListActive"] = "active"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")

@@ -86,14 +86,14 @@ func GetRecord(user User) (*Record, error) {
 }
 
 //更新
-func UpdateRecord(userId int64) {
+func UpdateRecord(userId int64, Ip string) {
 	o := orm.NewOrm()
 	var (
 		record Record
 		err    error
 	)
 	o.Using("default")
-	err = o.QueryTable(&record).Filter("User", userId).RelatedSel().OrderBy("-id").Limit(1).One(&record)
+	err = o.QueryTable(&record).Filter("User", userId).Filter("ip", Ip).RelatedSel().OrderBy("-id").Limit(1).One(&record)
 
 	if err == nil {
 		record.Logout = time.Now()

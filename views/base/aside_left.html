@@ -24,7 +24,7 @@
               <span>设置</span>
             </a>
             <ul class="treeview-menu">
-              <li class="treeview "><a href="#"><i class="fa  fa-user"></i>个人资料</a>
+              <li class="treeview {{.personInfoActive}}"><a href="#"><i class="fa  fa-user"></i>个人资料</a>
                 <ul class="treeview-menu">
                   <li class ="{{.settingPersonActive}}"><a href="/user/detail/{{.user.Id}}"><i class="fa fa-address-card"></i>个人信息</a></li>
                   <li><a href="#"><i class="fa fa-unlock"></i>密码修改</a></li>

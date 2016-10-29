@@ -54,7 +54,7 @@ func (this *LoginController) Post() {
 
 //登出
 func (this *LoginController) Logout() {
-	base.UpdateRecord(this.User.Id)
+	base.UpdateRecord(this.User.Id, this.Ctx.Input.IP())
 	this.SetSession("User", nil)
 	this.DelSession("User")
 
