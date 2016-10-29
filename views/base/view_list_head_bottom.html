@@ -15,6 +15,14 @@
 			<li><a href="#">Separated link</a></li>
 		</ul>
 	</div>
+	<div class="btn-group btn-group-sm pull-right">
+		<button class="btn btn-default fa fa-list-ul active" ></button>
+        <button class="btn btn-default fa fa-th-large"></button>
+        <!--<button class="btn btn-default fa fa-edit" ></button>
+        <button class="btn btn-default fa fa-calendar"></button>
+        <button class="btn btn-default fa fa-table"></button>
+        <button class="btn btn-default fa fa-bar-chart"></button>-->
+	</div>
 	{{if .Paginator}}
 		{{if ge .Paginator.TotalPage 1}}
 			<div  class="list-page pull-right">
@@ -28,19 +36,22 @@
 				<div >
 					<span >{{.Paginator.CurrentPage}}/{{.Paginator.TotalPage}}</span>
 				</div>
-				<div  class="btn-group btn-group-sm">
-					{{if le .Paginator.CurrentPage 1}}
-						<a type="button"  class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
-					{{else}}
-						<a type="button" class="fa fa-chevron-left btn btn-default page-link" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
-					{{end}}
-					{{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
-						<a type="button" class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
-					{{else}}
-						<a type="button" class="fa fa-chevron-right btn btn-default page-link " href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
-					{{end}}
-				</div>
+				{{if gt .Paginator.TotalPage 1}}
+					<div  class="btn-group btn-group-sm">
+						{{if le .Paginator.CurrentPage 1}}
+							<a type="button"  class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
+						{{else}}
+							<a type="button" class="fa fa-chevron-left btn btn-default page-link" href="?page={{$.Paginator.PrePage}}&offset={{$.Paginator.PageSize}}"></a>
+						{{end}}
+						{{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
+							<a type="button" class="fa  fa-ban btn btn-default page-link disabled" href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
+						{{else}}
+							<a type="button" class="fa fa-chevron-right btn btn-default page-link " href="?page={{$.Paginator.NextPage}}&offset={{$.Paginator.PageSize}}"></a>
+						{{end}}
+					</div>
+				{{end}}
 			</div>
 		{{end}}
 	{{end}}
+	
 </div>
