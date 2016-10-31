@@ -1,6 +1,7 @@
 package product
 
 import (
+	"fmt"
 	"pms/models/base"
 	"pms/utils"
 
@@ -59,6 +60,7 @@ func ListProductCategory(condArr map[string]interface{}, page, offset int64) (ut
 func AddProductCategory(obj ProductCategory, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
+
 	productCategory := new(ProductCategory)
 	productCategory.Name = obj.Name
 	productCategory.CreateUser = &user
@@ -69,9 +71,33 @@ func AddProductCategory(obj ProductCategory, user base.User) (int64, error) {
 
 //获得某一个属性信息
 func GetProductCategory(id int64) (ProductCategory, error) {
+	var productCategory ProductCategory
 	o := orm.NewOrm()
 	o.Using("default")
-	productCategory := ProductCategory{Base: base.Base{Id: id}}
-	err := o.Read(&productCategory)
+	qs := o.QueryTable(new(ProductCategory))
+	qs = qs.RelatedSel()
+	err := qs.Filter("id", id).Limit(1).One(&productCategory)
 	return productCategory, err
+}
+
+//获得全路径分类
+func GetFullPathCategory(obj ProductCategory) string {
+	var (
+		op  ProductCategory
+		err error
+	)
+	var p = new(ProductCategory)
+	p = &obj
+	fullPath := obj.Name
+	for {
+		if op, err = GetProductCategory(p.Parent.Id); err == nil {
+			fullPath = op.Name + "/" + fullPath
+			p = op.Parent
+		} else {
+			fmt.Println(err)
+			break
+		}
+	}
+	fmt.Println(fullPath)
+	return fullPath
 }

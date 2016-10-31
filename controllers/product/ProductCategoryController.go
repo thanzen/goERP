@@ -1,6 +1,7 @@
 package product
 
 import (
+	"fmt"
 	"pms/controllers/base"
 	"pms/models/product"
 	"pms/utils"
@@ -80,12 +81,14 @@ func (this *ProductCategoryController) List() {
 			detail["url"] = tableInfo.Url + "/detail/" + strconv.Itoa(id)
 			action["edit"] = edit
 			action["detail"] = detail
-			if productcategory.Parent != nil {
-				oneLine[1] = productcategory.Parent.Name
-			} else {
-				oneLine[1] = "-"
-			}
-
+			// if productcategory.Parent != nil {
+			// 	oneLine[1] = product.GetFullPathCategory(productcategory)
+			// } else {
+			// 	oneLine[1] = "-"
+			// }
+			oneLine[1] = product.GetFullPathCategory(productcategory)
+			kko, _ := product.GetProductCategory(productcategory.Id)
+			fmt.Println(kko)
 			oneLine[2] = action
 
 			lineData := make(map[string]interface{})
