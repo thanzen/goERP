@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	districtListCellLength = 5
+	districtListCellLength = 4
 )
 
 type DistrictController struct {
@@ -60,12 +60,14 @@ func (this *DistrictController) List() {
 	tableInfo := new(utils.TableInfo)
 	tableInfo.Url = "/district"
 	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [districtListCellLength]string{"区县", "国家", "省份", "城市", "操作"}
+	tableTitle["titleName"] = [districtListCellLength]string{"区县", "城市", "省份", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
 	bodyLines := make([]interface{}, 0, 20)
 	if err == nil {
 		for _, district := range districts {
+
+			//
 			oneLine := make([]interface{}, districtListCellLength, districtListCellLength)
 			lineInfo := make(map[string]interface{})
 			action := map[string]map[string]string{}
@@ -75,9 +77,10 @@ func (this *DistrictController) List() {
 
 			lineInfo["id"] = id
 			oneLine[0] = district.Name
-			oneLine[1] = district.City.Province.Country.Name
-			oneLine[2] = district.City.Province.Name
-			oneLine[3] = district.City.Name
+
+			oneLine[1] = district.City.Province.Name
+			oneLine[2] = district.City.Name
+
 			edit["name"] = "编辑"
 			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
 			detail["name"] = "详情"
@@ -85,7 +88,7 @@ func (this *DistrictController) List() {
 			action["edit"] = edit
 			action["detail"] = detail
 
-			oneLine[4] = action
+			oneLine[3] = action
 			lineData := make(map[string]interface{})
 			lineData["oneLine"] = oneLine
 			lineData["lineInfo"] = lineInfo
@@ -93,8 +96,8 @@ func (this *DistrictController) List() {
 		}
 		tableBody["bodyLines"] = bodyLines
 		tableInfo.Body = tableBody
-		tableInfo.TitleLen = cityListCellLength
-		tableInfo.TitleIndexLen = cityListCellLength - 1
+		tableInfo.TitleLen = districtListCellLength
+		tableInfo.TitleIndexLen = districtListCellLength - 1
 		tableInfo.BodyLen = paginator.CurrentPageSize
 		this.Data["tableInfo"] = tableInfo
 	}

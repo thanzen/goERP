@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego"
@@ -42,7 +41,6 @@ func ListDistrict(condArr map[string]interface{}, page, offset int64) (utils.Pag
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		fmt.Println(offset)
 		paginator = utils.GenPaginator(page, offset, cnt)
 	}
 

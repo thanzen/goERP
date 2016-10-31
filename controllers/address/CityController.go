@@ -59,7 +59,7 @@ func (this *CityController) List() {
 	tableInfo := new(utils.TableInfo)
 	tableInfo.Url = "/city"
 	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [cityListCellLength]string{"城市", "国家", "省份", "操作"}
+	tableTitle["titleName"] = [cityListCellLength]string{"城市", "省份", "国家", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
 	bodyLines := make([]interface{}, 0, 20)
@@ -74,8 +74,8 @@ func (this *CityController) List() {
 
 			lineInfo["id"] = id
 			oneLine[0] = city.Name
-			oneLine[1] = city.Province.Country.Name
-			oneLine[2] = city.Province.Name
+			oneLine[1] = city.Province.Name
+			oneLine[2] = city.Province.Country.Name
 			edit["name"] = "编辑"
 			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
 			detail["name"] = "详情"
@@ -84,6 +84,7 @@ func (this *CityController) List() {
 			action["detail"] = detail
 
 			oneLine[3] = action
+
 			lineData := make(map[string]interface{})
 			lineData["oneLine"] = oneLine
 			lineData["lineInfo"] = lineInfo
