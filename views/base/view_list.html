@@ -37,16 +37,16 @@
 						{{else if eq $TitleIndexLen $index}}
 							<div class="table-action">
 								{{with $cell.detail}}
-									<span class="table-action-list"><a href="{{$cell.detail.url}}" class="btn-xs btn-primary glyphicon glyphicon-new-window list-btn-action">{{$cell.detail.name}}</a></span>
+									<span class="table-action-list"><a href="{{$cell.detail.url}}" class="btn-xs btn-primary fa fa-external-link list-btn-action">{{$cell.detail.name}}</a></span>
 								{{end}}
 								{{with $cell.edit}}
-									<span class="table-action-list"><a href="{{$cell.edit.url}}" class="btn-xs btn-success glyphicon glyphicon-pencil list-btn-action">{{$cell.edit.name}}</a></span>
+									<span class="table-action-list"><a href="{{$cell.edit.url}}" class="btn-xs btn-success fa fa-pencil list-btn-action">{{$cell.edit.name}}</a></span>
 								{{end}}
 								{{with $cell.disable}}
-									<span class="table-action-list"><a href="{{$cell.disable.url}}" class="btn-xs btn-success glyphicon glyphicon-off list-btn-action">{{$cell.disable.name}}</a></span>
+									<span class="table-action-list"><a href="{{$cell.disable.url}}" class="btn-xs btn-warning fa fa-close list-btn-action">{{$cell.disable.name}}</a></span>
 								{{end}}
 								{{with $cell.remove}}
-									<span class="table-action-list"><a href="{{$cell.remove.url}}" class="btn-xs btn-danger glyphicon glyphicon-remove list-btn-action">{{$cell.remove.name}}</a></span>
+									<span class="table-action-list"><a href="{{$cell.remove.url}}" class="btn-xs btn-danger fa fa-trash list-btn-action">{{$cell.remove.name}}</a></span>
 								{{end}}
 							</div>
 						{{else}}

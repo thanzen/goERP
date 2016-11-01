@@ -1,7 +1,6 @@
 package product
 
 import (
-	"fmt"
 	"pms/models/base"
 	"pms/utils"
 
@@ -78,26 +77,4 @@ func GetProductCategory(id int64) (ProductCategory, error) {
 	qs = qs.RelatedSel()
 	err := qs.Filter("id", id).Limit(1).One(&productCategory)
 	return productCategory, err
-}
-
-//获得全路径分类
-func GetFullPathCategory(obj ProductCategory) string {
-	var (
-		op  ProductCategory
-		err error
-	)
-	var p = new(ProductCategory)
-	p = &obj
-	fullPath := obj.Name
-	for {
-		if op, err = GetProductCategory(p.Parent.Id); err == nil {
-			fullPath = op.Name + "/" + fullPath
-			p = op.Parent
-		} else {
-			fmt.Println(err)
-			break
-		}
-	}
-	fmt.Println(fullPath)
-	return fullPath
 }

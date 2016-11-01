@@ -32,6 +32,7 @@
 }
 .list-btn-action{
     margin-bottom: 2px;
+    padding: 2px 2px;
 }
 .pagesize input{
     width: 50px;
