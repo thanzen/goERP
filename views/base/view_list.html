@@ -19,7 +19,7 @@
 	</thead>
 	<tbody>
 		{{$Body := .tableInfo.Body}}
-		{{$Url:=.tableInfo.Url}}
+	 
 		{{$TitleIndexLen := .tableInfo.TitleIndexLen}}
 		{{range $bodyLine := $Body.bodyLines}}
 			{{$oneLine:=$bodyLine.oneLine}}
@@ -33,7 +33,7 @@
 						<td class="text-center">
 					{{end}}
 						{{if eq 0 $index}}
-							<input data-id="{{$lineInfo.id}}" class="checkbox-data" type="checkbox">&nbsp;&nbsp;<a href="{{$Url}}/detail/{{$lineInfo.id}}" >{{$cell}}</a>
+							<input data-id="{{$lineInfo.id}}" class="checkbox-data" type="checkbox">&nbsp;&nbsp;<a href="{{$.URL}}/detail/{{$lineInfo.id}}" >{{$cell}}</a>
 						{{else if eq $TitleIndexLen $index}}
 							<div class="table-action">
 								{{with $cell.detail}}

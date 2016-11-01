@@ -23,18 +23,32 @@ func (this *ProductCategoryController) Get() {
 		switch viewType {
 		case "list":
 			this.List()
+
 		default:
 			this.List()
 		}
+	case "create":
+		this.Create()
+	case "edit":
+		this.Edit()
 	default:
 		this.List()
 	}
 	this.Data["searchKeyWords"] = "产品类别"
 }
+func (this *ProductCategoryController) Edit() {
+
+}
+func (this *ProductCategoryController) Create() {
+	this.Layout = "base/base.html"
+	this.TplName = "product/product_category_form.html"
+	this.Data["Url"] = "/product/category"
+	this.Data["Action"] = "create"
+}
 func (this *ProductCategoryController) List() {
 	this.Data["listName"] = "产品类别"
 	this.Layout = "base/base.html"
-	this.TplName = "user/record_list.html"
+	this.TplName = "product/product_category_list.html"
 	this.Data["productRootActive"] = "active"
 	this.Data["productAttributeActive"] = "active"
 	condArr := make(map[string]interface{})
@@ -53,10 +67,10 @@ func (this *ProductCategoryController) List() {
 	}
 	var productcategories []product.ProductCategory
 	paginator, err, productcategories := product.ListProductCategory(condArr, pageInt64, offsetInt64)
-	paginator.Url = "/city"
+	URL := "/product/category"
+	this.Data["URL"] = URL
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
-	tableInfo.Url = "/city"
 	tableTitle := make(map[string]interface{})
 	tableTitle["titleName"] = [productCategoryListCellLength]string{"类别", "上级类别", "操作"}
 	tableInfo.Title = tableTitle
@@ -75,9 +89,9 @@ func (this *ProductCategoryController) List() {
 			oneLine[0] = productcategory.Name
 
 			edit["name"] = "编辑"
-			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
+			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
 			detail["name"] = "详情"
-			detail["url"] = tableInfo.Url + "/detail/" + strconv.Itoa(id)
+			detail["url"] = URL + "/detail/" + strconv.Itoa(id)
 			action["edit"] = edit
 			action["detail"] = detail
 			if productcategory.Parent != nil {

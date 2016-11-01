@@ -49,10 +49,11 @@ func (this *ProductAttributeLineController) List() {
 	}
 	var productAttributes []product.ProductAttribute
 	paginator, err, productAttributes := product.ListProductAttribute(condArr, pageInt64, offsetInt64)
-	paginator.Url = "/city"
+	URL := "/product/attribute"
+	this.Data["URL"] = URL
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
-	tableInfo.Url = "/city"
+
 	tableTitle := make(map[string]interface{})
 	tableTitle["titleName"] = [productAttributeListCellLength]string{"属性", "操作"}
 	tableInfo.Title = tableTitle
@@ -71,9 +72,9 @@ func (this *ProductAttributeLineController) List() {
 			oneLine[0] = productAttribute.Name
 
 			edit["name"] = "编辑"
-			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
+			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
 			detail["name"] = "详情"
-			detail["url"] = tableInfo.Url + "/detail/" + strconv.Itoa(id)
+			detail["url"] = URL + "/detail/" + strconv.Itoa(id)
 			action["edit"] = edit
 			action["detail"] = detail
 

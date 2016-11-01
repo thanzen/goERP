@@ -55,10 +55,10 @@ func (this *UserController) List() {
 	}
 
 	paginator, err, users := base.ListUser(condArr, this.User, pageInt64, offsetInt64)
-	paginator.Url = "/user"
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
-	tableInfo.Url = "/user"
+	URL := "/user"
+	this.Data["URL"] = URL
 	tableTitle := make(map[string]interface{})
 	tableTitle["titleName"] = [userListCellLength]string{"用户名", "中文用户名", "部门", "邮箱", "手机号码", "固定号码", "超级用户", "有效", "QQ", "微信", "操作"}
 	tableInfo.Title = tableTitle
@@ -100,13 +100,13 @@ func (this *UserController) List() {
 			oneLine[9] = user.Qq
 			oneLine[9] = user.WeChat
 			edit["name"] = "编辑"
-			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
+			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
 			remove["name"] = "删除"
-			remove["url"] = tableInfo.Url + "/remove/" + strconv.Itoa(id)
+			remove["url"] = URL + "/remove/" + strconv.Itoa(id)
 			detail["name"] = "详情"
-			detail["url"] = tableInfo.Url + "/detail/" + strconv.Itoa(id)
+			detail["url"] = URL + "/detail/" + strconv.Itoa(id)
 			disable["name"] = "无效"
-			disable["url"] = tableInfo.Url + "/disable/" + strconv.Itoa(id)
+			disable["url"] = URL + "/disable/" + strconv.Itoa(id)
 			action["edit"] = edit
 			action["remove"] = remove
 			action["detail"] = detail

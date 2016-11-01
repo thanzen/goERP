@@ -55,10 +55,10 @@ func (this *DistrictController) List() {
 	}
 	var districts []District
 	paginator, err, districts := ListDistrict(condArr, pageInt64, offsetInt64)
-	paginator.Url = "/district"
+	URL := "/district"
+	this.Data["URL"] = URL
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
-	tableInfo.Url = "/district"
 	tableTitle := make(map[string]interface{})
 	tableTitle["titleName"] = [districtListCellLength]string{"区县", "城市", "省份", "操作"}
 	tableInfo.Title = tableTitle
@@ -82,9 +82,9 @@ func (this *DistrictController) List() {
 			oneLine[2] = district.City.Name
 
 			edit["name"] = "编辑"
-			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
+			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
 			detail["name"] = "详情"
-			detail["url"] = tableInfo.Url + "/detail/" + strconv.Itoa(id)
+			detail["url"] = URL + "/detail/" + strconv.Itoa(id)
 			action["edit"] = edit
 			action["detail"] = detail
 

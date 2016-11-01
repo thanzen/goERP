@@ -12,7 +12,6 @@ type Paginator struct {
 	LastPage        bool    //为最后一页
 	PageList        []int64 //显示的页
 	Max             int64
-	Url             string //Url地址头
 }
 
 func GenPaginator(page, offset, count int64) Paginator {

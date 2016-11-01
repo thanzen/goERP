@@ -1,7 +1,6 @@
 package utils
 
 type TableInfo struct {
-	Url           string
 	PageName      string
 	Title         map[string]interface{}
 	Body          map[string]interface{}

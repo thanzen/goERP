@@ -57,10 +57,10 @@ func (this *RecordController) List() {
 	}
 	var records []base.Record
 	paginator, err, records := base.ListRecord(condArr, this.User.Id, pageInt64, offsetInt64)
-	paginator.Url = "/record"
+	Url := "/user"
+	this.Data["Url"] = Url
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
-	tableInfo.Url = "/record"
 	tableTitle := make(map[string]interface{})
 	tableTitle["titleName"] = [recordListCellLength]string{"邮箱", "手机", "用户名", "中文用户名", "开始时间", "结束时间", "登录IP", "操作"}
 	tableInfo.Title = tableTitle

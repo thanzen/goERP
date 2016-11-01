@@ -55,10 +55,11 @@ func (this *CountryController) List() {
 	}
 	var countrys []Country
 	paginator, err, countrys := ListCountry(condArr, pageInt64, offsetInt64)
-	paginator.Url = "/country"
+	URL := "/country"
+	this.Data["URL"] = URL
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
-	tableInfo.Url = "/country"
+
 	tableTitle := make(map[string]interface{})
 	tableTitle["titleName"] = [countryListCellLength]string{"国家", "操作"}
 	tableInfo.Title = tableTitle
@@ -77,9 +78,9 @@ func (this *CountryController) List() {
 			oneLine[0] = country.Name
 
 			edit["name"] = "编辑"
-			edit["url"] = tableInfo.Url + "/edit/" + strconv.Itoa(id)
+			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
 			detail["name"] = "详情"
-			detail["url"] = tableInfo.Url + "/detail/" + strconv.Itoa(id)
+			detail["url"] = URL + "/detail/" + strconv.Itoa(id)
 			action["edit"] = edit
 			action["detail"] = detail
 

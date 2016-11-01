@@ -2,7 +2,7 @@
 	</div>
 </div>
 <div class="row text-center">
-	<a href="#" type="buttom" class="btn btn-success fa fa-plus pull-left"></a>
+	<a href="{{.URL}}/create/" type="buttom" class="btn btn-success fa fa-plus pull-left"></a>
 	<div class="btn-group  pull-left list-top-action" >
 		<button type="button" class="btn btn-primary btn-sm dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			操作 <span class="caret"></span>
@@ -29,7 +29,7 @@
 				<div class="pagesize">
 					<label >总数:</label><span class="total-count">{{.Paginator.TotalCount}}</span>
 					<label for="pagesize">每页数量</label>
-					<input class="list-page-info" type="number" id="page-offset" data-url="{{.Paginator.Url}}" name="pagesize" value="{{.Paginator.PageSize}}" min="1" max="{{.Paginator.Max}}">
+					<input class="list-page-info" type="number" id="page-offset" data-url="{{$.URL}}" name="pagesize" value="{{.Paginator.PageSize}}" min="1" max="{{.Paginator.Max}}">
 					<label for="go-page">跳转</label>
 					<input  class="list-page-info" type="number" id="page-page"  value="{{.Paginator.CurrentPage}}" min="1" max="{{.Paginator.TotalPage}}">
 				</div>
