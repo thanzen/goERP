@@ -21,6 +21,7 @@ func (this *ProductAttributePriceController) Get() {
 		this.List()
 	}
 	this.Data["searchKeyWords"] = "属性值价格"
+	this.Layout = "base/base.html"
 }
 func (this *ProductAttributePriceController) List() {
 

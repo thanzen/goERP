@@ -30,13 +30,17 @@ func (this *ProductProductController) Get() {
 		this.List()
 	}
 	this.Data["searchKeyWords"] = "产品规格名"
+	this.URL = "/product/product"
+	this.Data["URL"] = this.URL
+	this.Data["productRootActive"] = "active"
+	this.Data["productProductActive"] = "active"
+	this.Layout = "base/base.html"
 }
 func (this *ProductProductController) List() {
 	this.Data["listName"] = "产品规格"
-	this.Layout = "base/base.html"
+
 	this.TplName = "user/record_list.html"
-	this.Data["productRootActive"] = "active"
-	this.Data["productProductActive"] = "active"
+
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")
@@ -53,8 +57,7 @@ func (this *ProductProductController) List() {
 	}
 	var productProducts []product.ProductProduct
 	paginator, err, productProducts := product.ListProductProduct(condArr, pageInt64, offsetInt64)
-	URL := "/product/product"
-	this.Data["URL"] = URL
+
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
 	tableTitle := make(map[string]interface{})
@@ -75,9 +78,9 @@ func (this *ProductProductController) List() {
 			oneLine[0] = productProduct.Name
 
 			edit["name"] = "编辑"
-			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
+			edit["url"] = this.URL + "/edit/" + strconv.Itoa(id)
 			detail["name"] = "详情"
-			detail["url"] = URL + "/detail/" + strconv.Itoa(id)
+			detail["url"] = this.URL + "/detail/" + strconv.Itoa(id)
 			action["edit"] = edit
 			action["detail"] = detail
 

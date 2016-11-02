@@ -21,6 +21,7 @@ type BaseController struct {
 	beego.Controller
 	IsAdmin   bool
 	UserName  string
+	URL       string
 	LastLogin time.Time
 	User      base.User
 	i18n.Locale

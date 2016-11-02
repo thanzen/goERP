@@ -32,15 +32,18 @@ func (this *RecordController) Get() {
 		this.List()
 	}
 	this.Data["searchKeyWords"] = "邮箱/手机号码"
+	this.URL = "/user"
+	this.Data["URL"] = this.URL
+	this.Layout = "base/base.html"
+	this.Data["settingRootActive"] = "active"
+	this.Data["personInfoActive"] = "active"
+
 }
 func (this *RecordController) List() {
 
 	this.Data["listName"] = "登录日志"
-	this.Layout = "base/base.html"
-	this.TplName = "user/record_list.html"
-	this.Data["settingRootActive"] = "active"
-	this.Data["personInfoActive"] = "active"
 	this.Data["recordListActive"] = "active"
+	this.TplName = "user/record_list.html"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")
@@ -57,8 +60,7 @@ func (this *RecordController) List() {
 	}
 	var records []base.Record
 	paginator, err, records := base.ListRecord(condArr, this.User.Id, pageInt64, offsetInt64)
-	Url := "/user"
-	this.Data["Url"] = Url
+
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
 	tableTitle := make(map[string]interface{})
