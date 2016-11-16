@@ -21,6 +21,7 @@ type User struct {
 	Active     bool        `orm:"default(true)" xml:"active"`          //有效
 	Qq         string      `orm:"default(\"\")" xml:"qq"`              //QQ
 	WeChat     string      `orm:"default(\"\")" xml:"wechat"`          //微信
+	Position   *Position   `orm:"rel(fk);null;"`                       //职位
 
 }
 
@@ -105,7 +106,7 @@ func AddUser(obj User, cUser User) (int64, error) {
 }
 
 //获得某一个用户信息
-func GetUser(id int64) (User, error) {
+func GetUserById(id int64) (User, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	user := User{Base: Base{Id: id}}

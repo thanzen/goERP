@@ -20,11 +20,11 @@ func InitDb() {
 		split = "/"
 	}
 	if xmDir, err := os.Getwd(); err == nil {
-		if _, err := GetUser(1); err != nil {
+		if _, err := GetUserById(1); err != nil {
 
 			xmDir += split + "init_xml" + split
 			initUser(xmDir + "Users.xml")
-			if user, err := GetUser(1); err == nil {
+			if user, err := GetUserById(1); err == nil {
 				initGroup(xmDir+"Groups.xml", user)
 				initCountry(xmDir+"Countries.xml", user)
 				initProvince(xmDir+"Provinces.xml", user)

@@ -43,6 +43,7 @@ func (this *RecordController) List() {
 
 	this.Data["listName"] = "登录日志"
 	this.Data["recordListActive"] = "active"
+	this.Data["Readonly"] = true
 	this.TplName = "user/record_list.html"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")

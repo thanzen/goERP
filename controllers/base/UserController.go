@@ -1,6 +1,7 @@
 package base
 
 import (
+	"fmt"
 	"pms/models/base"
 	"pms/utils"
 	"strconv"
@@ -19,6 +20,7 @@ func (this *UserController) Get() {
 
 	action := this.GetString(":action")
 	viewType := this.Input().Get("view_type")
+
 	switch action {
 	case "list":
 		switch viewType {
@@ -27,6 +29,12 @@ func (this *UserController) Get() {
 		default:
 			this.List()
 		}
+	case "detail":
+		this.Detail()
+	case "create":
+		this.Create()
+	case "edit":
+		this.Edit()
 	default:
 		this.List()
 	}
@@ -36,6 +44,24 @@ func (this *UserController) Get() {
 	this.Layout = "base/base.html"
 	this.Data["settingRootActive"] = "active"
 
+}
+func (this *UserController) Create() {
+	this.Data["Readonly"] = false
+	this.Data["listName"] = "创建用户"
+	this.TplName = "user/user_form.html"
+	this.LayoutSections = make(map[string]string)
+	this.LayoutSections["ExtendCss"] = "base/form_css.html"
+	this.LayoutSections["ExtendJs"] = "base/form_js.html"
+}
+func (this *UserController) Edit() {
+	id := this.GetString(":id")
+	fmt.Println(id)
+	this.TplName = "user/user_form.html"
+}
+func (this *UserController) Detail() {
+	id := this.GetString(":id")
+	fmt.Println(id)
+	this.TplName = "user/user_form.html"
 }
 func (this *UserController) List() {
 	this.Data["listName"] = "用户信息"

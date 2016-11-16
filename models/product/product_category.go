@@ -10,10 +10,11 @@ import (
 
 type ProductCategory struct {
 	base.Base
-	Name     string             `orm:"unique"`        //产品属性名称
-	Parent   *ProductCategory   `orm:"rel(fk);null"`  //上级分类
-	Childs   []*ProductCategory `orm:"reverse(many)"` //下级分类
-	Sequence int64              //序列
+	Name           string             `orm:"unique"`        //产品属性名称
+	Parent         *ProductCategory   `orm:"rel(fk);null"`  //上级分类
+	Childs         []*ProductCategory `orm:"reverse(many)"` //下级分类
+	Sequence       int64              //序列
+	ParentFullPath string             //上级全路径
 }
 
 //列出记录

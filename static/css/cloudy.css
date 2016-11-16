@@ -44,3 +44,18 @@
 .list-top-action{
     display: none;
 }
+form input{
+    margin-bottom: 10px;
+    
+}
+.form-control{
+    border-radius: 4px;
+}
+.form-group label  {
+    text-align: right;
+}
+.label-start:after{
+    content: ' *';
+	color: #999;
+	font-size: 100%;
+}

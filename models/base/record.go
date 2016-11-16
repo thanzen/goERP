@@ -97,7 +97,7 @@ func UpdateRecord(userId int64, Ip string) {
 
 	if err == nil {
 		record.Logout = time.Now()
-		if user, err := GetUser(userId); err == nil {
+		if user, err := GetUserById(userId); err == nil {
 			record.UpdateUser = &user
 			o.Update(&record)
 		}

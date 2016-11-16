@@ -10,7 +10,7 @@ import (
 
 func init() {
 	//============================基本表============================
-	orm.RegisterModel(new(base.User), new(base.Record))
+	orm.RegisterModel(new(base.User), new(base.Record), new(base.Position))
 	orm.RegisterModel(new(base.Company), new(base.Group), new(base.Department))
 	orm.RegisterModel(new(base.Country), new(base.Province), new(base.City), new(base.District))
 	//============================客户表============================
