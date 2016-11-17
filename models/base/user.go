@@ -9,19 +9,19 @@ import (
 
 type User struct {
 	Base
-	Name       string      `orm:"size(20)" xml:"name"`                 //用户名
-	NameZh     string      `orm:"size(20)" `                           //中文用户名
-	Department *Department `orm:"rel(fk);null;"`                       //部门
-	Email      string      `orm:"size(20)" xml:"email"`                //邮箱
-	Mobile     string      `orm:"size(20);default(\"\")" xml:"mobile"` //手机号码
-	Tel        string      `orm:"size(20);default(\"\")"`              //固定号码
-	Password   string      `xml:"password"`                            //密码
-	Group      []*Group    `orm:"rel(m2m);rel_table(user_groups)"`     //权限组
-	IsAdmin    bool        `orm:"default(false)" xml:"isAdmin"`        //是否为超级用户
-	Active     bool        `orm:"default(true)" xml:"active"`          //有效
-	Qq         string      `orm:"default(\"\")" xml:"qq"`              //QQ
-	WeChat     string      `orm:"default(\"\")" xml:"wechat"`          //微信
-	Position   *Position   `orm:"rel(fk);null;"`                       //职位
+	Name       string      `orm:"size(20)" xml:"name" form:"name"`                   //用户名
+	NameZh     string      `orm:"size(20)"  form:"namezh"`                           //中文用户名
+	Department *Department `orm:"rel(fk);null;"`                                     //部门
+	Email      string      `orm:"size(20)" xml:"email" form:"email"`                 //邮箱
+	Mobile     string      `orm:"size(20);default(\"\")" xml:"mobile" form:"mobile"` //手机号码
+	Tel        string      `orm:"size(20);default(\"\")" form:"tel"`                 //固定号码
+	Password   string      `xml:"password"`                                          //密码
+	Group      []*Group    `orm:"rel(m2m);rel_table(user_groups)"`                   //权限组
+	IsAdmin    bool        `orm:"default(false)" xml:"isAdmin"`                      //是否为超级用户
+	Active     bool        `orm:"default(true)" xml:"active"`                        //有效
+	Qq         string      `orm:"default(\"\")" xml:"qq" form:"qq"`                  //QQ
+	WeChat     string      `orm:"default(\"\")" xml:"wechat" form:"wechat"`          //微信
+	Position   *Position   `orm:"rel(fk);null;"`                                     //职位
 
 }
 
@@ -147,6 +147,21 @@ func CheckUserByName(name, password string) (User, error, bool) {
 	}
 	return user, err, ok
 
+}
+func UserNameExsit(name string) bool {
+	var (
+		user User
+	)
+	o := orm.NewOrm()
+	o.Using("default")
+	cond := orm.NewCondition()
+	cond = cond.And("name", name)
+	qs := o.QueryTable(&user)
+	qs = qs.SetCond(cond)
+	if err := qs.One(&user); err == nil {
+		return true
+	}
+	return false
 }
 func UpdateUser(user User) (int64, error) {
 	o := orm.NewOrm()

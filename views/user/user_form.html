@@ -1,15 +1,17 @@
-<div class="row"><p  id="list-title"  >{{.listName}}</p></div>
- 
+<div class="row">
+    <p id="list-title">{{.listName}}</p>
+</div>
+
 <form id="userForm" action="/user/create/" method="post" role="form">
     {{ .xsrf }}
-    <div  class="row">
-        <button type="submit"  form="userForm" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
-        <a  href="{{.URL}}/list/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a>
-        <a  href="{{.URL}}/list/" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
+    <div class="row">
+        <button type="submit" form="userForm" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
+        <a href="{{.URL}}/list/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a>
+        <a href="{{.URL}}/list/" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
     </div>
-    <div  class="row">
+    <div class="row">
         <fieldset>
-            <legend class="text-center">基本信息</legend>
+            <legend>基本信息</legend>
             <div class="form-group">
                 <div class="row">
                     <label for="name" class="col-md-1 control-label label-start">用户名</label>
@@ -18,7 +20,7 @@
                     </div>
                     <label for="namezh" class="col-md-1 control-label">用户名(中文)</label>
                     <div class="col-md-2">
-                        <input class="form-control" name="namezh" type="text"/>
+                        <input class="form-control" name="namezh" type="text" />
                     </div>
                     <label for="email" class="col-md-1 control-label label-start">邮箱</label>
                     <div class="col-md-2">
@@ -32,7 +34,7 @@
                 <div class="row">
                     <label for="tel" class="col-md-1 control-label">座机</label>
                     <div class="col-md-2">
-                        <input class="form-control" name="tel" type="text"   />
+                        <input class="form-control" name="tel" type="text" />
                     </div>
                     <label for="qq" class="col-md-1 control-label">QQ</label>
                     <div class="col-md-2">
@@ -40,13 +42,13 @@
                     </div>
                     <label for="wechat" class="col-md-1 control-label">微信</label>
                     <div class="col-md-2">
-                        <input class="form-control" name="wechat" type="text"   />
+                        <input class="form-control" name="wechat" type="text" />
                     </div>
                 </div>
             </div>
         </fieldset>
         <fieldset>
-            <legend class="text-center">部门信息</legend>
+            <legend>部门信息</legend>
             <div class="form-group">
                 <div class="row">
                     <label for="department" class="col-md-1 control-label label-start">部门</label>
@@ -63,16 +65,16 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend class="text-center">权限组信息</legend>
+            <legend>权限组信息</legend>
             <div class="form-group">
                 <div class="row">
-                    <label for="department" class="col-md-1 control-label">权限组</label>
+                    <label for="department" class="col-md-1 control-label  label-start">权限组</label>
                     <div class="col-md-2">
-                        <input class="form-control" name="department" type="text"   />
+                        <input class="form-control" name="department" type="text" />
                     </div>
                 </div>
             </div>
-             
+
         </fieldset>
     </div>
 </form>

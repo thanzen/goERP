@@ -5,6 +5,7 @@ import (
 	"pms/models/base"
 	"pms/utils"
 	"strconv"
+	"strings"
 )
 
 //列表视图列数-1，第一列为checkbox
@@ -16,6 +17,15 @@ type UserController struct {
 	BaseController
 }
 
+func (this *UserController) Post() {
+	action := this.GetString(":action")
+	switch action {
+	case "create":
+		this.Create()
+	default:
+		this.List()
+	}
+}
 func (this *UserController) Get() {
 
 	action := this.GetString(":action")
@@ -35,6 +45,8 @@ func (this *UserController) Get() {
 		this.Create()
 	case "edit":
 		this.Edit()
+	case "exsit":
+		this.Exsit()
 	default:
 		this.List()
 	}
@@ -45,13 +57,24 @@ func (this *UserController) Get() {
 	this.Data["settingRootActive"] = "active"
 
 }
+func (this *UserController) Exsit() {
+	name := this.GetString("name")
+	var exsit bool
+	exsit = base.UserNameExsit(name)
+	this.Data["json"] = make(map[string]bool{"valid": exsit})
+	this.ServeJSON()
+}
 func (this *UserController) Create() {
-	this.Data["Readonly"] = false
-	this.Data["listName"] = "创建用户"
-	this.TplName = "user/user_form.html"
-	this.LayoutSections = make(map[string]string)
-	this.LayoutSections["ExtendCss"] = "base/form_css.html"
-	this.LayoutSections["ExtendJs"] = "base/form_js.html"
+	method := strings.ToUpper(this.Ctx.Request.Method)
+	if method == "GET" {
+		this.Data["Readonly"] = false
+		this.Data["listName"] = "创建用户"
+		this.TplName = "user/user_form.html"
+
+	} else if method == "POST" {
+
+	}
+
 }
 func (this *UserController) Edit() {
 	id := this.GetString(":id")
