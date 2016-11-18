@@ -64,16 +64,27 @@ func (this *PositionController) Edit() {
 }
 func (this *PositionController) Search() {
 	name := this.GetString("name")
+	page, _ := this.GetInt64("page")
+	offset, _ := this.GetInt64("offset")
 	this.Data["json"] = ""
-	if _, postiones, err := base.GetPositionByName(name, false); err == nil {
-		data := make([]interface{}, 0)
-		for _, postion := range postiones {
+	var condArr = make(map[string]interface{})
+	if name != "" {
+		condArr["name"] = name
+	}
+	paginator, err, positions := base.ListPosition(condArr, page, offset)
+	if err == nil {
+		data := make(map[string]interface{})
+		items := make([]interface{}, 0, 5)
+		for _, postion := range positions {
 			line := make(map[string]interface{})
 			line["id"] = postion.Id
 			line["name"] = postion.Name
-
-			data = append(data, line)
+			items = append(items, line)
 		}
+		data["items"] = items
+		data["total"] = paginator.TotalCount
+		data["pageSize"] = paginator.PageSize
+		data["page"] = paginator.CurrentPage
 		this.Data["json"] = data
 	}
 

@@ -61,7 +61,9 @@ func (this *UserController) Exsit() {
 	name := this.GetString("name")
 	var exsit bool
 	exsit = base.UserNameExsit(name)
-	this.Data["json"] = make(map[string]bool{"valid": exsit})
+	result := make(map[string]bool)
+	result["valid"] = exsit
+	this.Data["json"] = result
 	this.ServeJSON()
 }
 func (this *UserController) Create() {
@@ -72,6 +74,10 @@ func (this *UserController) Create() {
 		this.TplName = "user/user_form.html"
 
 	} else if method == "POST" {
+		name := this.GetString("name")
+		mobile := this.GetString("mobile")
+		fmt.Println(name)
+		fmt.Println(mobile)
 
 	}
 
@@ -115,7 +121,7 @@ func (this *UserController) List() {
 	tableTitle["titleName"] = [userListCellLength]string{"用户名", "中文用户名", "部门", "邮箱", "手机号码", "固定号码", "超级用户", "有效", "QQ", "微信", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, 20)
+	bodyLines := make([]interface{}, 0, ListNum)
 	if err == nil {
 		for _, user := range users {
 			oneLine := make([]interface{}, userListCellLength, userListCellLength)

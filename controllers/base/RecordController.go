@@ -68,7 +68,7 @@ func (this *RecordController) List() {
 	tableTitle["titleName"] = [recordListCellLength]string{"邮箱", "手机", "用户名", "中文用户名", "开始时间", "结束时间", "登录IP", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, 20)
+	bodyLines := make([]interface{}, 0, ListNum)
 	if err == nil {
 		for _, record := range records {
 			oneLine := make([]interface{}, recordListCellLength, recordListCellLength)

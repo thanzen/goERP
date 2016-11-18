@@ -63,7 +63,7 @@ func (this *DistrictController) List() {
 	tableTitle["titleName"] = [districtListCellLength]string{"区县", "城市", "省份", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, 20)
+	bodyLines := make([]interface{}, 0, base.ListNum)
 	if err == nil {
 		for _, district := range districts {
 

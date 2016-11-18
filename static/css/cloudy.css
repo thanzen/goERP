@@ -57,13 +57,16 @@
     display: none;
 }
 
-.form-control {
+fieldset legend {
+    color: #337ab7;
+}
+
+.select-department {
     border-radius: 4px;
 }
 
-.form-group label {
-    text-align: right;
-}
+
+/*
 
 .label-start:after {
     content: ' *';
@@ -73,8 +76,4 @@
 
 fieldset legend {
     color: #337ab7;
-}
-
-label {
-    line-height: 44px;
-}
+}*/

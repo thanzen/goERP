@@ -14,7 +14,8 @@ type Position struct {
 }
 
 func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []Position) {
-
+	fmt.Println(123123)
+	fmt.Println(condArr)
 	if page < 1 {
 		page = 1
 	}
@@ -29,6 +30,9 @@ func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Pag
 	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
 
+	if name, ok := condArr["name"]; ok {
+		cond = cond.And("name_icontains", name)
+	}
 	var (
 		positions []Position
 		num       int64
@@ -46,6 +50,8 @@ func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Pag
 	if num, err = qs.Limit(offset, start).All(&positions); err == nil {
 		paginator.CurrentPageSize = num
 	}
+	fmt.Println(page)
+	fmt.Println(offset)
 
 	return paginator, err, positions
 }

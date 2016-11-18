@@ -63,7 +63,7 @@ func (this *CityController) List() {
 	tableTitle["titleName"] = [cityListCellLength]string{"城市", "省份", "国家", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, 20)
+	bodyLines := make([]interface{}, 0, base.ListNum)
 	if err == nil {
 		for _, city := range citys {
 			oneLine := make([]interface{}, cityListCellLength, cityListCellLength)

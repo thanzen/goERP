@@ -63,7 +63,7 @@ func (this *ProvinceController) List() {
 	tableTitle["titleName"] = [provinceListCellLength]string{"省份", "国家", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, 20)
+	bodyLines := make([]interface{}, 0, base.ListNum)
 	if err == nil {
 		for _, province := range provinces {
 			oneLine := make([]interface{}, provinceListCellLength, provinceListCellLength)

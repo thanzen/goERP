@@ -25,7 +25,7 @@ $(function() {
                         delay: 2000,
                         type: "POST",
                         data: function() {
-                            
+
                         },
                     },
                     regexp: {

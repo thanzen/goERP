@@ -64,7 +64,7 @@ func (this *CountryController) List() {
 	tableTitle["titleName"] = [countryListCellLength]string{"国家", "操作"}
 	tableInfo.Title = tableTitle
 	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, 20)
+	bodyLines := make([]interface{}, 0, base.ListNum)
 	if err == nil {
 		for _, country := range countrys {
 			oneLine := make([]interface{}, countryListCellLength, countryListCellLength)

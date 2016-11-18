@@ -15,10 +15,10 @@ type User struct {
 	Email      string      `orm:"size(20)" xml:"email" form:"email"`                 //邮箱
 	Mobile     string      `orm:"size(20);default(\"\")" xml:"mobile" form:"mobile"` //手机号码
 	Tel        string      `orm:"size(20);default(\"\")" form:"tel"`                 //固定号码
-	Password   string      `xml:"password"`                                          //密码
+	Password   string      `xml:"password" form:"password"`                          //密码
 	Group      []*Group    `orm:"rel(m2m);rel_table(user_groups)"`                   //权限组
-	IsAdmin    bool        `orm:"default(false)" xml:"isAdmin"`                      //是否为超级用户
-	Active     bool        `orm:"default(true)" xml:"active"`                        //有效
+	IsAdmin    bool        `orm:"default(false)" xml:"isAdmin" form:"isadmin"`       //是否为超级用户
+	Active     bool        `orm:"default(true)" xml:"active" form:"active"`          //有效
 	Qq         string      `orm:"default(\"\")" xml:"qq" form:"qq"`                  //QQ
 	WeChat     string      `orm:"default(\"\")" xml:"wechat" form:"wechat"`          //微信
 	Position   *Position   `orm:"rel(fk);null;"`                                     //职位
