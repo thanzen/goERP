@@ -60,7 +60,7 @@ func (this *RecordController) List() {
 		offsetInt64 = int64(offsetInt)
 	}
 	var records []base.Record
-	paginator, err, records := base.ListRecord(condArr, this.User.Id, pageInt64, offsetInt64)
+	paginator, records, err := base.ListRecord(condArr, this.User.Id, pageInt64, offsetInt64)
 
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)

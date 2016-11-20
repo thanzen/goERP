@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"io/ioutil"
 	"os"
-	. "pms/models/base"
+	"pms/models/base"
 	"runtime"
 )
 
@@ -20,11 +20,11 @@ func InitDb() {
 		split = "/"
 	}
 	if xmDir, err := os.Getwd(); err == nil {
-		if _, err := GetUserById(1); err != nil {
+		if _, err := base.GetUserByID(1); err != nil {
 
 			xmDir += split + "init_xml" + split
 			initUser(xmDir + "Users.xml")
-			if user, err := GetUserById(1); err == nil {
+			if user, err := base.GetUserByID(1); err == nil {
 				initGroup(xmDir+"Groups.xml", user)
 				initCountry(xmDir+"Countries.xml", user)
 				initProvince(xmDir+"Provinces.xml", user)
@@ -44,21 +44,21 @@ func initUser(filename string) {
 			if xml.Unmarshal(data, &initUsers) == nil {
 				for _, k := range initUsers.Users {
 					//admin系统管理员
-					AddUser(k, k)
+					base.AddUser(k, k)
 				}
 			}
 		}
 	}
 
 }
-func initGroup(filename string, user User) {
+func initGroup(filename string, user base.User) {
 	if file, err := os.Open(filename); err == nil {
 		defer file.Close()
 		if data, err := ioutil.ReadAll(file); err == nil {
 			var initGroups InitGroups
 			if xml.Unmarshal(data, &initGroups) == nil {
 				for _, k := range initGroups.Groups {
-					AddGroup(k, user)
+					base.AddGroup(k, user)
 				}
 			}
 		}
@@ -66,70 +66,70 @@ func initGroup(filename string, user User) {
 
 }
 
-func initCountry(filename string, user User) {
+func initCountry(filename string, user base.User) {
 	if file, err := os.Open(filename); err == nil {
 		defer file.Close()
 		if data, err := ioutil.ReadAll(file); err == nil {
 			var initCountries InitCountries
 			if xml.Unmarshal(data, &initCountries) == nil {
 				for _, k := range initCountries.Countries {
-					AddCountry(k, user)
+					base.AddCountry(k, user)
 				}
 			}
 		}
 	}
 }
-func initProvince(filename string, user User) {
+func initProvince(filename string, user base.User) {
 	if file, err := os.Open(filename); err == nil {
 		defer file.Close()
 		if data, err := ioutil.ReadAll(file); err == nil {
 			var initProvinces InitProvinces
 			if xml.Unmarshal(data, &initProvinces) == nil {
 				for _, k := range initProvinces.Provinces {
-					var province Province
+					var province base.Province
 					pid := int64(k.PID)
-					if country, err := GetCountry(pid); err == nil {
+					if country, err := base.GetCountryByID(pid); err == nil {
 						province.Country = &country
 						province.Name = k.Name
-						AddProvince(province, user)
+						base.AddProvince(province, user)
 					}
 				}
 			}
 		}
 	}
 }
-func initCity(filename string, user User) {
+func initCity(filename string, user base.User) {
 	if file, err := os.Open(filename); err == nil {
 		defer file.Close()
 		if data, err := ioutil.ReadAll(file); err == nil {
 			var initCities InitCities
 			if xml.Unmarshal(data, &initCities) == nil {
 				for _, k := range initCities.Cities {
-					var city City
+					var city base.City
 					pid := int64(k.PID)
-					if province, err := GetProvince(pid); err == nil {
+					if province, err := base.GetProvinceByID(pid); err == nil {
 						city.Province = &province
 						city.Name = k.Name
-						AddCity(city, user)
+						base.AddCity(city, user)
 					}
 				}
 			}
 		}
 	}
 }
-func initDistrict(filename string, user User) {
+func initDistrict(filename string, user base.User) {
 	if file, err := os.Open(filename); err == nil {
 		defer file.Close()
 		if data, err := ioutil.ReadAll(file); err == nil {
 			var initDistricts InitDistricts
 			if xml.Unmarshal(data, &initDistricts) == nil {
 				for _, k := range initDistricts.Districts {
-					var district District
+					var district base.District
 					pid := int64(k.PID)
-					if city, err := GetCity(pid); err == nil {
+					if city, err := base.GetCityByID(pid); err == nil {
 						district.City = &city
 						district.Name = k.Name
-						AddDistrict(district, user)
+						base.AddDistrict(district, user)
 					}
 				}
 			}

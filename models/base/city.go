@@ -1,6 +1,7 @@
 package base
 
 import (
+	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego"
@@ -14,8 +15,53 @@ type City struct {
 	Districts []*District `orm:"reverse(many)"` //城市
 }
 
+//添加城市
+func AddCity(obj City, user User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	city := new(City)
+	city.Name = obj.Name
+	city.CreateUser = &user
+	city.UpdateUser = &user
+	city.Province = obj.Province
+	id, err := o.Insert(city)
+	return id, err
+}
+
+//获得某一个城市信息
+func GetCityByID(id int64) (City, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	city := City{Base: Base{Id: id}}
+	err := o.Read(&city)
+	return city, err
+}
+
+//根据名称查询城市
+func GetCityByName(name string) (City, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	var (
+		city City
+		err  error
+	)
+	cond := orm.NewCondition()
+	qs := o.QueryTable(new(City))
+
+	if name != "" {
+		cond = cond.And("name", name)
+		qs = qs.SetCond(cond)
+		qs = qs.RelatedSel()
+		err = qs.One(&city)
+	} else {
+		err = fmt.Errorf("%s", "查询条件不成立")
+	}
+
+	return city, err
+}
+
 //列出记录
-func ListCity(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []City) {
+func ListCity(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []City, error) {
 
 	if page < 1 {
 		page = 1
@@ -30,7 +76,9 @@ func ListCity(condArr map[string]interface{}, page, offset int64) (utils.Paginat
 	qs := o.QueryTable(new(City))
 	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
-
+	if name, ok := condArr["name"]; ok {
+		cond = cond.And("name_icontains", name)
+	}
 	var (
 		citys []City
 		num   int64
@@ -50,27 +98,5 @@ func ListCity(condArr map[string]interface{}, page, offset int64) (utils.Paginat
 		paginator.CurrentPageSize = num
 	}
 
-	return paginator, err, citys
-}
-
-//添加城市
-func AddCity(obj City, user User) (int64, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	city := new(City)
-	city.Name = obj.Name
-	city.CreateUser = &user
-	city.UpdateUser = &user
-	city.Province = obj.Province
-	id, err := o.Insert(city)
-	return id, err
-}
-
-//获得某一个城市信息
-func GetCity(id int64) (City, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	city := City{Base: Base{Id: id}}
-	err := o.Read(&city)
-	return city, err
+	return paginator, citys, err
 }

@@ -1,6 +1,7 @@
 package base
 
 import (
+	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego"
@@ -13,8 +14,52 @@ type Country struct {
 	Provinces []*Province `orm:"reverse(many)"` //省份
 }
 
+//添加国家
+func AddCountry(obj Country, user User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	country := new(Country)
+	country.Name = obj.Name
+	country.CreateUser = &user
+	country.UpdateUser = &user
+	id, err := o.Insert(country)
+	return id, err
+}
+
+//获得某一个国家信息
+func GetCountryByID(id int64) (Country, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	country := Country{Base: Base{Id: id}}
+	err := o.Read(&country)
+	return country, err
+}
+
+//根据名称查询国家
+func GetCountryByName(name string) (Country, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	var (
+		country Country
+		err     error
+	)
+	cond := orm.NewCondition()
+	qs := o.QueryTable(new(Country))
+
+	if name != "" {
+		cond = cond.And("name", name)
+		qs = qs.SetCond(cond)
+		qs = qs.RelatedSel()
+		err = qs.One(&country)
+	} else {
+		err = fmt.Errorf("%s", "查询条件不成立")
+	}
+
+	return country, err
+}
+
 //列出记录
-func ListCountry(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []Country) {
+func ListCountry(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Country, error) {
 
 	if page < 1 {
 		page = 1
@@ -29,7 +74,9 @@ func ListCountry(condArr map[string]interface{}, page, offset int64) (utils.Pagi
 	qs := o.QueryTable(new(Country))
 	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
-
+	if name, ok := condArr["name"]; ok {
+		cond = cond.And("name_icontains", name)
+	}
 	var (
 		countrys []Country
 		num      int64
@@ -49,26 +96,5 @@ func ListCountry(condArr map[string]interface{}, page, offset int64) (utils.Pagi
 		paginator.CurrentPageSize = num
 	}
 
-	return paginator, err, countrys
-}
-
-//添加国家
-func AddCountry(obj Country, user User) (int64, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	country := new(Country)
-	country.Name = obj.Name
-	country.CreateUser = &user
-	country.UpdateUser = &user
-	id, err := o.Insert(country)
-	return id, err
-}
-
-//获得某一个国家信息
-func GetCountry(id int64) (Country, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	country := Country{Base: Base{Id: id}}
-	err := o.Read(&country)
-	return country, err
+	return paginator, countrys, err
 }

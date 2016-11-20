@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego"
@@ -13,9 +12,26 @@ type Position struct {
 	Name string `orm:"unique"` //职位名称
 }
 
-func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []Position) {
-	fmt.Println(123123)
-	fmt.Println(condArr)
+func AddPosition(obj Position, user User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	position := new(Position)
+	position.Name = obj.Name
+	position.CreateUser = &user
+	position.UpdateUser = &user
+	id, err := o.Insert(position)
+	return id, err
+}
+func GetPositionByID(id int64) (Position, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	position := Position{Base: Base{Id: id}}
+	err := o.Read(&position)
+
+	return position, err
+}
+
+func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Position, error) {
 	if page < 1 {
 		page = 1
 	}
@@ -50,45 +66,6 @@ func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Pag
 	if num, err = qs.Limit(offset, start).All(&positions); err == nil {
 		paginator.CurrentPageSize = num
 	}
-	fmt.Println(page)
-	fmt.Println(offset)
 
-	return paginator, err, positions
-}
-
-func GetPositionByName(name string, exact bool) (int64, []Position, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	var (
-		positions []Position
-		err       error
-		num       int64
-	)
-	cond := orm.NewCondition()
-	qs := o.QueryTable(new(Position))
-
-	if name != "" {
-		cond = cond.And("name__icontains", name)
-		qs = qs.SetCond(cond)
-		qs = qs.RelatedSel()
-		num, err = qs.All(&positions)
-	} else {
-		if exact == true {
-			err = fmt.Errorf("%s", "查询条件不成立")
-		} else {
-			qs = qs.SetCond(cond)
-			qs = qs.RelatedSel()
-			num, err = qs.Limit(5, 0).All(&positions)
-		}
-	}
-
-	return num, positions, err
-}
-func GetPositionById(id int64) (Position, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	position := Position{Base: Base{Id: id}}
-	err := o.Read(&position)
-
-	return position, err
+	return paginator, positions, err
 }

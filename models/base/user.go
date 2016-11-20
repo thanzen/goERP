@@ -41,7 +41,7 @@ func (u *User) TableIndex() [][]string {
 func (u *User) TableName() string {
 	return "auth_user"
 }
-func ListUser(condArr map[string]interface{}, user User, page, offset int64) (utils.Paginator, error, []User) {
+func ListUser(condArr map[string]interface{}, user User, page, offset int64) (utils.Paginator, []User, error) {
 
 	if page < 1 {
 		page = 1
@@ -61,6 +61,9 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int64) (ut
 
 	} else {
 		cond = cond.And("active", true)
+	}
+	if name, ok := condArr["name"]; ok {
+		cond = cond.And("name_icontains", name)
 	}
 	if departmentId, ok := condArr["departmentId"]; ok {
 		cond = cond.And("department__id", departmentId)
@@ -83,7 +86,7 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int64) (ut
 		paginator.CurrentPageSize = num
 	}
 
-	return paginator, err, users
+	return paginator, users, err
 }
 
 //添加用户
@@ -106,7 +109,7 @@ func AddUser(obj User, cUser User) (int64, error) {
 }
 
 //获得某一个用户信息
-func GetUserById(id int64) (User, error) {
+func GetUserByID(id int64) (User, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	user := User{Base: Base{Id: id}}

@@ -6,8 +6,11 @@ $(function() {
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
+        live: 'enabled',
+        submitButtons: 'button[type="submit"]',
+        trigger: null,
         fields: {
-            name: {
+            username: {
                 message: "该值无效",
                 validators: {
                     notEmpty: {
@@ -18,7 +21,6 @@ $(function() {
                         max: 30,
                         message: '用户名长度必须在6到30之间'
                     },
-                    threshold: 5,
                     remote: {
                         url: "/user",
                         message: "用户已经存在",
@@ -33,7 +35,19 @@ $(function() {
                         message: '用户名由数字字母下划线和.组成'
                     }
                 },
-            }
+            },
+            namezh:{
+                enabled:false,
+            },
+            mobile:{
+                message: "该值无效",
+                validators: {
+                    notEmpty: {
+                        message: "手机号码不能为空"
+                    },
+                }
+            },
+
         },
-    });
+    }) ;
 });

@@ -6,6 +6,9 @@
 <script>
     $.widget.bridge('uibutton', $.ui.button);
 </script>
+<!--select2-->
+<script src="/static/plugins/select2/select2.full.min.js"></script>
+<script src="/static/plugins/select2/i18n/zh-CN.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->
@@ -33,9 +36,7 @@
 <script src="/static/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/dist/js/app.js"></script>
-<!--select2-->
-<script src="/static/plugins/select2/select2.full.min.js"></script>
-<script src="/static/plugins/select2/i18n/zh-CN.js"></script>
+
 <!--bootstrap-checkbox-->
 <script src="/static/plugins/bootstrap-checkbox-1.4.0/bootstrap-checkbox.min.js"></script>
 <script src="/static/plugins/bootstrap-checkbox-1.4.0/i18n/zh-CN.js"></script>
@@ -49,4 +50,6 @@
 <script src="/static/js/cloudy.js"></script>
 <script>
     $('.form-checkbox').checkboxpicker();
+    $.fn.select2.defaults.set( "theme", "bootstrap" );
+     
 </script>

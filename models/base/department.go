@@ -17,7 +17,49 @@ type Department struct {
 	Company *Company `orm:"rel(fk);null"`  //公司
 }
 
-func ListDepartment(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []Department) {
+//添加国家
+func AddDepartment(obj Department, user User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	department := new(Department)
+	department.Name = obj.Name
+	department.CreateUser = &user
+	department.UpdateUser = &user
+	department.Company = obj.Company
+	department.Leader = obj.Leader
+	id, err := o.Insert(department)
+	return id, err
+}
+func GetDepartmentByID(id int64) (Department, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	department := Department{Base: Base{Id: id}}
+	err := o.Read(&department)
+
+	return department, err
+}
+func GetDepartmentByName(name string) (Department, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	var (
+		department Department
+		err        error
+	)
+	cond := orm.NewCondition()
+	qs := o.QueryTable(new(Department))
+
+	if name != "" {
+		cond = cond.And("name", name)
+		qs = qs.SetCond(cond)
+		qs = qs.RelatedSel()
+		err = qs.One(&department)
+	} else {
+		err = fmt.Errorf("%s", "查询条件不成立")
+	}
+
+	return department, err
+}
+func ListDepartment(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Department, error) {
 
 	if page < 1 {
 		page = 1
@@ -51,41 +93,5 @@ func ListDepartment(condArr map[string]interface{}, page, offset int64) (utils.P
 		paginator.CurrentPageSize = num
 	}
 
-	return paginator, err, departments
-}
-func GetDepartmentByName(name string, exact bool) (int64, []Department, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	var (
-		departments []Department
-		err         error
-		num         int64
-	)
-	cond := orm.NewCondition()
-	qs := o.QueryTable(new(Department))
-
-	if name != "" {
-		cond = cond.And("name__icontains", name)
-		qs = qs.SetCond(cond)
-		qs = qs.RelatedSel()
-		num, err = qs.All(&departments)
-	} else {
-		if exact == true {
-			err = fmt.Errorf("%s", "查询条件不成立")
-		} else {
-			qs = qs.SetCond(cond)
-			qs = qs.RelatedSel()
-			num, err = qs.Limit(5, 0).All(&departments)
-		}
-	}
-
-	return num, departments, err
-}
-func GetDepartmentById(id int64) (Department, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	department := Department{Base: Base{Id: id}}
-	err := o.Read(&department)
-
-	return department, err
+	return paginator, departments, err
 }

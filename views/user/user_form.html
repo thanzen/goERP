@@ -4,7 +4,7 @@
 
 <form id="userForm" action="/user/create/" method="post" class="form-horizontal" role="form">
     <div class="row">
-        <button type="submit" form="userForm" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
+        <button type="submit" form="userForm" id="userFormBtn" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
         <a href="{{.URL}}/list/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a>
         <a href="{{.URL}}/list/" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
     </div>
@@ -12,13 +12,13 @@
     <fieldset>
         <legend>基本信息</legend>
         <div class="form-group">
-            <label for="name" class="col-md-1 control-label label-start">用户名</label>
+            <label for="username" class="col-md-1 control-label label-start">用户名<span>*</span></label>
             <div class="col-md-2">
-                <input class="form-control" name="name" type="text" />
+                <input class="form-control" name="username" type="text" />
             </div>
             <label for="namezh" class="col-md-1 control-label">用户名(中文)</label>
             <div class="col-md-2">
-                <input class="form-control" name="namezh" type="text" />
+                <input class="form-control" name="namezh" type="text" data-bv-excluded/>
             </div>
             <label for="mobile" class="col-md-1 control-label label-start">手机号码</label>
             <div class="col-md-2">

@@ -39,7 +39,7 @@ func (this *LoginController) Post() {
 	if user, err, ok = base.CheckUserByName(loginName, password); ok != true {
 		this.Redirect("/login/in", 302)
 	} else {
-		if record, err = base.GetRecord(user); err == nil {
+		if record, err = base.GetRecordByUser(user); err == nil {
 			this.SetSession("LastLogin", record.CreateDate)
 			this.SetSession("LastIp", record.Ip)
 		}

@@ -1,6 +1,7 @@
 package base
 
 import (
+	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego"
@@ -15,8 +16,51 @@ type Province struct {
 
 }
 
+//添加省份
+func AddProvince(obj Province, user User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	province := new(Province)
+	province.Name = obj.Name
+	province.Country = obj.Country
+	province.CreateUser = &user
+	province.UpdateUser = &user
+	id, err := o.Insert(province)
+	return id, err
+}
+
+//获得某一个省份信息
+func GetProvinceByID(id int64) (Province, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	province := Province{Base: Base{Id: id}}
+	err := o.Read(&province)
+	return province, err
+}
+func GetProvinceByName(name string) (Province, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	var (
+		province Province
+		err      error
+	)
+	cond := orm.NewCondition()
+	qs := o.QueryTable(new(Province))
+
+	if name != "" {
+		cond = cond.And("name", name)
+		qs = qs.SetCond(cond)
+		qs = qs.RelatedSel()
+		err = qs.One(&province)
+	} else {
+		err = fmt.Errorf("%s", "查询条件不成立")
+	}
+
+	return province, err
+}
+
 //列出记录
-func ListProvince(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []Province) {
+func ListProvince(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Province, error) {
 
 	if page < 1 {
 		page = 1
@@ -51,27 +95,5 @@ func ListProvince(condArr map[string]interface{}, page, offset int64) (utils.Pag
 		paginator.CurrentPageSize = num
 	}
 
-	return paginator, err, provinces
-}
-
-//添加省份
-func AddProvince(obj Province, user User) (int64, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	province := new(Province)
-	province.Name = obj.Name
-	province.Country = obj.Country
-	province.CreateUser = &user
-	province.UpdateUser = &user
-	id, err := o.Insert(province)
-	return id, err
-}
-
-//获得某一个省份信息
-func GetProvince(id int64) (Province, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	province := Province{Base: Base{Id: id}}
-	err := o.Read(&province)
-	return province, err
+	return paginator, provinces, err
 }

@@ -1,6 +1,9 @@
 package base
 
-import "pms/models/base"
+import (
+	"pms/models/base"
+	"strings"
+)
 
 //列表视图列数-1，第一列为checkbox
 const (
@@ -22,7 +25,6 @@ func (this *DepartmentController) Post() {
 }
 
 func (this *DepartmentController) Get() {
-
 	action := this.GetString(":action")
 	viewType := this.Input().Get("view_type")
 
@@ -40,8 +42,6 @@ func (this *DepartmentController) Get() {
 		this.Create()
 	case "edit":
 		this.Edit()
-	case "search":
-		this.Search()
 	default:
 		this.List()
 	}
@@ -64,9 +64,19 @@ func (this *DepartmentController) Edit() {
 }
 func (this *DepartmentController) Search() {
 	name := this.GetString("name")
-	this.Data["json"] = ""
-	if _, departments, err := base.GetDepartmentByName(name, false); err == nil {
-		data := make([]interface{}, 0)
+
+	page, _ := this.GetInt64("page")
+	offset, _ := this.GetInt64("offset")
+	var condArr = make(map[string]interface{})
+	name = strings.TrimSpace(name)
+	if name != "" {
+		condArr["name"] = name
+	}
+	paginator, departments, err := base.ListDepartment(condArr, page, offset)
+	data := make(map[string]interface{})
+	if err == nil {
+
+		items := make([]interface{}, 0, 5)
 		for _, department := range departments {
 			line := make(map[string]interface{})
 			line["id"] = department.Id
@@ -76,10 +86,14 @@ func (this *DepartmentController) Search() {
 			} else {
 				line["leader"] = "-"
 			}
-
-			data = append(data, line)
+			items = append(items, line)
 		}
-		this.Data["json"] = data
+		data["items"] = items
+		data["total_count"] = paginator.TotalCount
+		data["pageSize"] = paginator.PageSize
+		data["page"] = paginator.CurrentPage
+	} else {
+		data["msg"] = "failed"
 	}
-
+	this.Data["json"] = data
 }

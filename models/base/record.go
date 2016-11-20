@@ -16,7 +16,7 @@ type Record struct {
 }
 
 //列出记录
-func ListRecord(condArr map[string]interface{}, userId, page, offset int64) (utils.Paginator, error, []Record) {
+func ListRecord(condArr map[string]interface{}, userId, page, offset int64) (utils.Paginator, []Record, error) {
 
 	if page < 1 {
 		page = 1
@@ -57,7 +57,7 @@ func ListRecord(condArr map[string]interface{}, userId, page, offset int64) (uti
 		paginator.CurrentPageSize = num
 	}
 
-	return paginator, err, records
+	return paginator, records, err
 }
 
 //添加记录
@@ -73,7 +73,7 @@ func AddRecord(user User, IP string) (int64, error) {
 }
 
 //获得某一个用户记录信息
-func GetRecord(user User) (*Record, error) {
+func GetRecordByUser(user User) (*Record, error) {
 	o := orm.NewOrm()
 	var (
 		record Record
@@ -97,7 +97,7 @@ func UpdateRecord(userId int64, Ip string) {
 
 	if err == nil {
 		record.Logout = time.Now()
-		if user, err := GetUserById(userId); err == nil {
+		if user, err := GetUserByID(userId); err == nil {
 			record.UpdateUser = &user
 			o.Update(&record)
 		}

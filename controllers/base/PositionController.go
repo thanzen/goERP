@@ -1,6 +1,9 @@
 package base
 
-import "pms/models/base"
+import (
+	"pms/models/base"
+	"strings"
+)
 
 //列表视图列数-1，第一列为checkbox
 const (
@@ -40,8 +43,6 @@ func (this *PositionController) Get() {
 		this.Create()
 	case "edit":
 		this.Edit()
-	case "search":
-		this.Search()
 	default:
 		this.List()
 	}
@@ -66,14 +67,15 @@ func (this *PositionController) Search() {
 	name := this.GetString("name")
 	page, _ := this.GetInt64("page")
 	offset, _ := this.GetInt64("offset")
-	this.Data["json"] = ""
 	var condArr = make(map[string]interface{})
+	name = strings.TrimSpace(name)
 	if name != "" {
 		condArr["name"] = name
 	}
-	paginator, err, positions := base.ListPosition(condArr, page, offset)
+	paginator, positions, err := base.ListPosition(condArr, page, offset)
+	data := make(map[string]interface{})
 	if err == nil {
-		data := make(map[string]interface{})
+
 		items := make([]interface{}, 0, 5)
 		for _, postion := range positions {
 			line := make(map[string]interface{})
@@ -85,7 +87,10 @@ func (this *PositionController) Search() {
 		data["total"] = paginator.TotalCount
 		data["pageSize"] = paginator.PageSize
 		data["page"] = paginator.CurrentPage
-		this.Data["json"] = data
+
+	} else {
+		data["msg"] = "failed"
 	}
+	this.Data["json"] = data
 
 }

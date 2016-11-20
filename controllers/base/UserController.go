@@ -59,6 +59,7 @@ func (this *UserController) Get() {
 }
 func (this *UserController) Exsit() {
 	name := this.GetString("name")
+	name = strings.TrimSpace(name)
 	var exsit bool
 	exsit = base.UserNameExsit(name)
 	result := make(map[string]bool)
@@ -76,20 +77,20 @@ func (this *UserController) Create() {
 	} else if method == "POST" {
 		name := this.GetString("name")
 		mobile := this.GetString("mobile")
-		fmt.Println(name)
-		fmt.Println(mobile)
+		fmt.Print(name, mobile)
 
 	}
 
 }
 func (this *UserController) Edit() {
-	id := this.GetString(":id")
-	fmt.Println(id)
+	id, _ := this.GetInt64(":id")
+	user, _ := base.GetUserByID(id)
+	fmt.Println(user)
 	this.TplName = "user/user_form.html"
 }
 func (this *UserController) Detail() {
-	id := this.GetString(":id")
-	fmt.Println(id)
+	id, _ := this.GetInt64(":id")
+	fmt.Print(id)
 	this.TplName = "user/user_form.html"
 }
 func (this *UserController) List() {
@@ -113,7 +114,7 @@ func (this *UserController) List() {
 		offsetInt64 = int64(offsetInt)
 	}
 
-	paginator, err, users := base.ListUser(condArr, this.User, pageInt64, offsetInt64)
+	paginator, users, err := base.ListUser(condArr, this.User, pageInt64, offsetInt64)
 	this.Data["Paginator"] = paginator
 	tableInfo := new(utils.TableInfo)
 

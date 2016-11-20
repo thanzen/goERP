@@ -17,7 +17,7 @@ func init() {
 	beego.Router("/user/:action([A-Za-z]+)/?:id", &base.UserController{})
 	//部门
 	beego.Router("/department/:action([A-Za-z]+)/?:id", &base.DepartmentController{})
-	//部门
+	//职位
 	beego.Router("/position/:action([A-Za-z]+)/?:id", &base.PositionController{})
 	//登录日志
 	beego.Router("/record/:action([A-Za-z]+)/?:id", &base.RecordController{})
