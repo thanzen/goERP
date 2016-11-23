@@ -68,8 +68,6 @@ func (this *UserController) Search() {
 	username := this.GetString("username")
 	username = strings.TrimSpace(username)
 	result := make(map[string]bool)
-	fmt.Println("===================================")
-	fmt.Println(username)
 	if _, err := base.GetUserByName(username); err != nil {
 		result["valid"] = true
 	} else {
