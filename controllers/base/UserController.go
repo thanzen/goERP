@@ -22,6 +22,8 @@ func (this *UserController) Post() {
 	switch action {
 	case "create":
 		this.Create()
+	case "search":
+		this.Search()
 	default:
 		this.List()
 	}
@@ -39,14 +41,14 @@ func (this *UserController) Get() {
 		default:
 			this.List()
 		}
-	case "detail":
-		this.Detail()
+	case "show":
+		this.Show()
 	case "create":
 		this.Create()
 	case "edit":
 		this.Edit()
-	case "exsit":
-		this.Exsit()
+	case "changepasswd":
+		this.ChangePwd()
 	default:
 		this.List()
 	}
@@ -57,13 +59,22 @@ func (this *UserController) Get() {
 	this.Data["settingRootActive"] = "active"
 
 }
-func (this *UserController) Exsit() {
-	name := this.GetString("name")
-	name = strings.TrimSpace(name)
-	var exsit bool
-	exsit = base.UserNameExsit(name)
+func (this *UserController) ChangePwd() {
+	this.Data["personInfoActive"] = "active"
+	this.Data["settingPassword"] = "active"
+	this.TplName = "user/user_change_password_form.html"
+}
+func (this *UserController) Search() {
+	username := this.GetString("username")
+	username = strings.TrimSpace(username)
 	result := make(map[string]bool)
-	result["valid"] = exsit
+	fmt.Println("===================================")
+	fmt.Println(username)
+	if _, err := base.GetUserByName(username); err != nil {
+		result["valid"] = true
+	} else {
+		result["valid"] = false
+	}
 	this.Data["json"] = result
 	this.ServeJSON()
 }
@@ -88,7 +99,7 @@ func (this *UserController) Edit() {
 	fmt.Println(user)
 	this.TplName = "user/user_form.html"
 }
-func (this *UserController) Detail() {
+func (this *UserController) Show() {
 	id, _ := this.GetInt64(":id")
 	fmt.Print(id)
 	this.TplName = "user/user_form.html"
@@ -97,7 +108,8 @@ func (this *UserController) List() {
 	this.Data["listName"] = "用户信息"
 	this.Data["userListActive"] = "active"
 	this.TplName = "user/user_list.html"
-
+	this.URL = "/user"
+	this.Data["URL"] = this.URL
 	condArr := make(map[string]interface{})
 	condArr["active"] = true
 	page := this.Input().Get("page")
@@ -129,7 +141,7 @@ func (this *UserController) List() {
 			lineInfo := make(map[string]interface{})
 			action := map[string]map[string]string{}
 			edit := make(map[string]string)
-			remove := make(map[string]string)
+			delete := make(map[string]string)
 			disable := make(map[string]string)
 			detail := make(map[string]string)
 			id := int(user.Id)
@@ -160,14 +172,14 @@ func (this *UserController) List() {
 			oneLine[9] = user.WeChat
 			edit["name"] = "编辑"
 			edit["url"] = this.URL + "/edit/" + strconv.Itoa(id)
-			remove["name"] = "删除"
-			remove["url"] = this.URL + "/remove/" + strconv.Itoa(id)
+			delete["name"] = "删除"
+			delete["url"] = this.URL + "/delete/" + strconv.Itoa(id)
 			detail["name"] = "详情"
-			detail["url"] = this.URL + "/detail/" + strconv.Itoa(id)
+			detail["url"] = this.URL + "/show/" + strconv.Itoa(id)
 			disable["name"] = "无效"
 			disable["url"] = this.URL + "/disable/" + strconv.Itoa(id)
 			action["edit"] = edit
-			action["remove"] = remove
+			action["delete"] = delete
 			action["detail"] = detail
 			action["disable"] = disable
 			oneLine[10] = action

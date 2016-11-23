@@ -11,73 +11,129 @@
     {{ .xsrf }}
     <fieldset>
         <legend>基本信息</legend>
-        <div class="form-group">
-            <label for="username" class="col-md-1 control-label label-start">用户名<span>*</span></label>
-            <div class="col-md-2">
-                <input class="form-control" name="username" type="text" />
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="username" class="col-md-4 control-label label-start">用户名<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="username" type="text" />
+                    </div>
+                </div>
             </div>
-            <label for="namezh" class="col-md-1 control-label">用户名(中文)</label>
-            <div class="col-md-2">
-                <input class="form-control" name="namezh" type="text" data-bv-excluded/>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="namezh" class="col-md-4 control-label">用户名(中文)<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="namezh" type="text" />
+                    </div>
+                </div>
             </div>
-            <label for="mobile" class="col-md-1 control-label label-start">手机号码</label>
-            <div class="col-md-2">
-                <input class="form-control" name="mobile" id="mobile" type="text" />
-                </select>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="mobile" class="col-md-4 control-label label-start">手机号码<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="mobile" id="mobile" type="text" />
+                        </select>
+                    </div>
+                </div>
             </div>
-            <label for="tel" class="col-md-1 control-label">座机</label>
-            <div class="col-md-2">
-                <input class="form-control" name="tel" id="tel" type="text" />
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="tel" class="col-md-4 control-label">座机</label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="tel" id="tel" type="text" data-bv-excluded/>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label for="password" class="col-md-1 control-label label-start">密码</label>
-            <div class="col-md-2">
-                <input class="form-control" name="password" id="password" type="password" />
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="password" class="col-md-4 control-label label-start">密码<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="password" id="password" type="password" />
+                    </div>
+                </div>
             </div>
-            <label for="email" class="col-md-1 control-label label-start">邮箱</label>
-            <div class="col-md-2">
-                <input class="form-control" name="email" id="email" type="email" />
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="email" class="col-md-4 control-label label-start">邮箱<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="email" id="email" type="email" />
+                    </div>
+                </div>
             </div>
-            <label for="qq" class="col-md-1 control-label ">QQ</label>
-            <div class="col-md-2">
-                <input class="form-control" name="qq" id="qq" type="text" />
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="qq" class="col-md-4 control-label ">QQ</label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="qq" id="qq" type="text" />
+                    </div>
+                </div>
             </div>
-            <label for="wechat" class="col-md-1 control-label">微信</label>
-            <div class="col-md-2">
-                <input class="form-control" name="wechat" id="wechat" type="text" />
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="wechat" class="col-md-4 control-label">微信</label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="wechat" id="wechat" type="text" />
+                    </div>
+                </div>
+
             </div>
         </div>
     </fieldset>
     <fieldset>
         <legend>部门信息</legend>
-        <div class="form-group">
-            <label for="department" class="col-md-1 control-label label-start">部门</label>
-            <div class="col-md-2">
-                <select name="department" id="department" class="form-control select-department">
-            </select>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="department" class="col-md-4 control-label label-start">部门<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <select name="department" id="department" class="form-control select-department">
+                    </select>
+                    </div>
+                </div>
             </div>
-            <label for="postion" class="col-md-1 control-label label-start">职位</label>
-            <div class="col-md-2">
-                <select name="postion" id="postion" class="form-control select-postion"></select>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="postion" class="col-md-4 control-label label-start">职位<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <select name="postion" id="postion" class="form-control select-position"></select>
+                    </div>
+                </div>
             </div>
         </div>
     </fieldset>
     <fieldset>
         <legend>权限信息</legend>
-        <div class="form-group">
-            <label for="isadmin" class="col-md-1 control-label ">超级用户</label>
-            <div class="col-md-2 ">
-                <input name="isadmin" id="isadmin" class="form-control form-checkbox" type="checkbox">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="isadmin" class="col-md-4 control-label ">超级用户</label>
+                    <div class="col-md-8 ">
+                        <input name="isadmin" id="isadmin" class="form-control form-checkbox" type="checkbox">
+                    </div>
+                </div>
             </div>
-            <label for="active" class="col-md-1 control-label ">有效</label>
-            <div class="col-md-2 ">
-                <input name="active" id="active" class="form-control form-checkbox" checked="checked" type="checkbox">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="active" class="col-md-4 control-label ">有效</label>
+                    <div class="col-md-8 ">
+                        <input name="active" id="active" class="form-control form-checkbox" checked="checked" type="checkbox">
+                    </div>
+                </div>
             </div>
-            <label for="group" class="col-md-1 control-label label-start">权限组</label>
-            <div class="col-md-2">
-                <select name="group" id="group" class="form-control select-group"></select>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="group" class="col-md-4 control-label label-start">权限组<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <select name="group" id="group" class="form-control select-group"></select>
+                    </div>
+                </div>
             </div>
+        </div>
         </div>
     </fieldset>
 </form>

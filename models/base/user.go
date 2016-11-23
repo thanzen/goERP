@@ -63,7 +63,7 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int64) (ut
 		cond = cond.And("active", true)
 	}
 	if name, ok := condArr["name"]; ok {
-		cond = cond.And("name_icontains", name)
+		cond = cond.And("name__icontains", name)
 	}
 	if departmentId, ok := condArr["departmentId"]; ok {
 		cond = cond.And("department__id", departmentId)
@@ -122,7 +122,7 @@ func GetUserByName(name string) (User, error) {
 	//7LR8ZC-855575-64657756081974692
 	o.Using("default")
 	cond := orm.NewCondition()
-	cond = cond.And("mobile", name).Or("email", name)
+	cond = cond.And("mobile", name).Or("email", name).Or("name", name)
 	qs := o.QueryTable(&user)
 	qs = qs.SetCond(cond)
 	err := qs.One(&user)
@@ -151,21 +151,7 @@ func CheckUserByName(name, password string) (User, error, bool) {
 	return user, err, ok
 
 }
-func UserNameExsit(name string) bool {
-	var (
-		user User
-	)
-	o := orm.NewOrm()
-	o.Using("default")
-	cond := orm.NewCondition()
-	cond = cond.And("name", name)
-	qs := o.QueryTable(&user)
-	qs = qs.SetCond(cond)
-	if err := qs.One(&user); err == nil {
-		return true
-	}
-	return false
-}
+
 func UpdateUser(user User) (int64, error) {
 	o := orm.NewOrm()
 	return o.Update(&user)

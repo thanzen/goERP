@@ -1,87 +1,64 @@
+ {{if .tableInfo}}
+<table class="table table-bordered table-hover table-condensed table-striped">
+    <thead>
+        <tr class="info">
+            {{/*获得list视图的标题*/}} {{$titleName := .tableInfo.Title.titleName}} {{/*list视图标题长度*/}} {{$TitleLen:=.tableInfo.TitleLen}} {{range $index,$cell:=$titleName}} {{if eq 0 $index }}
+            <th class="text-center"><input class="checkbox-top pull-left" type="checkbox">&nbsp;&nbsp;{{$cell}}</th>
+            {{else}}
+            <th class="text-center">{{$cell}}</th>
+            {{end}} {{end}}
+        </tr>
 
-{{if .tableInfo}}
-	<table class="table table-bordered table-hover table-condensed table-striped">
-	<thead>
-		<tr class="info">
-			{{/*获得list视图的标题*/}}
-			{{$titleName := .tableInfo.Title.titleName}}
-			{{/*list视图标题长度*/}}
-			{{$TitleLen:=.tableInfo.TitleLen}}
-			{{range $index,$cell:=$titleName}}
-			{{if eq 0 $index }}
-				<th class="text-center"><input class="checkbox-top pull-left" type="checkbox">&nbsp;&nbsp;{{$cell}}</th>
-			{{else}}
-				<th class="text-center">{{$cell}}</th>
-			{{end}}
-		{{end}}
-		</tr>
-		
-	</thead>
-	<tbody>
-		{{$Body := .tableInfo.Body}}
-	 
-		{{$TitleIndexLen := .tableInfo.TitleIndexLen}}
-		{{range $bodyLine := $Body.bodyLines}}
-			{{$oneLine:=$bodyLine.oneLine}}
-			{{$lineInfo := $bodyLine.lineInfo}}
-			<tr data-id="{{$lineInfo.id}}">
-				{{range $index,$cell:=$oneLine}}
-				
-					{{if eq 0 $index}}
-						<td data-id="{{$lineInfo.id}}">
-					{{else}}
-						<td class="text-center">
-					{{end}}
-						{{if eq 0 $index}}
-							<input data-id="{{$lineInfo.id}}" class="checkbox-data" type="checkbox">&nbsp;&nbsp;<a href="{{$.URL}}/detail/{{$lineInfo.id}}" >{{$cell}}</a>
-						{{else if eq $TitleIndexLen $index}}
-							<div class="table-action">
-								{{with $cell.detail}}
-									<span class="table-action-list"><a href="{{$cell.detail.url}}" class="btn-xs btn-primary fa fa-external-link list-btn-action">{{$cell.detail.name}}</a></span>
-								{{end}}
-								{{with $cell.edit}}
-									<span class="table-action-list"><a href="{{$cell.edit.url}}" class="btn-xs btn-success fa fa-pencil list-btn-action">{{$cell.edit.name}}</a></span>
-								{{end}}
-								{{with $cell.disable}}
-									<span class="table-action-list"><a href="{{$cell.disable.url}}" class="btn-xs btn-warning fa fa-close list-btn-action">{{$cell.disable.name}}</a></span>
-								{{end}}
-								{{with $cell.remove}}
-									<span class="table-action-list"><a href="{{$cell.remove.url}}" class="btn-xs btn-danger fa fa-trash list-btn-action">{{$cell.remove.name}}</a></span>
-								{{end}}
-							</div>
-						{{else}}
-							{{$cell}}
-						{{end}}
-					</td>
-				{{end}}
-			</tr>
-		{{end}}
-	</tbody>
-	</table>
-{{end}}
-{{if ge .Paginator.TotalPage 1}}
-	<nav class="text-center">
-		<ul class="pagination">
-			{{if le .Paginator.CurrentPage 1}}
-				<li class="disabled"><a  class="page-link fa fa-backward" href="?page=1&offset={{$.Paginator.PageSize}}"></a></li>
-			{{else}}
-				<li ><a class="page-link fa fa-backward" href="?page=1&offset={{$.Paginator.PageSize}}"></a></li>
-			{{end}}
-			{{range $Page:= .Paginator.PageList}}
-				{{if eq $.Paginator.CurrentPage $Page}}
-					<li class="active"><a class="page-link" href="?page={{$Page}}&offset={{$.Paginator.PageSize}}">{{$Page}}</a></li>
-				{{else}}
-					<li ><a class="page-link" href="?page={{$Page}}&offset={{$.Paginator.PageSize}}">{{$Page}}</a></li>
-				{{end}}
-			{{end}}
-			{{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
-				<li class="disabled"><a class="page-link fa fa-forward" href="?page={{$.Paginator.TotalPage}}&offset={{$.Paginator.PageSize}}"></a></li>
-			{{else}}
-				<li ><a class="page-link fa fa-forward" href="?page={{$.Paginator.TotalPage}}&offset={{$.Paginator.PageSize}}"></a></li>
-			{{end}}
-		</ul>
-	</nav>
-{{end}}
-{{if eq .Paginator.TotalPage 0}}
+    </thead>
+    <tbody>
+        {{$Body := .tableInfo.Body}} {{$TitleIndexLen := .tableInfo.TitleIndexLen}} {{range $bodyLine := $Body.bodyLines}} {{$oneLine:=$bodyLine.oneLine}} {{$lineInfo := $bodyLine.lineInfo}}
+        <tr data-id="{{$lineInfo.id}}">
+            {{range $index,$cell:=$oneLine}} {{if eq 0 $index}}
+            <td data-id="{{$lineInfo.id}}">
+                {{else}}
+                <td class="text-center">
+                    {{end}} {{if eq 0 $index}}
+                    <input data-id="{{$lineInfo.id}}" class="checkbox-data" type="checkbox">&nbsp;&nbsp;<a href="{{$.URL}}/detail/{{$lineInfo.id}}">{{$cell}}</a> {{else if eq $TitleIndexLen $index}}
+                    <div class="table-action">
+                        {{with $cell.detail}}
+                        <span class="table-action-list"><a href="{{$cell.detail.url}}" class="btn-xs btn-primary fa fa-external-link list-btn-action">{{$cell.detail.name}}</a></span> {{end}} {{with $cell.edit}}
+                        <span class="table-action-list"><a href="{{$cell.edit.url}}" class="btn-xs btn-success fa fa-pencil list-btn-action">{{$cell.edit.name}}</a></span> {{end}} {{with $cell.disable}}
+                        <span class="table-action-list"><a href="{{$cell.disable.url}}" class="btn-xs btn-warning fa fa-close list-btn-action">{{$cell.disable.name}}</a></span> {{end}} {{with $cell.delete}}
+                        <span class="table-action-list"><a href="{{$cell.delete.url}}" class="btn-xs btn-danger fa fa-trash list-btn-action">{{$cell.delete.name}}</a></span> {{end}}
+                    </div>
+                    {{else}} {{$cell}} {{end}}
+                </td>
+                {{end}}
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{end}} {{if ge .Paginator.TotalPage 1}}
+<nav class="text-center">
+    <ul class="pagination">
+        {{if le .Paginator.CurrentPage 1}}
+        <li class="disabled">
+            <a class="page-link fa fa-backward" href="?page=1&offset={{$.Paginator.PageSize}}"></a>
+        </li>
+        {{else}}
+        <li>
+            <a class="page-link fa fa-backward" href="?page=1&offset={{$.Paginator.PageSize}}"></a>
+        </li>
+        {{end}} {{range $Page:= .Paginator.PageList}} {{if eq $.Paginator.CurrentPage $Page}}
+        <li class="active"><a class="page-link" href="?page={{$Page}}&offset={{$.Paginator.PageSize}}">{{$Page}}</a></li>
+        {{else}}
+        <li><a class="page-link" href="?page={{$Page}}&offset={{$.Paginator.PageSize}}">{{$Page}}</a></li>
+        {{end}} {{end}} {{if ge .Paginator.CurrentPage .Paginator.TotalPage}}
+        <li class="disabled">
+            <a class="page-link fa fa-forward" href="?page={{$.Paginator.TotalPage}}&offset={{$.Paginator.PageSize}}"></a>
+        </li>
+        {{else}}
+        <li>
+            <a class="page-link fa fa-forward" href="?page={{$.Paginator.TotalPage}}&offset={{$.Paginator.PageSize}}"></a>
+        </li>
+        {{end}}
+    </ul>
+</nav>
+{{end}} {{if eq .Paginator.TotalPage 0}}
 <p class="text-center">暂无<mark>{{.listName}}</mark>数据</p>
 {{end}}

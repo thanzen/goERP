@@ -84,7 +84,7 @@ func (this *DistrictController) List() {
 			edit["name"] = "编辑"
 			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
 			detail["name"] = "详情"
-			detail["url"] = URL + "/detail/" + strconv.Itoa(id)
+			detail["url"] = URL + "/show/" + strconv.Itoa(id)
 			action["edit"] = edit
 			action["detail"] = detail
 

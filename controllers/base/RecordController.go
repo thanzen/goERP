@@ -32,7 +32,7 @@ func (this *RecordController) Get() {
 		this.List()
 	}
 	this.Data["searchKeyWords"] = "邮箱/手机号码"
-	this.URL = "/user"
+	this.URL = "/record"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
 	this.Data["settingRootActive"] = "active"

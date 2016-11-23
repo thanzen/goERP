@@ -37,8 +37,8 @@ func (this *PositionController) Get() {
 		default:
 			this.List()
 		}
-	case "detail":
-		this.Detail()
+	case "show":
+		this.Show()
 	case "create":
 		this.Create()
 	case "edit":
@@ -54,10 +54,13 @@ func (this *PositionController) Get() {
 func (this *PositionController) List() {
 
 }
-func (this *PositionController) Detail() {
+func (this *PositionController) Show() {
 
 }
 func (this *PositionController) Create() {
+
+}
+func (this *PositionController) Update() {
 
 }
 func (this *PositionController) Edit() {

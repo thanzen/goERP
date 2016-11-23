@@ -81,7 +81,9 @@ func ListDepartment(condArr map[string]interface{}, page, offset int64) (utils.P
 		err         error
 	)
 	var paginator utils.Paginator
-
+	if name, ok := condArr["name"]; ok {
+		cond = cond.And("name__icontains", name)
+	}
 	//后面再考虑查看权限的问题
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()

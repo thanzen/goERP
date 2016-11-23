@@ -36,8 +36,8 @@ func (this *DepartmentController) Get() {
 		default:
 			this.List()
 		}
-	case "detail":
-		this.Detail()
+	case "show":
+		this.Show()
 	case "create":
 		this.Create()
 	case "edit":
@@ -53,13 +53,20 @@ func (this *DepartmentController) Get() {
 func (this *DepartmentController) List() {
 
 }
-func (this *DepartmentController) Detail() {
+func (this *DepartmentController) Show() {
 
 }
 func (this *DepartmentController) Create() {
 
 }
+
+//get请求
 func (this *DepartmentController) Edit() {
+
+}
+
+//post请求
+func (this *DepartmentController) Update() {
 
 }
 func (this *DepartmentController) Search() {
