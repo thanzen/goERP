@@ -18,17 +18,18 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header text-center">MAIN NAVIGATION</li>
-            <li class="treeview {{.settingRootActive}}">
+            <li class="treeview {{.MenuSelfInfoActive}}{{.MenuChangePwdActive}}{{.MenuRecordActive}}
+            {{.MenuCountryActive}}{{.MenuProvinceActive}}{{.MenuCityActive}}{{.MenuDistrictActive}}">
                 <a href="#">
                     <i class="fa fa-gears"></i>
                     <span>设置</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="treeview {{.personInfoActive}}"><a href="#"><i class="fa fa-list-alt" aria-hidden="true"></i></i>个人资料</a>
+                    <li class="treeview {{.MenuSelfInfoActive}}{{.MenuChangePwdActive}}{{.MenuRecordActive}}"><a href="#"><i class="fa fa-list-alt" aria-hidden="true"></i></i>个人资料</a>
                         <ul class="treeview-menu">
-                            <li class="{{.settingPersonActive}}"><a href="/user/show/{{.user.Id}}"><i class="fa fa-user-secret" aria-hidden="true"></i>个人信息</a></li>
-                            <li class="{{.settingPassword}}"><a href="/user/changepasswd"><i class="fa fa-unlock"></i>密码修改</a></li>
-                            <li class="{{.recordListActive}}"><a href="/record/list/"><i class="fa fa-list-ol"></i>登录记录</a></li>
+                            <li class="{{.MenuSelfInfoActive}}"><a href="/user/show/{{.user.Id}}"><i class="fa fa-user-secret" aria-hidden="true"></i>个人信息</a></li>
+                            <li class="{{.MenuChangePwdActive}}"><a href="/user/changepasswd"><i class="fa fa-unlock"></i>密码修改</a></li>
+                            <li class="{{.MenuRecordActive}}"><a href="/record/"><i class="fa fa-list-ol"></i>登录记录</a></li>
                         </ul>
                     </li>
                     <li><a href="#"><i class="fa fa-gavel" aria-hidden="true"></i>权限管理</a></li>
@@ -39,13 +40,13 @@
                             <li><a href="#"><i class="fa fa-arrow-circle-right"></i>团队管理</a></li>
                         </ul>
                     </li>
-                    <li class="{{.userListActive}}"><a href="/user/list/"><i class="fa fa-users" aria-hidden="true"></i></i>用户管理</a></li>
-                    <li class="treeview {{.addressManageActive}}"><a href="#"><i class="fa fa-building" aria-hidden="true"></i></i>地址管理</a>
+                    <li class="{{.userListActive}}"><a href="/user/"><i class="fa fa-users" aria-hidden="true"></i></i>用户管理</a></li>
+                    <li class="treeview {{.MenuCountryActive}}{{.MenuProvinceActive}}{{.MenuCityActive}}{{.MenuDistrictActive}}"><a href="#"><i class="fa fa-building" aria-hidden="true"></i></i>地址管理</a>
                         <ul class="treeview-menu">
-                            <li class="{{.addressCountryActive}}"><a href="/country/list/"><i class="fa fa-check-circle-o"></i>国家管理</a></li>
-                            <li class="{{.addressProvinceActive}}"><a href="/province/list/"><i class="fa fa-arrow-circle-right"></i>省份管理</a></li>
-                            <li class="{{.addressCityActive}}"><a href="/city/list/"><i class="fa fa-arrow-circle-right"></i>城市管理</a></li>
-                            <li class="{{.addressDistrictActive}}"><a href="/district/list/"><i class="fa fa-arrow-circle-right"></i>区县管理</a></li>
+                            <li class="{{.MenuCountryActive}}"><a href="/country/"><i class="fa fa-check-circle-o"></i>国家管理</a></li>
+                            <li class="{{.MenuProvinceActive}}"><a href="/province/"><i class="fa fa-arrow-circle-right"></i>省份管理</a></li>
+                            <li class="{{.MenuCityActive}}"><a href="/city/"><i class="fa fa-arrow-circle-right"></i>城市管理</a></li>
+                            <li class="{{.MenuDistrictActive}}"><a href="/district/"><i class="fa fa-arrow-circle-right"></i>区县管理</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -55,11 +56,11 @@
                     <i class="fa fa-newspaper-o" aria-hidden="true"></i><span>产品管理</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{.productCategoryActive}}"><a href="/product/category/list/"><i class="fa fa-bars"></i>产品类别</a></li>
-                    <li class="{{.productAttributeActive}}"><a href="/product/attribute/list/"><i class="fa fa-bars"></i>产品属性</a></li>
-                    <li class="{{.productAttributeValueActive}}"><a href="/product/attributevalue/list/"><i class="fa fa-bars"></i>产品属性值</a>
-                        <li class="{{.productTemplateActive}}"><a href="/product/template/list/"><i class="fa fa-bars" ></i>产品款式</a></li>
-                        <li class="{{.productProductActive}}"><a href="/product/product/list/"><i class="fa fa-bars"></i>产品规格</a></li>
+                    <li class="{{.productCategoryActive}}"><a href="/product/category/"><i class="fa fa-bars"></i>产品类别</a></li>
+                    <li class="{{.productAttributeActive}}"><a href="/product/attribute/"><i class="fa fa-bars"></i>产品属性</a></li>
+                    <li class="{{.productAttributeValueActive}}"><a href="/product/attributevalue/"><i class="fa fa-bars"></i>产品属性值</a>
+                        <li class="{{.productTemplateActive}}"><a href="/product/template/"><i class="fa fa-bars" ></i>产品款式</a></li>
+                        <li class="{{.productProductActive}}"><a href="/product/product/"><i class="fa fa-bars"></i>产品规格</a></li>
 
                 </ul>
                 </li>

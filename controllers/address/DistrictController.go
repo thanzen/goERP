@@ -17,28 +17,14 @@ type DistrictController struct {
 }
 
 func (this *DistrictController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
-	switch action {
-	case "list":
-		switch viewType {
-		case "list":
-			this.List()
-		default:
-			this.List()
-		}
-	default:
-		this.List()
-	}
+	this.List()
 	this.Data["searchKeyWords"] = "国家/省份/城市/区县"
 }
 func (this *DistrictController) List() {
 	this.Data["listName"] = "区县信息"
 	this.Layout = "base/base.html"
 	this.TplName = "user/record_list.html"
-	this.Data["settingRootActive"] = "active"
-	this.Data["addressManageActive"] = "active"
-	this.Data["addressDistrictActive"] = "active"
+	this.Data["MenuDistrictActive"] = "active"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")

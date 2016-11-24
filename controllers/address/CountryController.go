@@ -16,28 +16,14 @@ type CountryController struct {
 }
 
 func (this *CountryController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
-	switch action {
-	case "list":
-		switch viewType {
-		case "list":
-			this.List()
-		default:
-			this.List()
-		}
-	default:
-		this.List()
-	}
+	this.List()
 	this.Data["searchKeyWords"] = "国家"
 }
 func (this *CountryController) List() {
 	this.Data["listName"] = "国家信息"
 	this.Layout = "base/base.html"
 	this.TplName = "user/record_list.html"
-	this.Data["settingRootActive"] = "active"
-	this.Data["addressManageActive"] = "active"
-	this.Data["addressCountryActive"] = "active"
+	this.Data["MenuCountryActive"] = "active"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")

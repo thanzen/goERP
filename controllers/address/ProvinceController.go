@@ -16,28 +16,15 @@ type ProvinceController struct {
 }
 
 func (this *ProvinceController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
-	switch action {
-	case "list":
-		switch viewType {
-		case "list":
-			this.List()
-		default:
-			this.List()
-		}
-	default:
-		this.List()
-	}
+
+	this.List()
 	this.Data["searchKeyWords"] = "国家/省份"
 }
 func (this *ProvinceController) List() {
 	this.Data["listName"] = "省份信息"
 	this.Layout = "base/base.html"
 	this.TplName = "user/record_list.html"
-	this.Data["settingRootActive"] = "active"
-	this.Data["addressManageActive"] = "active"
-	this.Data["addressProvinceActive"] = "active"
+	this.Data["MenuProvinceActive"] = "active"
 	condArr := make(map[string]interface{})
 	page := this.Input().Get("page")
 	offset := this.Input().Get("offset")

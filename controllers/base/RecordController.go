@@ -18,31 +18,20 @@ type RecordController struct {
 }
 
 func (this *RecordController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
-	switch action {
-	case "list":
-		switch viewType {
-		case "list":
-			this.List()
-		default:
-			this.List()
-		}
-	default:
-		this.List()
-	}
+
+	this.List()
+
 	this.Data["searchKeyWords"] = "邮箱/手机号码"
 	this.URL = "/record"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
-	this.Data["settingRootActive"] = "active"
-	this.Data["personInfoActive"] = "active"
+
+	this.Data["MenuRecordActive"] = "active"
 
 }
 func (this *RecordController) List() {
 
 	this.Data["listName"] = "登录日志"
-	this.Data["recordListActive"] = "active"
 	this.Data["Readonly"] = true
 	this.TplName = "user/record_list.html"
 	condArr := make(map[string]interface{})

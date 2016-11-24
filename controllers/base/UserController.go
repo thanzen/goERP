@@ -69,12 +69,10 @@ func (this *UserController) Get() {
 	this.URL = "/user"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
-	this.Data["settingRootActive"] = "active"
 
 }
 func (this *UserController) ChangePwd() {
-	this.Data["personInfoActive"] = "active"
-	this.Data["settingPassword"] = "active"
+	this.Data["MenuChangePwdActive"] = "active"
 	this.TplName = "user/user_change_password_form.html"
 }
 func (this *UserController) Search() {
@@ -112,13 +110,14 @@ func (this *UserController) Edit() {
 	this.TplName = "user/user_form.html"
 }
 func (this *UserController) Show() {
+	this.Data["MenuSelfInfoActive"] = "active"
 	id, _ := this.GetInt64(":id")
 	fmt.Print(id)
 	this.TplName = "user/user_form.html"
 }
 func (this *UserController) List() {
 	this.Data["listName"] = "用户信息"
-	this.Data["userListActive"] = "active"
+	this.Data["MenuSelfInfoActive"] = "active"
 	this.TplName = "user/user_list.html"
 	this.URL = "/user"
 	this.Data["URL"] = this.URL

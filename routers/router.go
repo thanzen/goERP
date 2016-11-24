@@ -20,15 +20,15 @@ func init() {
 	//职位
 	beego.Router("/position/:action([A-Za-z]+)/?:id", &base.PositionController{})
 	//登录日志
-	beego.Router("/record/:action([A-Za-z]+)/?:id", &base.RecordController{})
+	beego.Router("/record/", &base.RecordController{})
 	//国家
-	beego.Router("/country/:action([A-Za-z]+)/?:id", &address.CountryController{})
+	beego.Router("/country/?:id", &address.CountryController{})
 	//省份
-	beego.Router("/province/:action([A-Za-z]+)/?:id", &address.ProvinceController{})
+	beego.Router("/province/?:id", &address.ProvinceController{})
 	//城市
-	beego.Router("/city/:action([A-Za-z]+)/?:id", &address.CityController{})
+	beego.Router("/city/?:id", &address.CityController{})
 	//区县
-	beego.Router("/district/:action([A-Za-z]+)/?:id", &address.DistrictController{})
+	beego.Router("/district/?:id", &address.DistrictController{})
 	//=======================================产品管理===========================================
 	//属性
 	beego.Router("/product/attribute/:action([A-Za-z]+)/?:id", &product.ProductAttributeController{})
