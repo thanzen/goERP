@@ -17,6 +17,19 @@ type UserController struct {
 	BaseController
 }
 
+func (this *UserController) Put() {
+	action := this.GetString(":action")
+	fmt.Println(action)
+	switch action {
+	case "create":
+		fmt.Println("create")
+		this.Create()
+	case "search":
+		this.Search()
+	default:
+		this.List()
+	}
+}
 func (this *UserController) Post() {
 	action := this.GetString(":action")
 	switch action {
@@ -77,6 +90,7 @@ func (this *UserController) Search() {
 	this.ServeJSON()
 }
 func (this *UserController) Create() {
+	fmt.Println("user create")
 	method := strings.ToUpper(this.Ctx.Request.Method)
 	if method == "GET" {
 		this.Data["Readonly"] = false
