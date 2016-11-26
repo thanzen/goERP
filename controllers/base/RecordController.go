@@ -3,7 +3,6 @@ package base
 
 import (
 	"pms/models/base"
-	"pms/utils"
 	"strconv"
 )
 
@@ -17,11 +16,66 @@ type RecordController struct {
 	BaseController
 }
 
+func (this *RecordController) Post() {
+	this.PostList()
+
+}
+func (this *RecordController) PostList() {
+	start := this.Input().Get("start")
+	length := this.Input().Get("length")
+
+	condArr := make(map[string]interface{})
+	var (
+		err         error
+		startInt64  int64
+		lengthInt64 int64
+	)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
+	}
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
+	}
+	var records []base.Record
+	paginator, records, err := base.ListRecord(condArr, this.User.Id, startInt64, lengthInt64)
+	result := make(map[string]interface{})
+	if err == nil {
+
+		result["draw"] = this.Input().Get("draw")
+		result["recordsTotal"] = paginator.TotalCount
+		result["recordsFiltered"] = paginator.TotalCount
+
+		result["page"] = paginator.CurrentPage
+		result["pages"] = paginator.TotalPage
+		result["start"] = paginator.CurrentPage * paginator.PageSize
+		result["length"] = length
+		result["serverSide"] = true
+		result["currentPageSize"] = paginator.CurrentPageSize
+		// result["recordsFiltered"] = paginator.TotalCount
+		tableLines := make([]interface{}, 0, ListNum)
+		for _, record := range records {
+			oneLine := make(map[string]interface{})
+			oneLine["email"] = record.User.Email
+			oneLine["mobile"] = record.User.Mobile
+			oneLine["username"] = record.User.Name
+			oneLine["namezh"] = record.User.NameZh
+
+			oneLine["start_time"] = record.CreateDate.Format("2006-01-02 15:04:05")
+			oneLine["end_time"] = record.Logout.Format("2006-01-02 15:04:05")
+			oneLine["ip"] = record.Ip
+			oneLine["id"] = record.Id
+			tableLines = append(tableLines, oneLine)
+		}
+		result["data"] = tableLines
+	}
+	this.Data["json"] = result
+	this.ServeJSON()
+
+}
 func (this *RecordController) Get() {
 
 	this.List()
 
-	this.Data["searchKeyWords"] = "邮箱/手机号码"
 	this.URL = "/record"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
@@ -33,59 +87,6 @@ func (this *RecordController) List() {
 
 	this.Data["listName"] = "登录日志"
 	this.Data["Readonly"] = true
-	this.TplName = "user/record_list.html"
-	condArr := make(map[string]interface{})
-	page := this.Input().Get("page")
-	offset := this.Input().Get("offset")
-	var (
-		err         error
-		pageInt64   int64
-		offsetInt64 int64
-	)
-	if pageInt, ok := strconv.Atoi(page); ok == nil {
-		pageInt64 = int64(pageInt)
-	}
-	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
-		offsetInt64 = int64(offsetInt)
-	}
-	var records []base.Record
-	paginator, records, err := base.ListRecord(condArr, this.User.Id, pageInt64, offsetInt64)
+	this.TplName = "user/table_record.html"
 
-	this.Data["Paginator"] = paginator
-	tableInfo := new(utils.TableInfo)
-	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [recordListCellLength]string{"邮箱", "手机", "用户名", "中文用户名", "开始时间", "结束时间", "登录IP", "操作"}
-	tableInfo.Title = tableTitle
-	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, ListNum)
-	if err == nil {
-		for _, record := range records {
-			oneLine := make([]interface{}, recordListCellLength, recordListCellLength)
-			lineInfo := make(map[string]interface{})
-			action := map[string]map[string]string{}
-			id := int(record.Id)
-
-			lineInfo["id"] = id
-			oneLine[0] = record.User.Email
-			oneLine[1] = record.User.Mobile
-			oneLine[2] = record.User.Name
-			oneLine[3] = record.User.NameZh
-
-			oneLine[4] = record.CreateDate.Format("2006-01-02 15:04:05")
-			oneLine[5] = record.Logout.Format("2006-01-02 15:04:05")
-			oneLine[6] = record.Ip
-
-			oneLine[7] = action
-			lineData := make(map[string]interface{})
-			lineData["oneLine"] = oneLine
-			lineData["lineInfo"] = lineInfo
-			bodyLines = append(bodyLines, lineData)
-		}
-		tableBody["bodyLines"] = bodyLines
-		tableInfo.Body = tableBody
-		tableInfo.TitleLen = recordListCellLength
-		tableInfo.TitleIndexLen = recordListCellLength - 1
-		tableInfo.BodyLen = paginator.CurrentPageSize
-		this.Data["tableInfo"] = tableInfo
-	}
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"pms/utils"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -58,15 +57,7 @@ func GetDistrictByName(name string) (District, error) {
 }
 
 //列出记录
-func ListDistrict(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []District, error) {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
+func ListDistrict(condArr map[string]interface{}, start, length int64) (utils.Paginator, []District, error) {
 
 	o := orm.NewOrm()
 	o.Using("default")
@@ -87,11 +78,10 @@ func ListDistrict(condArr map[string]interface{}, page, offset int64) (utils.Pag
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
 
-	start := (page - 1) * offset
-	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&districts); err == nil {
+	if num, err = qs.OrderBy("-id").Limit(length, start).All(&districts); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

@@ -4,7 +4,6 @@ import (
 	"pms/utils"
 	"time"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -16,15 +15,7 @@ type Record struct {
 }
 
 //列出记录
-func ListRecord(condArr map[string]interface{}, userId, page, offset int64) (utils.Paginator, []Record, error) {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
+func ListRecord(condArr map[string]interface{}, userId, start, length int64) (utils.Paginator, []Record, error) {
 
 	o := orm.NewOrm()
 	o.Using("default")
@@ -50,10 +41,10 @@ func ListRecord(condArr map[string]interface{}, userId, page, offset int64) (uti
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
-	start := (page - 1) * offset
-	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&records); err == nil {
+
+	if num, err = qs.OrderBy("-id").Limit(length, start).All(&records); err == nil {
 		paginator.CurrentPageSize = num
 	}
 
