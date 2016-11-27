@@ -3,91 +3,92 @@ package address
 import (
 	"pms/controllers/base"
 	mb "pms/models/base"
-	"pms/utils"
 	"strconv"
-)
-
-const (
-	cityListCellLength = 4
+	"strings"
 )
 
 type CityController struct {
 	base.BaseController
 }
 
+func (this *CityController) Post() {
+	action := this.Input().Get("action")
+	switch action {
+	case "validator":
+		this.Validator()
+	case "table":
+		this.Table()
+	default:
+		this.Table()
+	}
+}
 func (this *CityController) Get() {
 
-	this.List()
+	this.GetList()
 
-	this.Data["searchKeyWords"] = "国家/省份/城市"
-}
-func (this *CityController) List() {
-	this.Data["listName"] = "城市信息"
+	this.URL = "/city"
+	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
-	this.TplName = "user/record_list.html"
 	this.Data["MenuCityActive"] = "active"
+}
+func (this *CityController) Validator() {
+	name := this.GetString("name")
+	name = strings.TrimSpace(name)
+	result := make(map[string]bool)
+	if _, err := mb.GetCityByName(name); err != nil {
+		result["valid"] = true
+	} else {
+		result["valid"] = false
+	}
+	this.Data["json"] = result
+	this.ServeJSON()
+}
+func (this *CityController) Table() {
+	start := this.Input().Get("start")
+	length := this.Input().Get("length")
+
 	condArr := make(map[string]interface{})
-	page := this.Input().Get("page")
-	offset := this.Input().Get("offset")
 	var (
 		err         error
-		pageInt64   int64
-		offsetInt64 int64
+		startInt64  int64
+		lengthInt64 int64
 	)
-	if pageInt, ok := strconv.Atoi(page); ok == nil {
-		pageInt64 = int64(pageInt)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
 	}
-	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
-		offsetInt64 = int64(offsetInt)
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
 	}
-	var citys []mb.City
-	paginator, citys, err := mb.ListCity(condArr, pageInt64, offsetInt64)
-	URL := "/city"
-	this.Data["URL"] = URL
-	this.Data["Paginator"] = paginator
-	tableInfo := new(utils.TableInfo)
-
-	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [cityListCellLength]string{"城市", "省份", "国家", "操作"}
-	tableInfo.Title = tableTitle
-	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, base.ListNum)
+	var cities []mb.City
+	paginator, cities, err := mb.ListCity(condArr, startInt64, lengthInt64)
+	result := make(map[string]interface{})
 	if err == nil {
-		for _, city := range citys {
-			oneLine := make([]interface{}, cityListCellLength, cityListCellLength)
-			lineInfo := make(map[string]interface{})
-			action := map[string]map[string]string{}
-			edit := make(map[string]string)
-			detail := make(map[string]string)
-			id := int(city.Id)
+		result["draw"] = this.Input().Get("draw")
+		result["recordsTotal"] = paginator.TotalCount
+		result["recordsFiltered"] = paginator.TotalCount
+		result["page"] = paginator.CurrentPage
+		result["pages"] = paginator.TotalPage
+		result["start"] = paginator.CurrentPage * paginator.PageSize
+		result["length"] = length
+		result["serverSide"] = true
+		result["currentPageSize"] = paginator.CurrentPageSize
 
-			lineInfo["id"] = id
-			oneLine[0] = city.Name
-			oneLine[1] = city.Province.Name
-			oneLine[2] = city.Province.Country.Name
-			edit["name"] = "编辑"
-			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
-			detail["name"] = "详情"
-			detail["url"] = URL + "/show/" + strconv.Itoa(id)
-			action["edit"] = edit
-			action["detail"] = detail
-
-			oneLine[3] = action
-
-			lineData := make(map[string]interface{})
-			lineData["oneLine"] = oneLine
-			lineData["lineInfo"] = lineInfo
-			bodyLines = append(bodyLines, lineData)
+		// result["recordsFiltered"] = paginator.TotalCount
+		tableLines := make([]interface{}, 0, 4)
+		for _, city := range cities {
+			oneLine := make(map[string]interface{})
+			oneLine["name"] = city.Name
+			oneLine["province"] = city.Province.Name
+			oneLine["country"] = city.Province.Country.Name
+			oneLine["id"] = city.Id
+			tableLines = append(tableLines, oneLine)
 		}
-		tableBody["bodyLines"] = bodyLines
-		tableInfo.Body = tableBody
-		tableInfo.TitleLen = cityListCellLength
-		tableInfo.TitleIndexLen = cityListCellLength - 1
-		tableInfo.BodyLen = paginator.CurrentPageSize
-		this.Data["tableInfo"] = tableInfo
+		result["data"] = tableLines
 	}
+	this.Data["json"] = result
+	this.ServeJSON()
 }
 
-func (this *CityController) Update() {
-
+func (this *CityController) GetList() {
+	this.TplName = "address/table_city.html"
 }

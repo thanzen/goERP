@@ -3,12 +3,9 @@ package address
 import (
 	"pms/controllers/base"
 	mb "pms/models/base"
+	"strings"
 
 	"strconv"
-)
-
-const (
-	districtListCellLength = 4
 )
 
 type DistrictController struct {
@@ -16,9 +13,29 @@ type DistrictController struct {
 }
 
 func (this *DistrictController) Post() {
-	this.PostList()
+	action := this.Input().Get("action")
+	switch action {
+	case "validator":
+		this.Validator()
+	case "table":
+		this.Table()
+	default:
+		this.Table()
+	}
 }
-func (this *DistrictController) PostList() {
+func (this *DistrictController) Validator() {
+	name := this.GetString("name")
+	name = strings.TrimSpace(name)
+	result := make(map[string]bool)
+	if _, err := mb.GetDistrictByName(name); err != nil {
+		result["valid"] = true
+	} else {
+		result["valid"] = false
+	}
+	this.Data["json"] = result
+	this.ServeJSON()
+}
+func (this *DistrictController) Table() {
 	start := this.Input().Get("start")
 	length := this.Input().Get("length")
 
@@ -65,8 +82,7 @@ func (this *DistrictController) PostList() {
 	this.ServeJSON()
 }
 func (this *DistrictController) Get() {
-	this.List()
-	this.List()
+	this.GetList()
 
 	this.URL = "/district"
 	this.Data["URL"] = this.URL
@@ -74,8 +90,6 @@ func (this *DistrictController) Get() {
 	this.Data["MenuDistrictActive"] = "active"
 
 }
-func (this *DistrictController) List() {
-	this.Data["listName"] = "区县信息"
-	this.Data["Readonly"] = true
+func (this *DistrictController) GetList() {
 	this.TplName = "address/table_district.html"
 }

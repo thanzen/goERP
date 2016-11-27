@@ -50,6 +50,18 @@ func (this *DepartmentController) Get() {
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
 }
+func (this *DepartmentController) Validator() {
+	name := this.GetString("name")
+	name = strings.TrimSpace(name)
+	result := make(map[string]bool)
+	if _, err := base.GetDepartmentByName(name); err != nil {
+		result["valid"] = true
+	} else {
+		result["valid"] = false
+	}
+	this.Data["json"] = result
+	this.ServeJSON()
+}
 func (this *DepartmentController) List() {
 
 }
@@ -98,7 +110,7 @@ func (this *DepartmentController) Search() {
 		data["items"] = items
 		data["total_count"] = paginator.TotalCount
 		data["pageSize"] = paginator.PageSize
-		data["page"] = paginator.CurrentPage
+		data["page"] = 2 //paginator.CurrentPage
 	} else {
 		data["msg"] = "failed"
 	}

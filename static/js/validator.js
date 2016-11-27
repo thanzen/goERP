@@ -22,7 +22,7 @@ $(function() {
                         message: '用户名长度必须在3到20之间'
                     },
                     remote: {
-                        url: "/user/search/",
+                        url: "/user/",
                         message: "用户已经存在",
                         dataType: "json",
                         delay: 200,
@@ -31,6 +31,7 @@ $(function() {
                             var xsrf = $("input[name ='_xsrf']")[0].value;
                             return {
                                 _xsrf: xsrf,
+                                action:"validator",
 
                             }
                         },
@@ -56,7 +57,7 @@ $(function() {
                         message: "手机号码不能为空"
                     },
                     remote: {
-                        url: "/user/search/",
+                        url: "/user/",
                         message: "手机号码已经存在",
                         dataType: "json",
                         delay: 200,
@@ -65,14 +66,15 @@ $(function() {
                             var xsrf = $("input[name ='_xsrf']")[0].value;
                             return {
                                 _xsrf: xsrf,
+                                action:"validator",
                                 username: $('input[name="mobile"]').val()
                             }
                         },
                     },
-                    regexp: {
-                        regexp: /^1\d{10}$/,
-                        message: '手机号码无效'
-                    }
+                    // regexp: {
+                    //     regexp: /^1\d{10}$/,
+                    //     message: '手机号码无效'
+                    // }
 
                 }
             },
@@ -83,7 +85,7 @@ $(function() {
                         message: "邮箱不能为空"
                     },
                     remote: {
-                        url: "/user/search/",
+                        url: "/user/",
                         message: "邮箱已经存在",
                         dataType: "json",
                         delay: 200,
@@ -92,6 +94,7 @@ $(function() {
                             var xsrf = $("input[name ='_xsrf']")[0].value;
                             return {
                                 _xsrf: xsrf,
+                                action:"validator",
                                 username: $('input[name="email"]').val()
                             }
                         },

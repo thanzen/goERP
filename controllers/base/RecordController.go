@@ -17,10 +17,17 @@ type RecordController struct {
 }
 
 func (this *RecordController) Post() {
-	this.PostList()
+	action := this.Input().Get("action")
+	switch action {
+
+	case "table":
+		this.Table()
+	default:
+		this.Table()
+	}
 
 }
-func (this *RecordController) PostList() {
+func (this *RecordController) Table() {
 	start := this.Input().Get("start")
 	length := this.Input().Get("length")
 
@@ -84,9 +91,6 @@ func (this *RecordController) Get() {
 
 }
 func (this *RecordController) List() {
-
-	this.Data["listName"] = "登录日志"
-	this.Data["Readonly"] = true
 	this.TplName = "user/table_record.html"
 
 }

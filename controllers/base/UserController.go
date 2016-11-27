@@ -3,14 +3,8 @@ package base
 import (
 	"fmt"
 	"pms/models/base"
-	"pms/utils"
 	"strconv"
 	"strings"
-)
-
-//列表视图列数-1，第一列为checkbox
-const (
-	userListCellLength = 11
 )
 
 type UserController struct {
@@ -18,64 +12,20 @@ type UserController struct {
 }
 
 func (this *UserController) Put() {
-	action := this.GetString(":action")
-	fmt.Println(action)
-	switch action {
-	case "create":
-		fmt.Println("create")
-		this.Create()
-	case "search":
-		this.Search()
-	default:
-		this.List()
-	}
+
 }
 func (this *UserController) Post() {
-	action := this.GetString(":action")
+	action := this.Input().Get("action")
 	switch action {
-	case "create":
-		this.Create()
-	case "search":
-		this.Search()
+	case "validator":
+		this.Validator()
+	case "table":
+		this.Table()
 	default:
-		this.List()
+		this.Create()
 	}
 }
-func (this *UserController) Get() {
-
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
-
-	switch action {
-	case "list":
-		switch viewType {
-		case "list":
-			this.List()
-		default:
-			this.List()
-		}
-	case "show":
-		this.Show()
-	case "create":
-		this.Create()
-	case "edit":
-		this.Edit()
-	case "changepasswd":
-		this.ChangePwd()
-	default:
-		this.List()
-	}
-	this.Data["searchKeyWords"] = "邮箱/手机号码"
-	this.URL = "/user"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-
-}
-func (this *UserController) ChangePwd() {
-	this.Data["MenuChangePwdActive"] = "active"
-	this.TplName = "user/user_change_password_form.html"
-}
-func (this *UserController) Search() {
+func (this *UserController) Validator() {
 	username := this.GetString("username")
 	username = strings.TrimSpace(username)
 	result := make(map[string]bool)
@@ -87,8 +37,99 @@ func (this *UserController) Search() {
 	this.Data["json"] = result
 	this.ServeJSON()
 }
+func (this *UserController) Table() {
+	start := this.Input().Get("start")
+	length := this.Input().Get("length")
+
+	condArr := make(map[string]interface{})
+	var (
+		err         error
+		startInt64  int64
+		lengthInt64 int64
+	)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
+	}
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
+	}
+	var users []base.User
+	paginator, users, err := base.ListUser(condArr, this.User, startInt64, lengthInt64)
+	result := make(map[string]interface{})
+	if err == nil {
+
+		result["draw"] = this.Input().Get("draw")
+		result["recordsTotal"] = paginator.TotalCount
+		result["recordsFiltered"] = paginator.TotalCount
+
+		result["page"] = paginator.CurrentPage
+		result["pages"] = paginator.TotalPage
+		result["start"] = paginator.CurrentPage * paginator.PageSize
+		result["length"] = length
+		result["serverSide"] = true
+		result["currentPageSize"] = paginator.CurrentPageSize
+		// result["recordsFiltered"] = paginator.TotalCount
+		tableLines := make([]interface{}, 0, ListNum)
+		for _, user := range users {
+			oneLine := make(map[string]interface{})
+			oneLine["username"] = user.Name
+			oneLine["namezh"] = user.NameZh
+			if user.Department != nil {
+				oneLine["department"] = user.Department.Name
+			} else {
+				oneLine["department"] = "-"
+			}
+
+			oneLine["email"] = user.Email
+			oneLine["mobile"] = user.Mobile
+			oneLine["tel"] = user.Tel
+			if user.IsAdmin {
+				oneLine["isadmin"] = "是"
+			} else {
+				oneLine["isadmin"] = "否"
+			}
+			if user.Active {
+				oneLine["active"] = "有效"
+			} else {
+				oneLine["active"] = "无效"
+			}
+			oneLine["qq"] = user.Qq
+			oneLine["wechat"] = user.WeChat
+			tableLines = append(tableLines, oneLine)
+		}
+		result["data"] = tableLines
+	}
+	this.Data["json"] = result
+	this.ServeJSON()
+
+}
+func (this *UserController) Get() {
+	action := this.Input().Get("action")
+	switch action {
+	case "create":
+		this.Create()
+	default:
+		this.List()
+
+	}
+
+	this.URL = "/user"
+	this.Data["URL"] = this.URL
+	this.Layout = "base/base.html"
+	this.Data["MenuUserActive"] = "active"
+
+}
+func (this *UserController) List() {
+
+	this.TplName = "user/table_user.html"
+}
+func (this *UserController) ChangePwd() {
+	this.Data["MenuChangePwdActive"] = "active"
+	this.TplName = "user/user_change_password_form.html"
+}
+
 func (this *UserController) Create() {
-	fmt.Println("user create")
+	fmt.Println("enter create")
 	method := strings.ToUpper(this.Ctx.Request.Method)
 	if method == "GET" {
 		this.Data["Readonly"] = false
@@ -96,9 +137,19 @@ func (this *UserController) Create() {
 		this.TplName = "user/user_form.html"
 
 	} else if method == "POST" {
-		name := this.GetString("name")
-		mobile := this.GetString("mobile")
-		fmt.Print(name, mobile)
+		fmt.Println("enter create post")
+		user := new(base.User)
+		if err := this.ParseForm(user); err == nil {
+
+			department := this.Input().Get("department")
+			fmt.Println("======================")
+			fmt.Println(department)
+			if id, err := base.AddUser(user, this.User); err == nil {
+				this.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
+			}
+		} else {
+			fmt.Print("%T", err)
+		}
 
 	}
 
@@ -114,97 +165,4 @@ func (this *UserController) Show() {
 	id, _ := this.GetInt64(":id")
 	fmt.Print(id)
 	this.TplName = "user/user_form.html"
-}
-func (this *UserController) List() {
-	this.Data["listName"] = "用户信息"
-	this.Data["MenuSelfInfoActive"] = "active"
-	this.TplName = "user/user_list.html"
-	this.URL = "/user"
-	this.Data["URL"] = this.URL
-	condArr := make(map[string]interface{})
-	condArr["active"] = true
-	page := this.Input().Get("page")
-	offset := this.Input().Get("offset")
-	var (
-		err         error
-		pageInt64   int64
-		offsetInt64 int64
-	)
-	if pageInt, ok := strconv.Atoi(page); ok == nil {
-		pageInt64 = int64(pageInt)
-	}
-	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
-		offsetInt64 = int64(offsetInt)
-	}
-
-	paginator, users, err := base.ListUser(condArr, this.User, pageInt64, offsetInt64)
-	this.Data["Paginator"] = paginator
-	tableInfo := new(utils.TableInfo)
-
-	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [userListCellLength]string{"用户名", "中文用户名", "部门", "邮箱", "手机号码", "固定号码", "超级用户", "有效", "QQ", "微信", "操作"}
-	tableInfo.Title = tableTitle
-	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, ListNum)
-	if err == nil {
-		for _, user := range users {
-			oneLine := make([]interface{}, userListCellLength, userListCellLength)
-			lineInfo := make(map[string]interface{})
-			action := map[string]map[string]string{}
-			edit := make(map[string]string)
-			delete := make(map[string]string)
-			disable := make(map[string]string)
-			detail := make(map[string]string)
-			id := int(user.Id)
-
-			lineInfo["id"] = id
-			oneLine[0] = user.Name
-			oneLine[1] = user.NameZh
-			if user.Department != nil {
-				oneLine[2] = user.Department.Name
-			} else {
-				oneLine[2] = "-"
-			}
-
-			oneLine[3] = user.Email
-			oneLine[4] = user.Mobile
-			oneLine[5] = user.Tel
-			if user.IsAdmin {
-				oneLine[6] = "是"
-			} else {
-				oneLine[6] = "否"
-			}
-			if user.Active {
-				oneLine[7] = "有效"
-			} else {
-				oneLine[7] = "无效"
-			}
-			oneLine[9] = user.Qq
-			oneLine[9] = user.WeChat
-			edit["name"] = "编辑"
-			edit["url"] = this.URL + "/edit/" + strconv.Itoa(id)
-			delete["name"] = "删除"
-			delete["url"] = this.URL + "/delete/" + strconv.Itoa(id)
-			detail["name"] = "详情"
-			detail["url"] = this.URL + "/show/" + strconv.Itoa(id)
-			disable["name"] = "无效"
-			disable["url"] = this.URL + "/disable/" + strconv.Itoa(id)
-			action["edit"] = edit
-			action["delete"] = delete
-			action["detail"] = detail
-			action["disable"] = disable
-			oneLine[10] = action
-			lineData := make(map[string]interface{})
-			lineData["oneLine"] = oneLine
-			lineData["lineInfo"] = lineInfo
-			bodyLines = append(bodyLines, lineData)
-		}
-		tableBody["bodyLines"] = bodyLines
-		tableInfo.Body = tableBody
-		tableInfo.TitleLen = userListCellLength
-		tableInfo.TitleIndexLen = userListCellLength - 1
-		tableInfo.BodyLen = paginator.CurrentPageSize
-		this.Data["tableInfo"] = tableInfo
-	}
-
 }

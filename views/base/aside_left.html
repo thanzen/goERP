@@ -19,7 +19,7 @@
         <ul class="sidebar-menu">
             <li class="header text-center">MAIN NAVIGATION</li>
             <li class="treeview {{.MenuSelfInfoActive}}{{.MenuChangePwdActive}}{{.MenuRecordActive}}
-            {{.MenuCountryActive}}{{.MenuProvinceActive}}{{.MenuCityActive}}{{.MenuDistrictActive}}">
+            {{.MenuCountryActive}}{{.MenuProvinceActive}}{{.MenuCityActive}}{{.MenuDistrictActive}}{{.MenuUserActive}}">
                 <a href="#">
                     <i class="fa fa-gears"></i>
                     <span>设置</span>
@@ -40,7 +40,7 @@
                             <li><a href="#"><i class="fa fa-arrow-circle-right"></i>团队管理</a></li>
                         </ul>
                     </li>
-                    <li class="{{.userListActive}}"><a href="/user/"><i class="fa fa-users" aria-hidden="true"></i></i>用户管理</a></li>
+                    <li class="{{.MenuUserActive}}"><a href="/user/"><i class="fa fa-users" aria-hidden="true"></i></i>用户管理</a></li>
                     <li class="treeview {{.MenuCountryActive}}{{.MenuProvinceActive}}{{.MenuCityActive}}{{.MenuDistrictActive}}"><a href="#"><i class="fa fa-building" aria-hidden="true"></i></i>地址管理</a>
                         <ul class="treeview-menu">
                             <li class="{{.MenuCountryActive}}"><a href="/country/"><i class="fa fa-check-circle-o"></i>国家管理</a></li>

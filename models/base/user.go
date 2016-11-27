@@ -9,9 +9,9 @@ import (
 
 type User struct {
 	Base
-	Name       string      `orm:"size(20)" xml:"name" form:"name"`                   //用户名
+	Name       string      `orm:"size(20)" xml:"name" form:"username"`               //用户名
 	NameZh     string      `orm:"size(20)"  form:"namezh"`                           //中文用户名
-	Department *Department `orm:"rel(fk);null;"`                                     //部门
+	Department *Department `orm:"rel(fk);null;" form:"department"`                   //部门
 	Email      string      `orm:"size(20)" xml:"email" form:"email"`                 //邮箱
 	Mobile     string      `orm:"size(20);default(\"\")" xml:"mobile" form:"mobile"` //手机号码
 	Tel        string      `orm:"size(20);default(\"\")" form:"tel"`                 //固定号码
@@ -21,7 +21,7 @@ type User struct {
 	Active     bool        `orm:"default(true)" xml:"active" form:"active"`          //有效
 	Qq         string      `orm:"default(\"\")" xml:"qq" form:"qq"`                  //QQ
 	WeChat     string      `orm:"default(\"\")" xml:"wechat" form:"wechat"`          //微信
-	Position   *Position   `orm:"rel(fk);null;"`                                     //职位
+	Position   *Position   `orm:"rel(fk);null;" form:"position"`                     //职位
 
 }
 
@@ -90,21 +90,16 @@ func ListUser(condArr map[string]interface{}, user User, page, offset int64) (ut
 }
 
 //添加用户
-func AddUser(obj User, cUser User) (int64, error) {
+func AddUser(insetUser *User, currentUser User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	user := new(User)
-	user.Name = obj.Name
-	user.Email = obj.Email
-	user.Mobile = obj.Mobile
-	user.Tel = obj.Tel
-	user.IsAdmin = obj.IsAdmin
-	user.Active = obj.Active
-	user.CreateUser = &cUser
-	user.UpdateUser = &cUser
-	user.Password = utils.PasswordMD5(obj.Password, obj.Mobile)
 
-	id, err := o.Insert(user)
+	insetUser.CreateUser = &currentUser
+	insetUser.UpdateUser = &currentUser
+	password := utils.PasswordMD5(insetUser.Password, insetUser.Mobile)
+	insetUser.Password = password
+
+	id, err := o.Insert(insetUser)
 	return id, err
 }
 
@@ -143,7 +138,6 @@ func CheckUserByName(name, password string) (User, error, bool) {
 	qs := o.QueryTable(&user)
 	qs = qs.SetCond(cond)
 	if err = qs.One(&user); err == nil {
-
 		if user.Password == utils.PasswordMD5(password, user.Mobile) {
 			ok = true
 		}

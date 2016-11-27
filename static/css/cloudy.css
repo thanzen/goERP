@@ -73,8 +73,10 @@ td.details-control {
 tr.shown td.details-control {
     background: url('../images/details_close.png') no-repeat center center;
 }
-
-
+.table-head-top{
+    padding-bottom: 5px;
+}
+ 
 /*
 
 .label-start:after {

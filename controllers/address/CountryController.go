@@ -3,83 +3,90 @@ package address
 import (
 	"pms/controllers/base"
 	mb "pms/models/base"
-	"pms/utils"
 	"strconv"
-)
-
-const (
-	countryListCellLength = 2
+	"strings"
 )
 
 type CountryController struct {
 	base.BaseController
 }
 
-func (this *CountryController) Get() {
-	this.List()
-	this.Data["searchKeyWords"] = "国家"
+func (this *CountryController) Post() {
+	action := this.Input().Get("action")
+	switch action {
+	case "validator":
+		this.Validator()
+	case "table":
+		this.Table()
+	default:
+		this.Table()
+	}
 }
-func (this *CountryController) List() {
-	this.Data["listName"] = "国家信息"
+func (this *CountryController) Get() {
+
+	this.GetList()
+
+	this.URL = "/city"
+	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
-	this.TplName = "user/record_list.html"
 	this.Data["MenuCountryActive"] = "active"
+}
+func (this *CountryController) Validator() {
+	name := this.GetString("name")
+	name = strings.TrimSpace(name)
+	result := make(map[string]bool)
+	if _, err := mb.GetCountryByName(name); err != nil {
+		result["valid"] = true
+	} else {
+		result["valid"] = false
+	}
+	this.Data["json"] = result
+	this.ServeJSON()
+}
+func (this *CountryController) Table() {
+	start := this.Input().Get("start")
+	length := this.Input().Get("length")
+
 	condArr := make(map[string]interface{})
-	page := this.Input().Get("page")
-	offset := this.Input().Get("offset")
 	var (
 		err         error
-		pageInt64   int64
-		offsetInt64 int64
+		startInt64  int64
+		lengthInt64 int64
 	)
-	if pageInt, ok := strconv.Atoi(page); ok == nil {
-		pageInt64 = int64(pageInt)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
 	}
-	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
-		offsetInt64 = int64(offsetInt)
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
 	}
-	var countrys []mb.Country
-	paginator, countrys, err := mb.ListCountry(condArr, pageInt64, offsetInt64)
-	URL := "/country"
-	this.Data["URL"] = URL
-	this.Data["Paginator"] = paginator
-	tableInfo := new(utils.TableInfo)
-
-	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [countryListCellLength]string{"国家", "操作"}
-	tableInfo.Title = tableTitle
-	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, base.ListNum)
+	var countries []mb.Country
+	paginator, countries, err := mb.ListCountry(condArr, startInt64, lengthInt64)
+	result := make(map[string]interface{})
 	if err == nil {
-		for _, country := range countrys {
-			oneLine := make([]interface{}, countryListCellLength, countryListCellLength)
-			lineInfo := make(map[string]interface{})
-			action := map[string]map[string]string{}
-			edit := make(map[string]string)
-			detail := make(map[string]string)
-			id := int(country.Id)
+		result["draw"] = this.Input().Get("draw")
+		result["recordsTotal"] = paginator.TotalCount
+		result["recordsFiltered"] = paginator.TotalCount
+		result["page"] = paginator.CurrentPage
+		result["pages"] = paginator.TotalPage
+		result["start"] = paginator.CurrentPage * paginator.PageSize
+		result["length"] = length
+		result["serverSide"] = true
+		result["currentPageSize"] = paginator.CurrentPageSize
 
-			lineInfo["id"] = id
-			oneLine[0] = country.Name
-
-			edit["name"] = "编辑"
-			edit["url"] = URL + "/edit/" + strconv.Itoa(id)
-			detail["name"] = "详情"
-			detail["url"] = URL + "/show/" + strconv.Itoa(id)
-			action["edit"] = edit
-			action["detail"] = detail
-
-			oneLine[1] = action
-			lineData := make(map[string]interface{})
-			lineData["oneLine"] = oneLine
-			lineData["lineInfo"] = lineInfo
-			bodyLines = append(bodyLines, lineData)
+		// result["recordsFiltered"] = paginator.TotalCount
+		tableLines := make([]interface{}, 0, 4)
+		for _, country := range countries {
+			oneLine := make(map[string]interface{})
+			oneLine["name"] = country.Name
+			oneLine["id"] = country.Id
+			tableLines = append(tableLines, oneLine)
 		}
-		tableBody["bodyLines"] = bodyLines
-		tableInfo.Body = tableBody
-		tableInfo.TitleLen = countryListCellLength
-		tableInfo.TitleIndexLen = countryListCellLength - 1
-		tableInfo.BodyLen = paginator.CurrentPageSize
-		this.Data["tableInfo"] = tableInfo
+		result["data"] = tableLines
 	}
+	this.Data["json"] = result
+	this.ServeJSON()
+}
+
+func (this *CountryController) GetList() {
+	this.TplName = "address/table_country.html"
 }

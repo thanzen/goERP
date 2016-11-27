@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"pms/utils"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -58,15 +57,7 @@ func GetGroupByName(name string) (Group, error) {
 
 	return group, err
 }
-func ListGroup(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Group, error) {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
+func ListGroup(condArr map[string]interface{}, start, length int64) (utils.Paginator, []Group, error) {
 
 	o := orm.NewOrm()
 	o.Using("default")
@@ -85,10 +76,10 @@ func ListGroup(condArr map[string]interface{}, page, offset int64) (utils.Pagina
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
-	start := (page - 1) * offset
-	if num, err = qs.Limit(offset, start).All(&groups); err == nil {
+
+	if num, err = qs.Limit(length, start).All(&groups); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

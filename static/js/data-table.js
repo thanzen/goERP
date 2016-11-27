@@ -26,7 +26,63 @@ $(document).ready(function() {
             }
         }
     });
+//用户数据显示 
+    var tableUser = $('#table-user').DataTable({
+        ordering: true,
+        renderer: "bootstrap",
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        stateSave: true, //保存状态
+        deferRender: true, //延迟渲染
+        pagingType: "full_numbers", //分页风格
+        lengthMenu: [
+            [20, 10, 80, 100, 200, 500, 1000, 5000],
+            [20, 10, 80, 100, 200, 500, 1000, 5000]
+        ],
+        ajax: {
+            "url": "/user/",
+            "type": "POST",
+            'dataType': 'json',
+            "data": function(params) {
+                var xsrf = $("input[name ='_xsrf']")
+                if (xsrf != undefined) {
+                    params._xsrf = xsrf[0].value;
+                }
+                var limit = $("select[name='table-user_length']");
+                if (limit != undefined) {
 
+                    limit = (limit[0] && limit[0].value) || 20;
+                    params.length = limit;
+                }
+                params.action = "table"//视图类型为table
+                return params
+            },
+            "dataSrc": function(response) {
+                return response.data;
+            },
+
+        },
+        columns: [{
+                "class": 'details-control',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            { "data": "username" },
+            { "data": "namezh" },
+            { "data": "email" },
+            { "data": "department" },
+            { "data": "mobile" },
+            { "data": "tel" },
+            { "data": "isadmin" },
+            { "data": "active" },
+            { "data": "qq" },
+            { "data": "wechat" },
+            
+            
+        ]
+    });
     //登录记录表
     var tableRecord = $('#table-record').DataTable({
         "Dom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
@@ -68,6 +124,8 @@ $(document).ready(function() {
                     limit = (limit[0] && limit[0].value) || 20;
                     params.length = limit;
                 }
+                params.action = "table"//视图类型为table
+                
                 return params
             },
             "dataSrc": function(response) {
@@ -93,6 +151,151 @@ $(document).ready(function() {
 
     });
 
+    //国家表
+    var tableCountry = $('#table-country').DataTable({
+        ordering: true,
+        renderer: "bootstrap",
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        stateSave: true, //保存状态
+        deferRender: true, //延迟渲染
+        pagingType: "full_numbers", //分页风格
+        lengthMenu: [
+            [20, 10, 80, 100, 200, 500, 1000, 5000],
+            [20, 10, 80, 100, 200, 500, 1000, 5000]
+        ],
+        ajax: {
+            "url": "/country/",
+            "type": "POST",
+            'dataType': 'json',
+            "data": function(params) {
+                var xsrf = $("input[name ='_xsrf']")
+                if (xsrf != undefined) {
+                    params._xsrf = xsrf[0].value;
+                }
+                var limit = $("select[name='table-country_length']");
+                if (limit != undefined) {
+
+                    limit = (limit[0] && limit[0].value) || 20;
+                    params.length = limit;
+                }
+                params.action = "table"//视图类型为table
+                
+                return params
+            },
+            "dataSrc": function(response) {
+                return response.data;
+            },
+
+        },
+        columns: [{
+                "class": 'details-control',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            { "data": "name" },
+            
+        ]
+    });
+    //省份表
+    var tableProvince = $('#table-province').DataTable({
+        ordering: true,
+        renderer: "bootstrap",
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        stateSave: true, //保存状态
+        deferRender: true, //延迟渲染
+        pagingType: "full_numbers", //分页风格
+        lengthMenu: [
+            [20, 10, 80, 100, 200, 500, 1000, 5000],
+            [20, 10, 80, 100, 200, 500, 1000, 5000]
+        ],
+        ajax: {
+            "url": "/province/",
+            "type": "POST",
+            'dataType': 'json',
+            "data": function(params) {
+                var xsrf = $("input[name ='_xsrf']")
+                if (xsrf != undefined) {
+                    params._xsrf = xsrf[0].value;
+                }
+                var limit = $("select[name='table-province_length']");
+                if (limit != undefined) {
+
+                    limit = (limit[0] && limit[0].value) || 20;
+                    params.length = limit;
+                }
+                params.action = "table"//视图类型为table
+                
+                return params
+            },
+            "dataSrc": function(response) {
+                return response.data;
+            },
+
+        },
+        columns: [{
+                "class": 'details-control',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            { "data": "name" },
+            { "data": "country" },
+        ]
+    });
+    //城市表
+    var tableCity = $('#table-city').DataTable({
+        ordering: true,
+        renderer: "bootstrap",
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        stateSave: true, //保存状态
+        deferRender: true, //延迟渲染
+        pagingType: "full_numbers", //分页风格
+        lengthMenu: [
+            [20, 10, 80, 100, 200, 500, 1000, 5000],
+            [20, 10, 80, 100, 200, 500, 1000, 5000]
+        ],
+        ajax: {
+            "url": "/city/",
+            "type": "POST",
+            'dataType': 'json',
+            "data": function(params) {
+                var xsrf = $("input[name ='_xsrf']")
+                if (xsrf != undefined) {
+                    params._xsrf = xsrf[0].value;
+                }
+                var limit = $("select[name='table-city_length']");
+                if (limit != undefined) {
+
+                    limit = (limit[0] && limit[0].value) || 20;
+                    params.length = limit;
+                }
+                params.action = "table"//视图类型为table
+                
+                return params
+            },
+            "dataSrc": function(response) {
+                return response.data;
+            },
+
+        },
+        columns: [{
+                "class": 'details-control',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            { "data": "name" },
+            { "data": "province" },
+            { "data": "country" },
+        ]
+    });
     //地区表
     var tableDistrict = $('#table-district').DataTable({
         ordering: true,
@@ -140,4 +343,5 @@ $(document).ready(function() {
             { "data": "province" },
         ]
     });
+    
 });

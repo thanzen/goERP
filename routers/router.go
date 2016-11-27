@@ -14,11 +14,14 @@ func init() {
 	//登录
 	beego.Router("/login/:action([A-Za-z]+)/", &base.LoginController{})
 	//用户
-	beego.Router("/user?:id", &base.UserController{})
+	beego.Router("/user/?:id", &base.UserController{})
 	//部门
 	beego.Router("/department/:action([A-Za-z]+)/?:id", &base.DepartmentController{})
 	//职位
 	beego.Router("/position/:action([A-Za-z]+)/?:id", &base.PositionController{})
+
+	//用户
+	beego.Router("/group/?:id", &base.GroupController{})
 	//登录日志
 	beego.Router("/record/", &base.RecordController{})
 	//国家

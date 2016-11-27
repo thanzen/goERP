@@ -1,29 +1,39 @@
 $(function() {
+     $.fn.select2.defaults.set( "language","zh-CN");
+         
+     
     $(".select-department").select2({
         placeholder: "选择部门",
-        language: "zh-CN",
         ajax: {
             url: "/department/search/",
             dataType: 'json',
             delay: 250,
             type: "POST",
             data: function(params, page) {
+                console.log(params);
+                console.log(page);
                 var xsrf = $("input[name ='_xsrf']")[0].value;
                 return {
                     name: params.term, // search term
                     page: params.page || 1,
                     _xsrf: xsrf,
-                    offset: 3,
+                    offset: 2,
                 };
+            },
+            success:function(data){
+                console.log(data);
+                return data.items;
             },
             processResults: function(data, params) {
                 params.page = params.page || 1;
                 var result = {
                     results: data.items,
                     pagination: {
-                        more: (data.page * data.pageSize) < data.total_count
+                        more: (params.page * 2) < data.total_count
                     }
                 };
+                console.log(result);
+                console.log(params);
                 return result;
             },
             cache: true
@@ -83,7 +93,7 @@ $(function() {
         placeholder: "选择部门",
         language: "zh-CN",
         ajax: {
-            url: "/group/search/",
+            url: "/group/",
             dataType: 'json',
             delay: 250,
             type: "POST",
@@ -91,17 +101,18 @@ $(function() {
                 var xsrf = $("input[name ='_xsrf']")[0].value;
                 return {
                     name: params.term, // search term
-                    page: params.page || 1,
+                    start: (params.page || 0 )*3, 
                     _xsrf: xsrf,
-                    offset: 3,
+                    length: 3,
                 };
             },
             processResults: function(data, params) {
+                console.log(data);
                 params.page = params.page || 1;
                 var result = {
-                    results: data.items,
+                    results: data.data,
                     pagination: {
-                        more: (data.page * data.pageSize) < data.total_count
+                        more:  data.page  < data.pages
                     }
                 };
                 return result;
