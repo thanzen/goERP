@@ -1,6 +1,7 @@
 package address
 
 import (
+	"encoding/json"
 	"pms/controllers/base"
 	mb "pms/models/base"
 	"strconv"
@@ -16,21 +17,68 @@ func (this *CountryController) Post() {
 	switch action {
 	case "validator":
 		this.Validator()
-	case "table":
-		this.Table()
+	case "table": //bootstrap table的post请求
+		this.PostList()
 	default:
-		this.Table()
+		this.PostList()
 	}
 }
 func (this *CountryController) Get() {
 
 	this.GetList()
 
-	this.URL = "/city"
+	this.URL = "/address/city"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
 	this.Data["MenuCountryActive"] = "active"
 }
+
+func (this *CountryController) PostList() {
+	condArr := make(map[string]interface{})
+	start := this.Input().Get("offset")
+	length := this.Input().Get("limit")
+	var (
+		startInt64  int64
+		lengthInt64 int64
+	)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
+	}
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
+	}
+	if result, err := this.countryList(startInt64, lengthInt64, condArr); err == nil {
+		this.Data["json"] = result
+	}
+	this.ServeJSON()
+
+}
+
+// 获得符合要求的国家数据
+func (this *CountryController) countryList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+
+	var countries []mb.Country
+	paginator, countries, err := mb.ListCountry(condArr, start, length)
+	result := make(map[string]interface{})
+	if err == nil {
+
+		// result["recordsFiltered"] = paginator.TotalCount
+		tableLines := make([]interface{}, 0, 4)
+		for _, country := range countries {
+			oneLine := make(map[string]interface{})
+			oneLine["name"] = country.Name
+			oneLine["id"] = country.Id
+			tableLines = append(tableLines, oneLine)
+		}
+		result["data"] = tableLines
+		if jsonResult, er := json.Marshal(&paginator); er == nil {
+			result["paginator"] = string(jsonResult)
+			result["total"] = paginator.TotalCount
+		}
+	}
+	return result, err
+}
+
 func (this *CountryController) Validator() {
 	name := this.GetString("name")
 	name = strings.TrimSpace(name)
@@ -43,50 +91,8 @@ func (this *CountryController) Validator() {
 	this.Data["json"] = result
 	this.ServeJSON()
 }
-func (this *CountryController) Table() {
-	start := this.Input().Get("start")
-	length := this.Input().Get("length")
-
-	condArr := make(map[string]interface{})
-	var (
-		err         error
-		startInt64  int64
-		lengthInt64 int64
-	)
-	if startInt, ok := strconv.Atoi(start); ok == nil {
-		startInt64 = int64(startInt)
-	}
-	if lengthInt, ok := strconv.Atoi(length); ok == nil {
-		lengthInt64 = int64(lengthInt)
-	}
-	var countries []mb.Country
-	paginator, countries, err := mb.ListCountry(condArr, startInt64, lengthInt64)
-	result := make(map[string]interface{})
-	if err == nil {
-		result["draw"] = this.Input().Get("draw")
-		result["recordsTotal"] = paginator.TotalCount
-		result["recordsFiltered"] = paginator.TotalCount
-		result["page"] = paginator.CurrentPage
-		result["pages"] = paginator.TotalPage
-		result["start"] = paginator.CurrentPage * paginator.PageSize
-		result["length"] = length
-		result["serverSide"] = true
-		result["currentPageSize"] = paginator.CurrentPageSize
-
-		// result["recordsFiltered"] = paginator.TotalCount
-		tableLines := make([]interface{}, 0, 4)
-		for _, country := range countries {
-			oneLine := make(map[string]interface{})
-			oneLine["name"] = country.Name
-			oneLine["id"] = country.Id
-			tableLines = append(tableLines, oneLine)
-		}
-		result["data"] = tableLines
-	}
-	this.Data["json"] = result
-	this.ServeJSON()
-}
 
 func (this *CountryController) GetList() {
-	this.TplName = "address/table_country.html"
+	this.Data["tableId"] = "table-country"
+	this.TplName = "base/table_base.html"
 }

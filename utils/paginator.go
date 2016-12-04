@@ -1,16 +1,16 @@
 package utils
 
 type Paginator struct {
-	CurrentPage     int64   //当前页
-	NextPage        int64   //下一页
-	PrePage         int64   //上一页
-	PageSize        int64   //每页数量
-	CurrentPageSize int64   //当前页数量
-	TotalPage       int64   //总页数
-	TotalCount      int64   //总数量
-	FirstPage       bool    //为第一页
-	LastPage        bool    //为最后一页
-	PageList        []int64 //显示的页
+	CurrentPage     int64   `json:"currentPage"`     //当前页
+	NextPage        int64   `json:"nextPage"`        //下一页
+	PrePage         int64   `json:"prePage"`         //上一页
+	PageSize        int64   `json:"pageSize"`        //每页数量
+	CurrentPageSize int64   `json:"currentPageSize"` //当前页数量
+	TotalPage       int64   `json:"totalPage"`       //总页数
+	TotalCount      int64   `json:"totalCount"`      //总数量
+	FirstPage       bool    `json:"firstPage"`       //为第一页
+	LastPage        bool    `json:"lastPage"`        //为最后一页
+	PageList        []int64 `json:"pageList"`        //显示的页
 	Max             int64
 }
 

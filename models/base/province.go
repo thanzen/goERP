@@ -33,8 +33,15 @@ func AddProvince(obj Province, user User) (int64, error) {
 func GetProvinceByID(id int64) (Province, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	province := Province{Base: Base{Id: id}}
-	err := o.Read(&province)
+	var (
+		province Province
+		err      error
+	)
+	cond := orm.NewCondition()
+	cond = cond.And("id", id)
+	qs := o.QueryTable(new(Province))
+	qs = qs.RelatedSel()
+	err = qs.One(&province)
 	return province, err
 }
 func GetProvinceByName(name string) (Province, error) {
@@ -91,7 +98,7 @@ func ListProvince(condArr map[string]interface{}, page, offset int64) (utils.Pag
 	}
 
 	start := (page - 1) * offset
-	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&provinces); err == nil {
+	if num, err = qs.OrderBy("id").Limit(offset, start).All(&provinces); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

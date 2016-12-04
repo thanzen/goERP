@@ -4,15 +4,14 @@ import (
 	"fmt"
 	"pms/utils"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
 type City struct {
 	Base
-	Name      string      //城市名称
-	Province  *Province   `orm:"rel(fk)"`       //国家
-	Districts []*District `orm:"reverse(many)"` //城市
+	Name      string      `json:"name"`                          //城市名称
+	Province  *Province   `orm:"rel(fk)" json:"province"`        //国家
+	Districts []*District `orm:"reverse(many)" json:"districts"` //城市
 }
 
 //添加城市
@@ -61,15 +60,7 @@ func GetCityByName(name string) (City, error) {
 }
 
 //列出记录
-func ListCity(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []City, error) {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
+func ListCity(condArr map[string]interface{}, start, length int64) (utils.Paginator, []City, error) {
 
 	o := orm.NewOrm()
 	o.Using("default")
@@ -90,11 +81,10 @@ func ListCity(condArr map[string]interface{}, page, offset int64) (utils.Paginat
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
 
-	start := (page - 1) * offset
-	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&citys); err == nil {
+	if num, err = qs.OrderBy("id").Limit(length, start).All(&citys); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

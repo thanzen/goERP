@@ -92,7 +92,7 @@ func ListCountry(condArr map[string]interface{}, page, offset int64) (utils.Pagi
 	}
 
 	start := (page - 1) * offset
-	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&countrys); err == nil {
+	if num, err = qs.OrderBy("id").Limit(offset, start).All(&countrys); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

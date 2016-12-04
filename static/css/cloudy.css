@@ -1,90 +1,20 @@
-.text-left {
-    text-align: left;
-}
-
 .content-wrapper {
     padding: 10px 30px;
-    ;
 }
-
-#list-title {
-    margin: 0 0;
-    height: 30px;
-    line-height: 30px;
-}
-
-.list-view-title {
-    margin-bottom: 10px;
-}
-
-#top-search {
-    width: 350px;
-}
-
-.btn-action {
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
-
-.list-page {
-    display: inline-block;
-}
-
-.list-page div {
-    display: inline-block;
-}
-
+/*删选条件*/
 .list-filter {
     position: relative;
     clear: both;
 }
-
-.list-btn-action {
-    margin-bottom: 2px;
-    padding: 2px 2px;
-}
-
-.pagesize input {
-    width: 50px;
-}
-
-.total-count {
-    color: red;
-    font-size: 18px;
-}
-
-.list-top-action {
-    display: none;
-}
-
+ 
+ 
 fieldset legend {
     color: #337ab7;
 }
-
-.select-department {
-    border-radius: 4px;
-}
-
-td.details-control {
-    background: url('../images/details_open.png') no-repeat center center;
-    cursor: pointer;
-}
-
-tr.shown td.details-control {
-    background: url('../images/details_close.png') no-repeat center center;
-}
-.table-head-top{
-    padding-bottom: 5px;
+/*table中翻页信息*/
+.w70 {
+    width: 70px !important;
+    height: 30px;
 }
  
-/*
-
-.label-start:after {
-    content: ' *';
-    color: #999;
-    font-size: 100%;
-}
-
-fieldset legend {
-    color: #337ab7;
-}*/
+ 

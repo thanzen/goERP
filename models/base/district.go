@@ -81,7 +81,7 @@ func ListDistrict(condArr map[string]interface{}, start, length int64) (utils.Pa
 		paginator = utils.GenPaginator(start, length, cnt)
 	}
 
-	if num, err = qs.OrderBy("-id").Limit(length, start).All(&districts); err == nil {
+	if num, err = qs.OrderBy("id").Limit(length, start).All(&districts); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

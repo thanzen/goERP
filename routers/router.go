@@ -24,14 +24,15 @@ func init() {
 	beego.Router("/group/?:id", &base.GroupController{})
 	//登录日志
 	beego.Router("/record/", &base.RecordController{})
+	// ===============================地址===========================================
 	//国家
-	beego.Router("/country/?:id", &address.CountryController{})
+	beego.Router("/address/country/?:id", &address.CountryController{})
 	//省份
-	beego.Router("/province/?:id", &address.ProvinceController{})
+	beego.Router("/address/province/?:id", &address.ProvinceController{})
 	//城市
-	beego.Router("/city/?:id", &address.CityController{})
+	beego.Router("/address/city/?:id", &address.CityController{})
 	//区县
-	beego.Router("/district/?:id", &address.DistrictController{})
+	beego.Router("/address/district/?:id", &address.DistrictController{})
 	//=======================================产品管理===========================================
 	//属性
 	beego.Router("/product/attribute/:action([A-Za-z]+)/?:id", &product.ProductAttributeController{})

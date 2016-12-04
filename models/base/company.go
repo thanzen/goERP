@@ -10,15 +10,15 @@ import (
 
 type Company struct {
 	Base
-	Name       string        `orm:"unique"`        //公司名称
-	Children   []*Company    `orm:"reverse(many)"` //子公司
-	Parent     *Company      `orm:"rel(fk);null"`  //上级公司
-	Department []*Department `orm:"reverse(many)"` //部门
-	Country    *Country      `orm:"rel(fk);null"`  //国家
-	Province   *Province     `orm:"rel(fk);null"`  //身份
-	City       *City         `orm:"rel(fk);null"`  //城市
-	District   *District     `orm:"rel(fk);null"`  //区县
-	Street     string        `orm:"default(\"\")"` //街道
+	Name       string        `orm:"unique" json:"name"`               //公司名称
+	Children   []*Company    `orm:"reverse(many)" json:"childs"`      //子公司
+	Parent     *Company      `orm:"rel(fk);null" json:"parent"`       //上级公司
+	Department []*Department `orm:"reverse(many)" json:"departments"` //部门
+	Country    *Country      `orm:"rel(fk);null" json:"country"`      //国家
+	Province   *Province     `orm:"rel(fk);null" json:"province"`     //身份
+	City       *City         `orm:"rel(fk);null" json:"city"`         //城市
+	District   *District     `orm:"rel(fk);null" json:"district"`     //区县
+	Street     string        `orm:"default(\"\")" json:"street"`      //街道
 }
 
 //添加公司
