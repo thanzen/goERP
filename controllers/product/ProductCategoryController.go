@@ -1,121 +1,101 @@
 package product
 
 import (
+	"encoding/json"
 	"pms/controllers/base"
-	"pms/models/product"
-	"pms/utils"
+	mp "pms/models/product"
 	"strconv"
-)
-
-const (
-	productCategoryListCellLength = 3
+	"strings"
 )
 
 type ProductCategoryController struct {
 	base.BaseController
 }
 
-func (this *ProductCategoryController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
+func (this *ProductCategoryController) Post() {
+	action := this.Input().Get("action")
 	switch action {
-	case "list":
-		switch viewType {
-		case "list":
-			this.List()
-
-		default:
-			this.List()
-		}
-	case "create":
-		this.Create()
-	case "edit":
-		this.Edit()
+	case "validator":
+		this.Validator()
+	case "table": //bootstrap table的post请求
+		this.PostList()
 	default:
-		this.List()
+		this.PostList()
 	}
-	this.Data["searchKeyWords"] = "产品类别"
-	this.Data["Action"] = "create"
-	this.Data["formName"] = "产品类别"
-	this.Data["productRootActive"] = "active"
-	this.Data["productCategoryActive"] = "active"
+}
+func (this *ProductCategoryController) Get() {
+	this.GetList()
+
 	this.URL = "/product/category"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
+	this.Data["MenuProductCategoryActive"] = "active"
 }
-func (this *ProductCategoryController) Edit() {
-
-}
-func (this *ProductCategoryController) Create() {
-	this.Layout = "base/base.html"
-	this.TplName = "product/product_category_form.html"
-
-}
-func (this *ProductCategoryController) List() {
-	this.Data["listName"] = "产品类别"
-
-	this.TplName = "product/product_category_list.html"
-
-	condArr := make(map[string]interface{})
-	page := this.Input().Get("page")
-	offset := this.Input().Get("offset")
-	var (
-		err         error
-		pageInt64   int64
-		offsetInt64 int64
-	)
-	if pageInt, ok := strconv.Atoi(page); ok == nil {
-		pageInt64 = int64(pageInt)
+func (this *ProductCategoryController) Validator() {
+	name := this.GetString("name")
+	name = strings.TrimSpace(name)
+	result := make(map[string]bool)
+	if _, err := mp.GetProductCategoryByName(name); err != nil {
+		result["valid"] = true
+	} else {
+		result["valid"] = false
 	}
-	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
-		offsetInt64 = int64(offsetInt)
-	}
-	var productcategories []product.ProductCategory
-	paginator, err, productcategories := product.ListProductCategory(condArr, pageInt64, offsetInt64)
+	this.Data["json"] = result
+	this.ServeJSON()
+}
 
-	this.Data["Paginator"] = paginator
-	tableInfo := new(utils.TableInfo)
-	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [productCategoryListCellLength]string{"类别", "上级类别", "操作"}
-	tableInfo.Title = tableTitle
-	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, 20)
+// 获得符合要求的城市数据
+func (this *ProductCategoryController) productCategoryList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+
+	var arrs []mp.ProductCategory
+	paginator, arrs, err := mp.ListProductCategory(condArr, start, length)
+	result := make(map[string]interface{})
 	if err == nil {
-		for _, productcategory := range productcategories {
-			oneLine := make([]interface{}, productCategoryListCellLength, productCategoryListCellLength)
-			lineInfo := make(map[string]interface{})
-			action := map[string]map[string]string{}
-			edit := make(map[string]string)
-			detail := make(map[string]string)
-			id := int(productcategory.Id)
 
-			lineInfo["id"] = id
-			oneLine[0] = productcategory.Name
-
-			edit["name"] = "编辑"
-			edit["url"] = this.URL + "/edit/" + strconv.Itoa(id)
-			detail["name"] = "详情"
-			detail["url"] = this.URL + "/detail/" + strconv.Itoa(id)
-			action["edit"] = edit
-			action["detail"] = detail
-			if productcategory.Parent != nil {
-				oneLine[1] = productcategory.Parent.Name
+		// result["recordsFiltered"] = paginator.TotalCount
+		tableLines := make([]interface{}, 0, 4)
+		for _, line := range arrs {
+			oneLine := make(map[string]interface{})
+			oneLine["name"] = line.Name
+			if line.Parent != nil {
+				oneLine["parent"] = line.Parent.Name
 			} else {
-				oneLine[1] = "-"
+				oneLine["parent"] = "-"
 			}
-
-			oneLine[2] = action
-
-			lineData := make(map[string]interface{})
-			lineData["oneLine"] = oneLine
-			lineData["lineInfo"] = lineInfo
-			bodyLines = append(bodyLines, lineData)
+			oneLine["path"] = line.ParentFullPath
+			oneLine["id"] = line.Id
+			tableLines = append(tableLines, oneLine)
 		}
-		tableBody["bodyLines"] = bodyLines
-		tableInfo.Body = tableBody
-		tableInfo.TitleLen = productCategoryListCellLength
-		tableInfo.TitleIndexLen = productCategoryListCellLength - 1
-		tableInfo.BodyLen = paginator.CurrentPageSize
-		this.Data["tableInfo"] = tableInfo
+		result["data"] = tableLines
+		if jsonResult, er := json.Marshal(&paginator); er == nil {
+			result["paginator"] = string(jsonResult)
+			result["total"] = paginator.TotalCount
+		}
 	}
+	return result, err
+}
+func (this *ProductCategoryController) PostList() {
+	condArr := make(map[string]interface{})
+	start := this.Input().Get("offset")
+	length := this.Input().Get("limit")
+	var (
+		startInt64  int64
+		lengthInt64 int64
+	)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
+	}
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
+	}
+	if result, err := this.productCategoryList(startInt64, lengthInt64, condArr); err == nil {
+		this.Data["json"] = result
+	}
+	this.ServeJSON()
+
+}
+
+func (this *ProductCategoryController) GetList() {
+	this.Data["tableId"] = "table-product-category"
+	this.TplName = "base/table_base.html"
 }

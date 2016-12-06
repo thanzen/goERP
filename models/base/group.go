@@ -30,8 +30,15 @@ func AddGroup(obj Group, user User) (int64, error) {
 func GetGroupByID(id int64) (Group, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	group := Group{Base: Base{Id: id}}
-	err := o.Read(&group)
+	var (
+		group Group
+		err   error
+	)
+	cond := orm.NewCondition()
+	cond = cond.And("id", id)
+	qs := o.QueryTable(new(Group))
+	qs = qs.RelatedSel()
+	err = qs.One(&group)
 	return group, err
 }
 

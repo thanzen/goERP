@@ -30,8 +30,15 @@ func AddDistrict(obj District, user User) (int64, error) {
 func GetDistrictByID(id int64) (District, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	district := District{Base: Base{Id: id}}
-	err := o.Read(&district)
+	var (
+		district District
+		err      error
+	)
+	cond := orm.NewCondition()
+	cond = cond.And("id", id)
+	qs := o.QueryTable(new(District))
+	qs = qs.RelatedSel()
+	err = qs.One(&district)
 	return district, err
 }
 func GetDistrictByName(name string) (District, error) {

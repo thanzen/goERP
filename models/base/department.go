@@ -30,12 +30,20 @@ func AddDepartment(obj Department, user User) (int64, error) {
 	id, err := o.Insert(department)
 	return id, err
 }
+
+//获得某一个部门信息
 func GetDepartmentByID(id int64) (Department, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	department := Department{Base: Base{Id: id}}
-	err := o.Read(&department)
-
+	var (
+		department Department
+		err        error
+	)
+	cond := orm.NewCondition()
+	cond = cond.And("id", id)
+	qs := o.QueryTable(new(Department))
+	qs = qs.RelatedSel()
+	err = qs.One(&department)
 	return department, err
 }
 func GetDepartmentByName(name string) (Department, error) {

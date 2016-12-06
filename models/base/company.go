@@ -38,8 +38,15 @@ func AddCompany(obj Company, user User) (int64, error) {
 func GetCompanyByID(id int64) (Company, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	company := Company{Base: Base{Id: id}}
-	err := o.Read(&company)
+	var (
+		company Company
+		err     error
+	)
+	cond := orm.NewCondition()
+	cond = cond.And("id", id)
+	qs := o.QueryTable(new(Company))
+	qs = qs.RelatedSel()
+	err = qs.One(&company)
 	return company, err
 }
 

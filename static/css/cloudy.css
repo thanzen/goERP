@@ -1,20 +1,27 @@
 .content-wrapper {
     padding: 10px 30px;
 }
+
+
 /*删选条件*/
+
 .list-filter {
     position: relative;
     clear: both;
 }
- 
- 
+
 fieldset legend {
     color: #337ab7;
 }
+
+
 /*table中翻页信息*/
+
 .w70 {
     width: 70px !important;
     height: 30px;
 }
- 
- 
+
+.attribute-value-table-display {
+    margin: 2px;
+}

@@ -22,15 +22,21 @@ func AddPosition(obj Position, user User) (int64, error) {
 	id, err := o.Insert(position)
 	return id, err
 }
+
 func GetPositionByID(id int64) (Position, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	position := Position{Base: Base{Id: id}}
-	err := o.Read(&position)
-
+	var (
+		position Position
+		err      error
+	)
+	cond := orm.NewCondition()
+	cond = cond.And("id", id)
+	qs := o.QueryTable(new(Position))
+	qs = qs.RelatedSel()
+	err = qs.One(&position)
 	return position, err
 }
-
 func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Position, error) {
 	if page < 1 {
 		page = 1

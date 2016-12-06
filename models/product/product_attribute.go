@@ -1,10 +1,10 @@
 package product
 
 import (
+	"fmt"
 	"pms/models/base"
 	"pms/utils"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -18,17 +18,10 @@ type ProductAttribute struct {
 }
 
 //列出记录
-func ListProductAttribute(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []ProductAttribute) {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
+func ListProductAttribute(condArr map[string]interface{}, start, length int64) (utils.Paginator, []ProductAttribute, error) {
 
 	o := orm.NewOrm()
+
 	o.Using("default")
 	qs := o.QueryTable(new(ProductAttribute))
 	// qs = qs.RelatedSel()
@@ -45,15 +38,14 @@ func ListProductAttribute(condArr map[string]interface{}, page, offset int64) (u
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
 
-	start := (page - 1) * offset
-	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&productAttributes); err == nil {
+	if num, err = qs.OrderBy("-id").Limit(length, start).All(&productAttributes); err == nil {
 		paginator.CurrentPageSize = num
 	}
 
-	return paginator, err, productAttributes
+	return paginator, productAttributes, err
 }
 
 //添加属性
@@ -71,10 +63,38 @@ func AddProductAttribute(obj ProductAttribute, user base.User) (int64, error) {
 }
 
 //获得某一个属性信息
-func GetProductAttribute(id int64) (ProductAttribute, error) {
+func GetProductAttributeByID(id int64) (ProductAttribute, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	productAttribute := ProductAttribute{Base: base.Base{Id: id}}
-	err := o.Read(&productAttribute)
+	var (
+		productAttribute ProductAttribute
+		err              error
+	)
+	cond := orm.NewCondition()
+	cond = cond.And("id", id)
+	qs := o.QueryTable(new(ProductAttribute))
+	qs = qs.RelatedSel()
+	err = qs.One(&productAttribute)
 	return productAttribute, err
+}
+func GetProductAttributeByName(name string) (ProductAttribute, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	var (
+		obj ProductAttribute
+		err error
+	)
+	cond := orm.NewCondition()
+	qs := o.QueryTable(new(ProductAttribute))
+
+	if name != "" {
+		cond = cond.And("name", name)
+		qs = qs.SetCond(cond)
+		qs = qs.RelatedSel()
+		err = qs.One(&obj)
+	} else {
+		err = fmt.Errorf("%s", "查询条件不成立")
+	}
+
+	return obj, err
 }

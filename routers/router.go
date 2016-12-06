@@ -34,8 +34,10 @@ func init() {
 	//区县
 	beego.Router("/address/district/?:id", &address.DistrictController{})
 	//=======================================产品管理===========================================
+	//产品类别
+	beego.Router("/product/category/?:id", &product.ProductCategoryController{})
 	//属性
-	beego.Router("/product/attribute/:action([A-Za-z]+)/?:id", &product.ProductAttributeController{})
+	beego.Router("/product/attribute/?:id", &product.ProductAttributeController{})
 	//属性值
 	beego.Router("/product/attributevalue/:action([A-Za-z]+)/?:id", &product.ProductAttributeValueController{})
 	//属性值明细
@@ -44,8 +46,7 @@ func init() {
 	beego.Router("/product/template/:action([A-Za-z]+)/?:id", &product.ProductTemplateController{})
 	//产品规格
 	beego.Router("/product/product/:action([A-Za-z]+)/?:id", &product.ProductProductController{})
-	//产品类别
-	beego.Router("/product/category/:action([A-Za-z]+)/?:id", &product.ProductCategoryController{})
+
 	//产品标签
 	beego.Router("/product/tag/:action([A-Za-z]+)/?:id", &product.ProductTagController{})
 	//产品包装

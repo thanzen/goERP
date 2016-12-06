@@ -30,8 +30,15 @@ func AddCountry(obj Country, user User) (int64, error) {
 func GetCountryByID(id int64) (Country, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	country := Country{Base: Base{Id: id}}
-	err := o.Read(&country)
+	var (
+		country Country
+		err     error
+	)
+	cond := orm.NewCondition()
+	cond = cond.And("id", id)
+	qs := o.QueryTable(new(Country))
+	qs = qs.RelatedSel()
+	err = qs.One(&country)
 	return country, err
 }
 

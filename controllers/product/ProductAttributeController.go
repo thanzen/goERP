@@ -1,111 +1,112 @@
 package product
 
 import (
+	"encoding/json"
 	"pms/controllers/base"
-	"pms/models/product"
-	"pms/utils"
+	mp "pms/models/product"
 	"strconv"
-)
-
-const (
-	productAttributeListCellLength = 2
+	"strings"
 )
 
 type ProductAttributeController struct {
 	base.BaseController
 }
 
-func (this *ProductAttributeController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
+func (this *ProductAttributeController) Post() {
+	action := this.Input().Get("action")
 	switch action {
-	case "list":
-		switch viewType {
-		case "list":
-			this.List()
-
-		default:
-			this.List()
-		}
-	case "create":
-		this.Create()
+	case "validator":
+		this.Validator()
+	case "table": //bootstrap table的post请求
+		this.PostList()
 	default:
-		this.List()
+		this.PostList()
 	}
-	this.Data["searchKeyWords"] = "属性值"
-	this.Data["productRootActive"] = "active"
-	this.Data["productAttributeActive"] = "active"
+}
+func (this *ProductAttributeController) Get() {
+	this.GetList()
+
 	this.URL = "/product/attribute"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
-
+	this.Data["MenuProductAttributeActive"] = "active"
 }
-func (this *ProductAttributeController) Create() {
-
-	this.TplName = "product/product_attribute_form.html"
-	this.Data["Url"] = "/product/category"
-	this.Data["Action"] = "create"
-	this.Data["formName"] = "产品属性"
-
+func (this *ProductAttributeController) Validator() {
+	name := this.GetString("name")
+	name = strings.TrimSpace(name)
+	result := make(map[string]bool)
+	if _, err := mp.GetProductAttributeByName(name); err != nil {
+		result["valid"] = true
+	} else {
+		result["valid"] = false
+	}
+	this.Data["json"] = result
+	this.ServeJSON()
 }
-func (this *ProductAttributeController) List() {
-	this.Data["listName"] = "产品属性"
-	this.TplName = "product/product_attribute_list.html"
-	condArr := make(map[string]interface{})
-	page := this.Input().Get("page")
-	offset := this.Input().Get("offset")
-	var (
-		err         error
-		pageInt64   int64
-		offsetInt64 int64
-	)
-	if pageInt, ok := strconv.Atoi(page); ok == nil {
-		pageInt64 = int64(pageInt)
-	}
-	if offsetInt, ok := strconv.Atoi(offset); ok == nil {
-		offsetInt64 = int64(offsetInt)
-	}
-	var productAttributes []product.ProductAttribute
-	paginator, err, productAttributes := product.ListProductAttribute(condArr, pageInt64, offsetInt64)
 
-	this.Data["Paginator"] = paginator
-	tableInfo := new(utils.TableInfo)
-	tableTitle := make(map[string]interface{})
-	tableTitle["titleName"] = [productAttributeListCellLength]string{"属性", "操作"}
-	tableInfo.Title = tableTitle
-	tableBody := make(map[string]interface{})
-	bodyLines := make([]interface{}, 0, 20)
+// 获得符合要求的城市数据
+func (this *ProductAttributeController) productAttributeList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+
+	var arrs []mp.ProductAttribute
+	paginator, arrs, err := mp.ListProductAttribute(condArr, start, length)
+	result := make(map[string]interface{})
 	if err == nil {
-		for _, productAttribute := range productAttributes {
-			oneLine := make([]interface{}, productAttributeListCellLength, productAttributeListCellLength)
-			lineInfo := make(map[string]interface{})
-			action := map[string]map[string]string{}
-			edit := make(map[string]string)
-			detail := make(map[string]string)
-			id := int(productAttribute.Id)
 
-			lineInfo["id"] = id
-			oneLine[0] = productAttribute.Name
-
-			edit["name"] = "编辑"
-			edit["url"] = this.URL + "/edit/" + strconv.Itoa(id)
-			detail["name"] = "详情"
-			detail["url"] = this.URL + "/detail/" + strconv.Itoa(id)
-			action["edit"] = edit
-			action["detail"] = detail
-
-			oneLine[2] = action
-
-			lineData := make(map[string]interface{})
-			lineData["oneLine"] = oneLine
-			lineData["lineInfo"] = lineInfo
-			bodyLines = append(bodyLines, lineData)
+		//使用多线程来处理数据，待修改
+		tableLines := make([]interface{}, 0, 4)
+		for _, line := range arrs {
+			oneLine := make(map[string]interface{})
+			oneLine["name"] = line.Name
+			oneLine["code"] = line.Code
+			oneLine["sequence"] = line.Sequence
+			mapValues := make(map[int64]string)
+			oneLine["id"] = line.Id
+			values := line.ValueIds
+			for _, line := range values {
+				mapValues[line.Id] = line.Name
+			}
+			//测试代码
+			mapValues[12] = "11231232"
+			mapValues[2] = "21231230"
+			mapValues[3] = "121321"
+			mapValues[4] = "20123"
+			mapValues[52] = "12"
+			mapValues[72] = "20"
+			mapValues[21] = "12"
+			mapValues[37] = "20"
+			oneLine["values"] = mapValues
+			tableLines = append(tableLines, oneLine)
 		}
-		tableBody["bodyLines"] = bodyLines
-		tableInfo.Body = tableBody
-		tableInfo.TitleLen = productAttributeListCellLength
-		tableInfo.TitleIndexLen = productAttributeListCellLength - 1
-		tableInfo.BodyLen = paginator.CurrentPageSize
-		this.Data["tableInfo"] = tableInfo
+		result["data"] = tableLines
+		if jsonResult, er := json.Marshal(&paginator); er == nil {
+			result["paginator"] = string(jsonResult)
+			result["total"] = paginator.TotalCount
+		}
 	}
+	return result, err
+}
+func (this *ProductAttributeController) PostList() {
+	condArr := make(map[string]interface{})
+	start := this.Input().Get("offset")
+	length := this.Input().Get("limit")
+	var (
+		startInt64  int64
+		lengthInt64 int64
+	)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
+	}
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
+	}
+	if result, err := this.productAttributeList(startInt64, lengthInt64, condArr); err == nil {
+		this.Data["json"] = result
+	}
+	this.ServeJSON()
+
+}
+
+func (this *ProductAttributeController) GetList() {
+	this.Data["tableId"] = "table-product-attribute"
+	this.TplName = "base/table_base.html"
 }
