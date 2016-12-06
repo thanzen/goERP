@@ -1,10 +1,10 @@
 package product
 
 import (
+	"fmt"
 	"pms/models/base"
 	"pms/utils"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -28,26 +28,19 @@ type ProductProduct struct {
 }
 
 //列出记录
-func ListProductProduct(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []ProductProduct) {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
+func ListProductProduct(condArr map[string]interface{}, start, length int64) (utils.Paginator, []ProductProduct, error) {
 
 	o := orm.NewOrm()
+
 	o.Using("default")
 	qs := o.QueryTable(new(ProductProduct))
 	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
 
 	var (
-		productProducts []ProductProduct
-		num             int64
-		err             error
+		arrs []ProductProduct
+		num  int64
+		err  error
 	)
 	var paginator utils.Paginator
 
@@ -55,15 +48,14 @@ func ListProductProduct(condArr map[string]interface{}, page, offset int64) (uti
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
 
-	start := (page - 1) * offset
-	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&productProducts); err == nil {
+	if num, err = qs.OrderBy("-id").Limit(length, start).All(&arrs); err == nil {
 		paginator.CurrentPageSize = num
 	}
 
-	return paginator, err, productProducts
+	return paginator, arrs, err
 }
 
 //添加属性
@@ -78,11 +70,33 @@ func AddProductProduct(obj ProductProduct, user base.User) (int64, error) {
 	return id, err
 }
 
-//获得某一个属性信息
-func GetProductProduct(id int64) (ProductProduct, error) {
+//获得某一个产品模版信息
+func GetProductProductByID(id int64) (ProductProduct, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productProduct := ProductProduct{Base: base.Base{Id: id}}
 	err := o.Read(&productProduct)
 	return productProduct, err
+}
+
+func GetProductProductByName(name string) (ProductProduct, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	var (
+		obj ProductProduct
+		err error
+	)
+	cond := orm.NewCondition()
+	qs := o.QueryTable(new(ProductProduct))
+
+	if name != "" {
+		cond = cond.And("name", name)
+		qs = qs.SetCond(cond)
+		qs = qs.RelatedSel()
+		err = qs.One(&obj)
+	} else {
+		err = fmt.Errorf("%s", "查询条件不成立")
+	}
+
+	return obj, err
 }

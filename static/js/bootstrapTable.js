@@ -12,6 +12,7 @@ $(document).ready(function() {
         //     $element.css("background-color", "green");
         // },//单击row事件
     });
+
     var $tableCountry = $("#table-country");
     $tableCountry.bootstrapTable({
         url: "/address/country/",
@@ -32,8 +33,8 @@ $(document).ready(function() {
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "国家", field: 'name', sortable: true, order: "desc" },
         ],
-
     });
+
     var $tableProvince = $("#table-province");
     $tableProvince.bootstrapTable({
         url: "/address/province/",
@@ -54,10 +55,9 @@ $(document).ready(function() {
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "省份", field: 'name', sortable: true, order: "desc" },
             { title: "国家", field: 'country', sortable: true, order: "desc" },
-
         ],
-
     });
+
     var $tableCity = $("#table-city");
     $tableCity.bootstrapTable({
         url: "/address/city/",
@@ -79,10 +79,9 @@ $(document).ready(function() {
             { title: "城市", field: 'name', sortable: true, order: "desc" },
             { title: "省份", field: 'province', sortable: true, order: "desc" },
             { title: "国家", field: 'country', sortable: true, order: "desc" },
-
         ],
-
     });
+
     var $tableDistrict = $("#table-district");
     $tableDistrict.bootstrapTable({
         url: "/address/district/",
@@ -108,10 +107,9 @@ $(document).ready(function() {
             { title: "城市", field: 'city', sortable: true, order: "desc" },
             { title: "省份", field: 'province', sortable: true, order: "desc" },
             { title: "国家", field: 'country', sortable: true, order: "desc" },
-
         ],
-
     });
+
     //产品属性
     var $tableProductAttribute = $("#table-product-attribute");
     $tableProductAttribute.bootstrapTable({
@@ -151,12 +149,9 @@ $(document).ready(function() {
 
                 }
             },
-
-
         ],
-
-
     });
+
     //产品类别
     var $tableProductAttribute = $("#table-product-category");
     $tableProductAttribute.bootstrapTable({
@@ -182,9 +177,91 @@ $(document).ready(function() {
             { title: "类别名", field: 'name', sortable: true, order: "desc" },
             { title: "上级", field: 'parent', sortable: true, order: "desc" },
             { title: "上级路径", field: 'path', sortable: true, order: "desc" },
+        ],
+    });
+    //产品款式
+    var $tableProductTemplate = $("#table-product-template");
+    $tableProductTemplate.bootstrapTable({
+        url: "/product/template/",
+        queryParams: function(params) {
+            var xsrf = $("input[name ='_xsrf']");
+            if (xsrf != undefined) {
+                params._xsrf = xsrf[0].value;
+            }
+            params.action = 'table';
+            return params;
+        },
+        dataField: "data",
+        pagination: true,
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10, 25, 50, 100],
+        height: function() {
+            return document.body.offsetHeight;
+        },
+        columns: [
+            { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+            { title: "款式编码", field: 'defaultCode', sortable: true, order: "desc" },
+            { title: "款式类别", field: 'category', sortable: true, order: "desc" },
+            { title: "产品款式", field: 'name', sortable: true, order: "desc" },
+            { title: "规格数量", field: 'productCnt', sortable: true, order: "desc" },
+        ],
+    });
+    //产品规格
+    var $tableProductProduct = $("#table-product-product");
+    $tableProductProduct.bootstrapTable({
+        url: "/product/product/",
+        queryParams: function(params) {
+            var xsrf = $("input[name ='_xsrf']");
+            if (xsrf != undefined) {
+                params._xsrf = xsrf[0].value;
+            }
+            params.action = 'table';
+            return params;
+        },
+        dataField: "data",
+        pagination: true,
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10, 25, 50, 100],
+        height: function() {
+            return document.body.offsetHeight;
+        },
+        columns: [
+            { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+            { title: "规格编码", field: 'defaultCode', sortable: true, order: "desc" },
+            { title: "规格类别", field: 'category', sortable: true, order: "desc" },
+            { title: "产品规格", field: 'name', sortable: true, order: "desc" },
+            { title: "产品款式", field: 'parent', sortable: true, order: "desc" },
+            { title: "规格属性", field: 'attributes', sortable: true, order: "desc" },
+        ],
+    });
+
+    //产品属性值
+    var $tableProductAttributeValue = $("#table-product-attributevalue");
+    $tableProductAttributeValue.bootstrapTable({
+        url: "/product/attributevalue/",
+        queryParams: function(params) {
+            var xsrf = $("input[name ='_xsrf']");
+            if (xsrf != undefined) {
+                params._xsrf = xsrf[0].value;
+            }
+            params.action = 'table';
+            return params;
+        },
+        dataField: "data",
+        pagination: true,
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10, 25, 50, 100],
+        height: function() {
+            return document.body.offsetHeight;
+        },
+        columns: [
+            { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+            { title: "属性", field: 'attribute', sortable: true, order: "desc" },
+            { title: "属性值", field: 'value', sortable: true, order: "desc" },
 
         ],
-
-
     });
 });

@@ -39,13 +39,13 @@ func init() {
 	//属性
 	beego.Router("/product/attribute/?:id", &product.ProductAttributeController{})
 	//属性值
-	beego.Router("/product/attributevalue/:action([A-Za-z]+)/?:id", &product.ProductAttributeValueController{})
+	beego.Router("/product/attributevalue/?:id", &product.ProductAttributeValueController{})
 	//属性值明细
 	beego.Router("/product/attributeline/:action([A-Za-z]+)/?:id", &product.ProductAttributeLineController{})
 	//产品款式
-	beego.Router("/product/template/:action([A-Za-z]+)/?:id", &product.ProductTemplateController{})
+	beego.Router("/product/template/?:id", &product.ProductTemplateController{})
 	//产品规格
-	beego.Router("/product/product/:action([A-Za-z]+)/?:id", &product.ProductProductController{})
+	beego.Router("/product/product/?:id", &product.ProductProductController{})
 
 	//产品标签
 	beego.Router("/product/tag/:action([A-Za-z]+)/?:id", &product.ProductTagController{})
