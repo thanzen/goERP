@@ -31,7 +31,7 @@ $(function() {
                             var xsrf = $("input[name ='_xsrf']")[0].value;
                             return {
                                 _xsrf: xsrf,
-                                action:"validator",
+                                action: "validator",
 
                             }
                         },
@@ -66,16 +66,11 @@ $(function() {
                             var xsrf = $("input[name ='_xsrf']")[0].value;
                             return {
                                 _xsrf: xsrf,
-                                action:"validator",
+                                action: "validator",
                                 username: $('input[name="mobile"]').val()
                             }
                         },
                     },
-                    // regexp: {
-                    //     regexp: /^1\d{10}$/,
-                    //     message: '手机号码无效'
-                    // }
-
                 }
             },
             email: {
@@ -94,7 +89,7 @@ $(function() {
                             var xsrf = $("input[name ='_xsrf']")[0].value;
                             return {
                                 _xsrf: xsrf,
-                                action:"validator",
+                                action: "validator",
                                 username: $('input[name="email"]').val()
                             }
                         },
@@ -136,6 +131,43 @@ $(function() {
                         message: "密码不能为空"
                     },
                 }
+            },
+        },
+    });
+    $("#productCategoryForm").bootstrapValidator({
+        message: '该值无效',
+        feedbackIcons: { /*input状态样式图片*/
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        live: 'enabled',
+        submitButtons: 'button[type="submit"]',
+        trigger: null,
+        fields: {
+            name: {
+                message: "该值无效",
+                validators: {
+                    notEmpty: {
+                        message: "产品类别不能为空"
+                    },
+
+                    remote: {
+                        url: "/product/category/",
+                        message: "该类别已经存在",
+                        dataType: "json",
+                        delay: 200,
+                        type: "POST",
+                        data: function() {
+                            var xsrf = $("input[name ='_xsrf']")[0].value;
+                            return {
+                                _xsrf: xsrf,
+                                action: "validator",
+
+                            }
+                        },
+                    },
+                },
             },
         },
     });

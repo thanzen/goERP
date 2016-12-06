@@ -2,6 +2,7 @@ package product
 
 import (
 	"encoding/json"
+	"fmt"
 	"pms/controllers/base"
 	mp "pms/models/product"
 	"strconv"
@@ -25,11 +26,27 @@ func (this *ProductCategoryController) Post() {
 }
 func (this *ProductCategoryController) Get() {
 	this.GetList()
+	action := this.Input().Get("action")
+	switch action {
+	case "create":
+		this.Create()
+	default:
+		this.GetList()
 
+	}
 	this.URL = "/product/category"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
 	this.Data["MenuProductCategoryActive"] = "active"
+}
+func (this *ProductCategoryController) Create() {
+	method := strings.ToUpper(this.Ctx.Request.Method)
+	if method == "GET" {
+		this.Data["Readonly"] = false
+		this.Data["listName"] = "创建类别"
+		this.TplName = "product/product_category_form.html"
+
+	}
 }
 func (this *ProductCategoryController) Validator() {
 	name := this.GetString("name")
@@ -78,6 +95,9 @@ func (this *ProductCategoryController) PostList() {
 	condArr := make(map[string]interface{})
 	start := this.Input().Get("offset")
 	length := this.Input().Get("limit")
+	fmt.Println(start)
+	fmt.Println(length)
+
 	var (
 		startInt64  int64
 		lengthInt64 int64

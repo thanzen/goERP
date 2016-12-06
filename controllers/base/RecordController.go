@@ -2,38 +2,46 @@
 package base
 
 import (
-	"pms/models/base"
+	"encoding/json"
+	"fmt"
+	mb "pms/models/base"
 	"strconv"
 )
 
 //列表视图列数-1，第一列为checkbox
 
-const (
-	recordListCellLength = 8
-)
-
 type RecordController struct {
 	BaseController
 }
 
+func (this *RecordController) Get() {
+
+	this.GetList()
+
+	this.URL = "/user"
+	this.Data["URL"] = this.URL
+	this.Layout = "base/base.html"
+	this.Data["MenuRecordActive"] = "active"
+
+}
 func (this *RecordController) Post() {
 	action := this.Input().Get("action")
 	switch action {
 
 	case "table":
-		this.Table()
+		this.PostList()
 	default:
-		this.Table()
+		this.PostList()
 	}
-
 }
-func (this *RecordController) Table() {
-	start := this.Input().Get("start")
-	length := this.Input().Get("length")
-
+func (this *RecordController) PostList() {
 	condArr := make(map[string]interface{})
+	start := this.Input().Get("offset")
+	length := this.Input().Get("limit")
+	fmt.Println(start)
+	fmt.Println(length)
+
 	var (
-		err         error
 		startInt64  int64
 		lengthInt64 int64
 	)
@@ -43,23 +51,20 @@ func (this *RecordController) Table() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	var records []base.Record
-	paginator, records, err := base.ListRecord(condArr, this.User.Id, startInt64, lengthInt64)
+	if result, err := this.recordList(startInt64, lengthInt64, condArr); err == nil {
+		this.Data["json"] = result
+	}
+	this.ServeJSON()
+
+}
+func (this *RecordController) recordList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+
+	var records []mb.Record
+	paginator, records, err := mb.ListRecord(condArr, this.User.Id, start, length)
 	result := make(map[string]interface{})
 	if err == nil {
 
-		result["draw"] = this.Input().Get("draw")
-		result["recordsTotal"] = paginator.TotalCount
-		result["recordsFiltered"] = paginator.TotalCount
-
-		result["page"] = paginator.CurrentPage
-		result["pages"] = paginator.TotalPage
-		result["start"] = paginator.CurrentPage * paginator.PageSize
-		result["length"] = length
-		result["serverSide"] = true
-		result["currentPageSize"] = paginator.CurrentPageSize
-		// result["recordsFiltered"] = paginator.TotalCount
-		tableLines := make([]interface{}, 0, ListNum)
+		tableLines := make([]interface{}, 0, 4)
 		for _, record := range records {
 			oneLine := make(map[string]interface{})
 			oneLine["email"] = record.User.Email
@@ -74,23 +79,16 @@ func (this *RecordController) Table() {
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines
+
+		if jsonResult, er := json.Marshal(&paginator); er == nil {
+			result["paginator"] = string(jsonResult)
+			result["total"] = paginator.TotalCount
+		}
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
-
+	return result, err
 }
-func (this *RecordController) Get() {
-
-	this.List()
-
-	this.URL = "/record"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-
-	this.Data["MenuRecordActive"] = "active"
-
+func (this *RecordController) GetList() {
+	this.Data["tableId"] = "table-record"
+	this.TplName = "base/table_base.html"
 }
-func (this *RecordController) List() {
-	this.TplName = "user/table_record.html"
-
-}
+ 

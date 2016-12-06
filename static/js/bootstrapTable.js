@@ -12,7 +12,64 @@ $(document).ready(function() {
         //     $element.css("background-color", "green");
         // },//单击row事件
     });
+    var $tableUser = $("#table-user");
+    $tableUser.bootstrapTable({
+        url: "/user/",
+        queryParams: function(params) {
+            var xsrf = $("input[name ='_xsrf']");
+            if (xsrf != undefined) {
+                params._xsrf = xsrf[0].value;
+            }
+            params.action = 'table';
+            return params;
+        },
+        dataField: "data",
+        pagination: true,
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10, 25, 50, 100],
+        columns: [
+            { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+            { title: "用户名", field: 'username', sortable: true, order: "desc" },
+            { title: "中文名称", field: 'namezh', sortable: true, order: "desc" },
+            { title: "部门", field: 'department', sortable: true, order: "desc" },
+            { title: "邮箱", field: 'email', sortable: true, order: "desc" },
+            { title: "手机号码", field: 'mobile', sortable: true, order: "desc" },
+            { title: "座机", field: 'tel', sortable: true, order: "desc" },
+            { title: "QQ", field: 'qq', sortable: true, order: "desc" },
+            { title: "微信", field: 'wechat', sortable: true, order: "desc" },
+            { title: "管理员", field: 'isadmin', sortable: true, order: "desc" },
+            { title: "有效", field: 'active', sortable: true, order: "desc" },
 
+        ],
+    });
+    var $tableRecord = $("#table-record");
+    $tableRecord.bootstrapTable({
+        url: "/record/",
+        queryParams: function(params) {
+            var xsrf = $("input[name ='_xsrf']");
+            if (xsrf != undefined) {
+                params._xsrf = xsrf[0].value;
+            }
+            params.action = 'table';
+            return params;
+        },
+        dataField: "data",
+        pagination: true,
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10, 25, 50, 100],
+        columns: [
+            { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+            { title: "用户名", field: 'username', sortable: true, order: "desc" },
+            { title: "邮箱", field: 'email', sortable: true, order: "desc" },
+            { title: "手机号码", field: 'mobile', sortable: true, order: "desc" },
+            { title: "开始时间", field: 'start_time', sortable: true, order: "desc" },
+            { title: "结束时间", field: 'end_time', sortable: true, order: "desc" },
+            { title: "IP地址", field: 'ip', sortable: true, order: "desc" },
+
+        ],
+    });
     var $tableCountry = $("#table-country");
     $tableCountry.bootstrapTable({
         url: "/address/country/",

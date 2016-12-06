@@ -1,1 +1,34 @@
-{{template "base/view_form_top.html" .}}
+<div class="row">
+    <p id="list-title">{{.listName}}</p>
+</div>
+
+<form id="productCategoryForm" action="/product/category/" method="post" class="form-horizontal" role="form">
+    <div class="row">
+        <button type="submit" form="productCategoryForm" id="productCategoryForm" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
+        <a href="{{.URL}}/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a>
+        <a href="{{.URL}}/" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
+    </div>
+    {{ .xsrf }}
+    <fieldset>
+        <legend>基本信息</legend>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="name" class="col-md-4 control-label label-start">产品类别<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="name" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="parent" class="col-md-4 control-label label-start" multiple="multiple">上级类别</label>
+                    <div class="col-md-8">
+                        <select name="parent" id="parent" class="form-control select-product-category"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+</form>

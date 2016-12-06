@@ -1,7 +1,7 @@
 $(function() {
-     $.fn.select2.defaults.set( "language","zh-CN");
-         
-     
+    $.fn.select2.defaults.set("language", "zh-CN");
+
+    var LIMIT = 5;
     $(".select-department").select2({
         placeholder: "选择部门",
         ajax: {
@@ -10,18 +10,16 @@ $(function() {
             delay: 250,
             type: "POST",
             data: function(params, page) {
-                console.log(params);
-                console.log(page);
+
                 var xsrf = $("input[name ='_xsrf']")[0].value;
                 return {
                     name: params.term, // search term
-                    page: params.page || 1,
+                    page: params.page || 0,
                     _xsrf: xsrf,
-                    offset: 2,
+                    offset: LIMIT,
                 };
             },
-            success:function(data){
-                console.log(data);
+            success: function(data) {
                 return data.items;
             },
             processResults: function(data, params) {
@@ -32,8 +30,7 @@ $(function() {
                         more: (params.page * 2) < data.total_count
                     }
                 };
-                console.log(result);
-                console.log(params);
+
                 return result;
             },
             cache: true
@@ -61,13 +58,13 @@ $(function() {
                 var xsrf = $("input[name ='_xsrf']")[0].value;
                 return {
                     name: params.term, // search term
-                    page: params.page || 1,
+                    page: params.page || 0,
                     _xsrf: xsrf,
-                    offset: 3,
+                    offset: LIMIT,
                 };
             },
             processResults: function(data, params) {
-                params.page = params.page || 1;
+                params.page = params.page || 0;
                 var result = {
                     results: data.items,
                     pagination: {
@@ -101,18 +98,57 @@ $(function() {
                 var xsrf = $("input[name ='_xsrf']")[0].value;
                 return {
                     name: params.term, // search term
-                    start: (params.page || 0 )*3, 
+                    start: params.page || 0,
                     _xsrf: xsrf,
-                    length: 3,
+                    length: LIMIT,
                 };
             },
             processResults: function(data, params) {
-                console.log(data);
                 params.page = params.page || 1;
                 var result = {
                     results: data.data,
                     pagination: {
-                        more:  data.page  < data.pages
+                        more: data.page < data.pages
+                    }
+                };
+                return result;
+            },
+            cache: true
+        },
+        escapeMarkup: function(markup) { return markup; },
+        // minimumInputLength: 1,
+        dropdownCssClass: "bigdrop",
+        templateResult: function(repo) {
+            if (repo.loading) { return repo.text; }
+            return repo.name;
+        },
+        templateSelection: function(repo) {
+            return repo.name;
+        }
+    });
+    $(".select-product-category").select2({
+        placeholder: "选择产品类别",
+        language: "zh-CN",
+        ajax: {
+            url: "/product/category/",
+            dataType: 'json',
+            delay: 250,
+            type: "POST",
+            data: function(params, page) {
+                var xsrf = $("input[name ='_xsrf']")[0].value;
+                return {
+                    name: params.term, // search term
+                    offset: params.page || 0,
+                    _xsrf: xsrf,
+                    limit: LIMIT,
+                };
+            },
+            processResults: function(data, params) {
+                params.page = params.page || 1;
+                var result = {
+                    results: data.data,
+                    pagination: {
+                        more: data.page < data.pages
                     }
                 };
                 return result;
