@@ -107,7 +107,11 @@ func initCity(filename string, user base.User) {
 				for _, k := range initCities.Cities {
 					var city base.City
 					pid := int64(k.PID)
-					if province, err := base.GetProvinceByID(pid); err == nil {
+					var (
+						province base.Province
+						e        error
+					)
+					if province, e = base.GetProvinceByID(pid); e == nil {
 						city.Province = &province
 						city.Name = k.Name
 						base.AddCity(city, user)
@@ -124,9 +128,14 @@ func initDistrict(filename string, user base.User) {
 			var initDistricts InitDistricts
 			if xml.Unmarshal(data, &initDistricts) == nil {
 				for _, k := range initDistricts.Districts {
-					var district base.District
+
+					var (
+						district base.District
+						city     base.City
+						e        error
+					)
 					pid := int64(k.PID)
-					if city, err := base.GetCityByID(pid); err == nil {
+					if city, e = base.GetCityByID(pid); e == nil {
 						district.City = &city
 						district.Name = k.Name
 						base.AddDistrict(district, user)

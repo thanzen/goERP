@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego/orm"
@@ -30,37 +29,23 @@ func AddDistrict(obj District, user User) (int64, error) {
 func GetDistrictByID(id int64) (District, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		district District
-		err      error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(District))
-	qs = qs.RelatedSel()
-	err = qs.One(&district)
+	district := District{Base: Base{Id: id}}
+
+	err := o.Read(&district)
+	_, err = o.LoadRelated(&district, "City")
 	return district, err
 }
+
+//根据名称查询区县
 func GetDistrictByName(name string) (District, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		district District
-		err      error
-	)
-	cond := orm.NewCondition()
-	qs := o.QueryTable(new(District))
+	district := District{Name: name}
 
-	if name != "" {
-		cond = cond.And("name", name)
-		qs = qs.SetCond(cond)
-		qs = qs.RelatedSel()
-		err = qs.One(&district)
-	} else {
-		err = fmt.Errorf("%s", "查询条件不成立")
-	}
-
+	err := o.Read(&district)
+	_, err = o.LoadRelated(&district, "City")
 	return district, err
+
 }
 
 //列出记录

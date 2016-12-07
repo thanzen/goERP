@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego"
@@ -30,39 +29,21 @@ func AddCountry(obj Country, user User) (int64, error) {
 func GetCountryByID(id int64) (Country, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		country Country
-		err     error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(Country))
-	qs = qs.RelatedSel()
-	err = qs.One(&country)
+	country := Country{Base: Base{Id: id}}
+
+	err := o.Read(&country)
 	return country, err
 }
 
-//根据名称查询国家
+//根据名称查询城市
 func GetCountryByName(name string) (Country, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		country Country
-		err     error
-	)
-	cond := orm.NewCondition()
-	qs := o.QueryTable(new(Country))
+	country := Country{Name: name}
 
-	if name != "" {
-		cond = cond.And("name", name)
-		qs = qs.SetCond(cond)
-		qs = qs.RelatedSel()
-		err = qs.One(&country)
-	} else {
-		err = fmt.Errorf("%s", "查询条件不成立")
-	}
-
+	err := o.Read(&country)
 	return country, err
+
 }
 
 //列出记录

@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego"
@@ -31,39 +30,26 @@ func AddProvince(obj Province, user User) (int64, error) {
 
 //获得某一个省份信息
 func GetProvinceByID(id int64) (Province, error) {
+
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		province Province
-		err      error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(Province))
-	qs = qs.RelatedSel()
-	err = qs.One(&province)
+	province := Province{Base: Base{Id: id}}
+
+	err := o.Read(&province)
+	_, err = o.LoadRelated(&province, "Country")
 	return province, err
 }
+
+//根据名称查询区县
 func GetProvinceByName(name string) (Province, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		province Province
-		err      error
-	)
-	cond := orm.NewCondition()
-	qs := o.QueryTable(new(Province))
+	province := Province{Name: name}
 
-	if name != "" {
-		cond = cond.And("name", name)
-		qs = qs.SetCond(cond)
-		qs = qs.RelatedSel()
-		err = qs.One(&province)
-	} else {
-		err = fmt.Errorf("%s", "查询条件不成立")
-	}
-
+	err := o.Read(&province)
+	_, err = o.LoadRelated(&province, "Country")
 	return province, err
+
 }
 
 //列出记录

@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego"
@@ -36,41 +35,25 @@ func AddCompany(obj Company, user User) (int64, error) {
 
 //获得某一个公司信息
 func GetCompanyByID(id int64) (Company, error) {
+
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		company Company
-		err     error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(Company))
-	qs = qs.RelatedSel()
-	err = qs.One(&company)
+	company := Company{Base: Base{Id: id}}
+
+	err := o.Read(&company)
 	return company, err
 }
 
-//根据名称查询公司
+//根据名称查询城市
 func GetCompanyByName(name string) (Company, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		company Company
-		err     error
-	)
-	cond := orm.NewCondition()
-	qs := o.QueryTable(new(Company))
+	company := Company{Name: name}
 
-	if name != "" {
-		cond = cond.And("name", name)
-		qs = qs.SetCond(cond)
-		qs = qs.RelatedSel()
-		err = qs.One(&company)
-	} else {
-		err = fmt.Errorf("%s", "查询条件不成立")
-	}
+	err := o.Read(&company)
 
 	return company, err
+
 }
 
 //列出记录

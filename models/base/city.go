@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego/orm"
@@ -31,15 +30,10 @@ func AddCity(obj City, user User) (int64, error) {
 func GetCityByID(id int64) (City, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		city City
-		err  error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(City))
-	qs = qs.RelatedSel()
-	err = qs.One(&city)
+	city := City{Base: Base{Id: id}}
+
+	err := o.Read(&city)
+	_, err = o.LoadRelated(&city, "Province")
 	return city, err
 }
 
@@ -47,23 +41,12 @@ func GetCityByID(id int64) (City, error) {
 func GetCityByName(name string) (City, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		city City
-		err  error
-	)
-	cond := orm.NewCondition()
-	qs := o.QueryTable(new(City))
+	city := City{Name: name}
 
-	if name != "" {
-		cond = cond.And("name", name)
-		qs = qs.SetCond(cond)
-		qs = qs.RelatedSel()
-		err = qs.One(&city)
-	} else {
-		err = fmt.Errorf("%s", "查询条件不成立")
-	}
-
+	err := o.Read(&city)
+	_, err = o.LoadRelated(&city, "Province")
 	return city, err
+
 }
 
 //列出记录
