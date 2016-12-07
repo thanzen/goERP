@@ -17,7 +17,11 @@ $(document).ready(function() {
             }
             return stickyHeaderOffsetY + 'px';
         })(), //设置偏移量
-
+        dataField: "data",
+        pagination: true,
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10, 25, 50, 100, 500, 1000],
         // onClickRow: function(row, $element) {
         //     //$element是当前tr的jquery对象
         //     $element.css("background-color", "green");
@@ -34,12 +38,7 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
 
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "用户名", field: 'username', sortable: true, order: "desc" },
@@ -66,11 +65,6 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "用户名", field: 'username', sortable: true, order: "desc" },
@@ -93,11 +87,7 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
+
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "国家", field: 'name', sortable: true, order: "desc" },
@@ -115,11 +105,7 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
+
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "省份", field: 'name', sortable: true, order: "desc" },
@@ -138,11 +124,7 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
+
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "城市", field: 'name', sortable: true, order: "desc" },
@@ -162,11 +144,7 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
+
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "地区", field: 'name', sortable: true, order: "desc" },
@@ -188,14 +166,8 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
-        height: function() {
-            return document.body.offsetHeight;
-        },
+
+
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "属性名", field: 'name', sortable: true, order: "desc" },
@@ -230,14 +202,7 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
-        height: function() {
-            return document.body.offsetHeight;
-        },
+
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "类别名", field: 'name', sortable: true, order: "desc" },
@@ -257,14 +222,7 @@ $(document).ready(function() {
             params.action = 'table';
             return params;
         },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
-        height: function() {
-            return document.body.offsetHeight;
-        },
+
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "款式编码", field: 'defaultCode', sortable: true, order: "desc" },
@@ -284,14 +242,6 @@ $(document).ready(function() {
             }
             params.action = 'table';
             return params;
-        },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
-        height: function() {
-            return document.body.offsetHeight;
         },
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
@@ -314,14 +264,6 @@ $(document).ready(function() {
             }
             params.action = 'table';
             return params;
-        },
-        dataField: "data",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
-        height: function() {
-            return document.body.offsetHeight;
         },
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
