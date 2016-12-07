@@ -59,16 +59,16 @@ func (this *DistrictController) districtList(start, length int64, condArr map[st
 			oneLine := make(map[string]interface{})
 			oneLine["name"] = district.Name
 			oneLine["province"] = district.City.Province.Name
+
 			provinceId := district.City.Province.Id
 			if _, ok := provinceMap[provinceId]; ok != true {
 				if province, e := mb.GetProvinceByID(district.City.Province.Id); e == nil {
-					provinceMap[province.Id] = province.Country.Name
+					provinceMap[provinceId] = province.Country.Name
 				}
 			}
 			if _, ok := provinceMap[provinceId]; ok {
 				oneLine["country"] = provinceMap[provinceId]
 			}
-
 			oneLine["city"] = district.City.Name
 			oneLine["id"] = district.Id
 			tableLines = append(tableLines, oneLine)
