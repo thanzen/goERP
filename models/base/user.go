@@ -107,15 +107,8 @@ func AddUser(insetUser *User, currentUser User) (int64, error) {
 func GetUserByID(id int64) (User, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		user User
-		err  error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(User))
-	qs = qs.RelatedSel()
-	err = qs.One(&user)
+	user := User{Base: Base{Id: id}}
+	err := o.Read(&user)
 	return user, err
 }
 func GetUserByName(name string) (User, error) {

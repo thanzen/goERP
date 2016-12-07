@@ -16,13 +16,28 @@ func (this *UserController) Put() {
 
 }
 func (this *UserController) Get() {
-	action := this.Input().Get("action")
-	switch action {
-	case "create":
-		this.GetCreate()
-	default:
-		this.GetList()
-
+	if id, err := this.GetInt64(":id"); err == nil {
+		if user, err := mb.GetUserByID(id); err == nil {
+			userMap := make(map[string]interface{})
+			userMap["Id"] = user.Id
+			userMap["Name"] = user.Name
+			userMap["NameZh"] = user.NameZh
+			userMap["Email"] = user.Email
+			userMap["Mobile"] = user.Mobile
+			userMap["Tel"] = user.Tel
+			this.Data["User"] = userMap
+			fmt.Printf("%T", userMap)
+			this.Data["Readonly"] = "readonly"
+			this.TplName = "user/user_form.html"
+		}
+	} else {
+		action := this.Input().Get("action")
+		switch action {
+		case "create":
+			this.GetCreate()
+		default:
+			this.GetList()
+		}
 	}
 
 	this.URL = "/user"
@@ -143,9 +158,19 @@ func (this *UserController) PostCreate() {
 	user := new(mb.User)
 	if err := this.ParseForm(user); err == nil {
 
-		department := this.Input().Get("department")
-		fmt.Println("======================")
-		fmt.Println(department)
+		departmentStr := this.Input().Get("department")
+		if deparentId, err := strconv.ParseInt(departmentStr, 10, 64); err == nil {
+			if department, err := mb.GetDepartmentByID(deparentId); err == nil {
+				user.Department = &department
+			}
+		}
+		positionStr := this.Input().Get("position")
+		if positionId, err := strconv.ParseInt(positionStr, 10, 64); err == nil {
+			if position, err := mb.GetPositionByID(positionId); err == nil {
+				user.Position = &position
+			}
+		}
+
 		if id, err := mb.AddUser(user, this.User); err == nil {
 			this.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
 		}
