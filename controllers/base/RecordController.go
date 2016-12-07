@@ -3,7 +3,6 @@ package base
 
 import (
 	"encoding/json"
-	"fmt"
 	mb "pms/models/base"
 	"strconv"
 )
@@ -38,8 +37,6 @@ func (this *RecordController) PostList() {
 	condArr := make(map[string]interface{})
 	start := this.Input().Get("offset")
 	length := this.Input().Get("limit")
-	fmt.Println(start)
-	fmt.Println(length)
 
 	var (
 		startInt64  int64
@@ -91,4 +88,3 @@ func (this *RecordController) GetList() {
 	this.Data["tableId"] = "table-record"
 	this.TplName = "base/table_base.html"
 }
- 

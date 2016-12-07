@@ -19,7 +19,7 @@ func (this *UserController) Get() {
 	action := this.Input().Get("action")
 	switch action {
 	case "create":
-		this.Create()
+		this.GetCreate()
 	default:
 		this.GetList()
 
@@ -38,6 +38,8 @@ func (this *UserController) Post() {
 		this.Validator()
 	case "table":
 		this.PostList()
+	case "create":
+		this.PostCreate()
 	default:
 		this.PostList()
 	}
@@ -62,8 +64,6 @@ func (this *UserController) PostList() {
 	condArr := make(map[string]interface{})
 	start := this.Input().Get("offset")
 	length := this.Input().Get("limit")
-	fmt.Println(start)
-	fmt.Println(length)
 
 	var (
 		startInt64  int64
@@ -133,29 +133,24 @@ func (this *UserController) ChangePwd() {
 	this.TplName = "user/user_change_password_form.html"
 }
 
-func (this *UserController) Create() {
+func (this *UserController) GetCreate() {
+	this.Data["Readonly"] = false
+	this.Data["listName"] = "创建用户"
+	this.TplName = "user/user_form.html"
+}
+func (this *UserController) PostCreate() {
 
-	method := strings.ToUpper(this.Ctx.Request.Method)
-	if method == "GET" {
-		this.Data["Readonly"] = false
-		this.Data["listName"] = "创建用户"
-		this.TplName = "user/user_form.html"
+	user := new(mb.User)
+	if err := this.ParseForm(user); err == nil {
 
-	} else if method == "POST" {
-		fmt.Println("enter create post")
-		user := new(mb.User)
-		if err := this.ParseForm(user); err == nil {
-
-			department := this.Input().Get("department")
-			fmt.Println("======================")
-			fmt.Println(department)
-			if id, err := mb.AddUser(user, this.User); err == nil {
-				this.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
-			}
-		} else {
-			fmt.Print("%T", err)
+		department := this.Input().Get("department")
+		fmt.Println("======================")
+		fmt.Println(department)
+		if id, err := mb.AddUser(user, this.User); err == nil {
+			this.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
 		}
-
+	} else {
+		fmt.Print("%T", err)
 	}
 
 }

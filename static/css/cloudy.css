@@ -25,3 +25,8 @@ fieldset legend {
 .attribute-value-table-display {
     margin: 2px;
 }
+
+.table-diplay-info thead,
+.fix-sticky thead {
+    background-color: #5bc0de;
+}

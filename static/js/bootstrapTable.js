@@ -6,6 +6,17 @@ $(document).ready(function() {
         locale: "zh-CN",
         contentType: "application/x-www-form-urlencoded",
         sidePagination: "server",
+        stickyHeader: true, //表头固定
+        stickyHeaderOffsetY: (function() {
+            var stickyHeaderOffsetY = 0;
+            if ($('.navbar-fixed-top').css('height')) {
+                stickyHeaderOffsetY = +$('.navbar-fixed-top').css('height').replace('px', '');
+            }
+            if ($('.navbar-fixed-top').css('margin-bottom')) {
+                stickyHeaderOffsetY += +$('.navbar-fixed-top').css('margin-bottom').replace('px', '');
+            }
+            return stickyHeaderOffsetY + 'px';
+        })(), //设置偏移量
 
         // onClickRow: function(row, $element) {
         //     //$element是当前tr的jquery对象
@@ -24,6 +35,7 @@ $(document).ready(function() {
             return params;
         },
         dataField: "data",
+
         pagination: true,
         pageNumber: 1,
         pageSize: 10,
@@ -155,9 +167,6 @@ $(document).ready(function() {
         pageNumber: 1,
         pageSize: 10,
         pageList: [10, 25, 50, 100],
-        height: function() {
-            return document.body.offsetHeight;
-        },
         columns: [
             { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
             { title: "地区", field: 'name', sortable: true, order: "desc" },
