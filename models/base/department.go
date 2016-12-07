@@ -3,8 +3,6 @@ package base
 import (
 	"pms/utils"
 
-	"fmt"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
@@ -17,7 +15,7 @@ type Department struct {
 	Company *Company `orm:"rel(fk);null"`  //公司
 }
 
-//添加国家
+//添加部门
 func AddDepartment(obj Department, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
@@ -35,37 +33,28 @@ func AddDepartment(obj Department, user User) (int64, error) {
 func GetDepartmentByID(id int64) (Department, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		department Department
-		err        error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(Department))
-	qs = qs.RelatedSel()
-	err = qs.One(&department)
-	return department, err
-}
-func GetDepartmentByName(name string) (Department, error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	var (
-		department Department
-		err        error
-	)
-	cond := orm.NewCondition()
-	qs := o.QueryTable(new(Department))
+	department := Department{Base: Base{Id: id}}
 
-	if name != "" {
-		cond = cond.And("name", name)
-		qs = qs.SetCond(cond)
-		qs = qs.RelatedSel()
-		err = qs.One(&department)
-	} else {
-		err = fmt.Errorf("%s", "查询条件不成立")
+	err := o.Read(&department)
+	if department.Leader != nil {
+		o.Read(department.Leader)
 	}
 
 	return department, err
+}
+
+//根据名称查询部门
+func GetDepartmentByName(name string) (Department, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	department := Department{Name: name}
+
+	err := o.Read(&department)
+	if department.Leader != nil {
+		o.Read(department.Leader)
+	}
+	return department, err
+
 }
 func ListDepartment(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Department, error) {
 

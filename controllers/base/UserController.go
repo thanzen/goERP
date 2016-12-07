@@ -25,8 +25,23 @@ func (this *UserController) Get() {
 			userMap["Email"] = user.Email
 			userMap["Mobile"] = user.Mobile
 			userMap["Tel"] = user.Tel
+			department := make(map[string]string)
+			if user.Department != nil {
+				department["Id"] = strconv.FormatInt(user.Department.Id, 10)
+				department["Name"] = user.Department.Name
+				userMap["Department"] = department
+			}
+
+			position := make(map[string]string)
+			if user.Position != nil {
+				position["Id"] = strconv.FormatInt(user.Position.Id, 10)
+				position["Name"] = user.Position.Name
+				userMap["Position"] = position
+
+			}
+			fmt.Println(userMap)
 			this.Data["User"] = userMap
-			fmt.Printf("%T", userMap)
+
 			this.Data["Readonly"] = "readonly"
 			this.TplName = "user/user_form.html"
 		}

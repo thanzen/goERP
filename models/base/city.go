@@ -33,7 +33,10 @@ func GetCityByID(id int64) (City, error) {
 	city := City{Base: Base{Id: id}}
 
 	err := o.Read(&city)
-	_, err = o.LoadRelated(&city, "Province")
+	if city.Province != nil {
+		o.Read(city.Province)
+	}
+
 	return city, err
 }
 
@@ -44,7 +47,9 @@ func GetCityByName(name string) (City, error) {
 	city := City{Name: name}
 
 	err := o.Read(&city)
-	_, err = o.LoadRelated(&city, "Province")
+	if city.Province != nil {
+		o.Read(city.Province)
+	}
 	return city, err
 
 }

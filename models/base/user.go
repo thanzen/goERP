@@ -109,6 +109,13 @@ func GetUserByID(id int64) (User, error) {
 	o.Using("default")
 	user := User{Base: Base{Id: id}}
 	err := o.Read(&user)
+	if user.Department != nil {
+		o.Read(user.Department)
+	}
+
+	if user.Position != nil {
+		o.Read(user.Position)
+	}
 	return user, err
 }
 func GetUserByName(name string) (User, error) {

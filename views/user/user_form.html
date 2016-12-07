@@ -91,7 +91,10 @@
                 <div class="form-group">
                     <label for="department" class="col-md-4 control-label label-start">部门<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <select aria-hidden="true" name="department" id="department" class="form-control  select-department" {{.Readonly}}>
+                        <select aria-hidden="true" name="department" id="department" class="form-control  select-department">
+                            {{if .User.Department}}
+                                <option value="{{.User.Department.Id}}" selected="selected" >{{.User.Department.Name}}</option>
+                            {{end}}
                     </select>
                     </div>
                 </div>
@@ -102,7 +105,11 @@
                 <div class="form-group">
                     <label for="postion" class="col-md-4 control-label label-start">职位<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <select name="postion" id="postion" class="form-control select-position" {{.Readonly}}></select>
+                        <select name="postion" id="postion" class="form-control select-position">
+                            {{if .User.Position}}
+                                <option value="{{.User.Position.Id}}" selected="selected" >{{.User.Position.Name}}</option>
+                            {{end}}
+                        </select>
                     </div>
                 </div>
             </div>
