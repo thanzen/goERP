@@ -54,7 +54,7 @@ $(document).ready(function() {
         { title: "QQ", field: 'qq', sortable: true, order: "desc" },
         { title: "微信", field: 'wechat', sortable: true, order: "desc" },
         { title: "管理员", field: 'isadmin', sortable: true, order: "desc" },
-        { title: "有效", field: 'active', sortable: true, order: "desc" },
+        { title: "有效", field: 'active', sortable: true, order: "desc" }
 
     ]);
     //登录记录表
@@ -66,18 +66,19 @@ $(document).ready(function() {
         { title: "开始时间", field: 'start_time', sortable: true, order: "desc" },
         { title: "结束时间", field: 'end_time', sortable: true, order: "desc" },
         { title: "IP地址", field: 'ip', sortable: true, order: "desc" },
+        { title: "用户代理", field: "UserAgent" }
 
     ]);
     //国家表
     displayTable("#table-country", "/country/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "国家", field: 'name', sortable: true, order: "desc" },
+        { title: "国家", field: 'name', sortable: true, order: "desc" }
     ]);
     //省份表
     displayTable("#table-province", "/province/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "省份", field: 'name', sortable: true, order: "desc" },
-        { title: "国家", field: 'country', sortable: true, order: "desc" },
+        { title: "国家", field: 'country', sortable: true, order: "desc" }
     ]);
 
     //城市表
@@ -85,7 +86,7 @@ $(document).ready(function() {
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "城市", field: 'name', sortable: true, order: "desc" },
         { title: "省份", field: 'province', sortable: true, order: "desc" },
-        { title: "国家", field: 'country', sortable: true, order: "desc" },
+        { title: "国家", field: 'country', sortable: true, order: "desc" }
     ]);
     //区县表
     displayTable("#table-district", "/district/", [
@@ -93,7 +94,7 @@ $(document).ready(function() {
         { title: "地区", field: 'name', sortable: true, order: "desc" },
         { title: "城市", field: 'city', sortable: true, order: "desc" },
         { title: "省份", field: 'province', sortable: true, order: "desc" },
-        { title: "国家", field: 'country', sortable: true, order: "desc" },
+        { title: "国家", field: 'country', sortable: true, order: "desc" }
     ]);
 
     //产品属性
@@ -114,7 +115,7 @@ $(document).ready(function() {
                 }
                 return html;
             }
-        },
+        }
     ]);
 
     //产品类别
@@ -122,7 +123,7 @@ $(document).ready(function() {
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "类别名", field: 'name', sortable: true, order: "desc" },
         { title: "上级", field: 'parent', sortable: true, order: "desc" },
-        { title: "上级路径", field: 'path', sortable: true, order: "desc" },
+        { title: "上级路径", field: 'path', sortable: true, order: "desc" }
     ]);
 
     //产品款式
@@ -131,7 +132,7 @@ $(document).ready(function() {
         { title: "款式编码", field: 'defaultCode', sortable: true, order: "desc" },
         { title: "款式类别", field: 'category', sortable: true, order: "desc" },
         { title: "产品款式", field: 'name', sortable: true, order: "desc" },
-        { title: "规格数量", field: 'productCnt', sortable: true, order: "desc" },
+        { title: "规格数量", field: 'productCnt', sortable: true, order: "desc" }
     ]);
 
     //产品规格
@@ -141,14 +142,14 @@ $(document).ready(function() {
         { title: "规格类别", field: 'category', sortable: true, order: "desc" },
         { title: "产品规格", field: 'name', sortable: true, order: "desc" },
         { title: "产品款式", field: 'parent', sortable: true, order: "desc" },
-        { title: "规格属性", field: 'attributes', sortable: true, order: "desc" },
+        { title: "规格属性", field: 'attributes', sortable: true, order: "desc" }
     ]);
 
     //产品属性值
     displayTable("#table-product-attributevalue", "/product/attributevalue/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "属性", field: 'attribute', sortable: true, order: "desc" },
-        { title: "属性值", field: 'value', sortable: true, order: "desc" },
+        { title: "属性值", field: 'value', sortable: true, order: "desc" }
     ]);
 
 

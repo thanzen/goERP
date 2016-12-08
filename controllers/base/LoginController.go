@@ -40,10 +40,12 @@ func (this *LoginController) Post() {
 		this.Redirect("/login/in", 302)
 	} else {
 		if record, err = base.GetRecordByUser(user); err == nil {
+
+			 
 			this.SetSession("LastLogin", record.CreateDate)
 			this.SetSession("LastIp", record.Ip)
 		}
-		base.AddRecord(user, this.Ctx.Input.IP())
+		base.AddRecord(user, this.Ctx.Input.IP(), this.Ctx.Request.UserAgent())
 		this.SetSession("User", user)
 
 		this.Ctx.SetCookie("Remember", rememberMe, 31536000, "/")

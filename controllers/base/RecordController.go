@@ -68,7 +68,7 @@ func (this *RecordController) recordList(start, length int64, condArr map[string
 			oneLine["mobile"] = record.User.Mobile
 			oneLine["username"] = record.User.Name
 			oneLine["namezh"] = record.User.NameZh
-
+			oneLine["UserAgent"] = record.UserAgent
 			oneLine["start_time"] = record.CreateDate.Format("2006-01-02 15:04:05")
 			oneLine["end_time"] = record.Logout.Format("2006-01-02 15:04:05")
 			oneLine["ip"] = record.Ip
