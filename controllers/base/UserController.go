@@ -164,7 +164,7 @@ func (this *UserController) ChangePwd() {
 }
 
 func (this *UserController) GetCreate() {
-	this.Data["Readonly"] = false
+	this.Data["Readonly"] = "writeable"
 	this.Data["listName"] = "创建用户"
 	this.TplName = "user/user_form.html"
 }

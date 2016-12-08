@@ -1,13 +1,11 @@
 package base
 
 import (
-	"pms/models/base"
+	"encoding/json"
+	"fmt"
+	mb "pms/models/base"
+	"strconv"
 	"strings"
-)
-
-//列表视图列数-1，第一列为checkbox
-const (
-	departmentListCellLength = 4
 )
 
 type DepartmentController struct {
@@ -16,45 +14,33 @@ type DepartmentController struct {
 
 func (this *DepartmentController) Post() {
 
-	action := this.GetString(":action")
+	action := this.Input().Get("action")
 	switch action {
-	case "search":
-		this.Search()
+	case "validator":
+		this.Validator()
+	case "table": //bootstrap table的post请求
+		this.PostList()
+	case "selectSearch":
+		this.PostList()
+	default:
+		this.PostList()
 	}
-	this.ServeJSON()
 }
 
 func (this *DepartmentController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
+	this.GetList()
 
-	switch action {
-	case "list":
-		switch viewType {
-		case "list":
-			this.List()
-		default:
-			this.List()
-		}
-	case "show":
-		this.Show()
-	case "create":
-		this.Create()
-	case "edit":
-		this.Edit()
-	default:
-		this.List()
-	}
-	this.Data["searchKeyWords"] = "部门名称"
 	this.URL = "/department"
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
+	this.Data["MenuDepartmentActive"] = "active"
 }
+
 func (this *DepartmentController) Validator() {
 	name := this.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
-	if _, err := base.GetDepartmentByName(name); err != nil {
+	if _, err := mb.GetDepartmentByName(name); err != nil {
 		result["valid"] = true
 	} else {
 		result["valid"] = false
@@ -62,57 +48,56 @@ func (this *DepartmentController) Validator() {
 	this.Data["json"] = result
 	this.ServeJSON()
 }
-func (this *DepartmentController) List() {
 
-}
-func (this *DepartmentController) Show() {
+// 获得符合要求的城市数据
+func (this *DepartmentController) departmentList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
-}
-func (this *DepartmentController) Create() {
-
-}
-
-//get请求
-func (this *DepartmentController) Edit() {
-
-}
-
-//post请求
-func (this *DepartmentController) Update() {
-
-}
-func (this *DepartmentController) Search() {
-	name := this.GetString("name")
-
-	page, _ := this.GetInt64("page")
-	offset, _ := this.GetInt64("offset")
-	var condArr = make(map[string]interface{})
-	name = strings.TrimSpace(name)
-	if name != "" {
-		condArr["name"] = name
-	}
-	paginator, departments, err := base.ListDepartment(condArr, page, offset)
-	data := make(map[string]interface{})
+	var departments []mb.Department
+	paginator, departments, err := mb.ListDepartment(condArr, start, length)
+	result := make(map[string]interface{})
 	if err == nil {
 
-		items := make([]interface{}, 0, 5)
+		// result["recordsFiltered"] = paginator.TotalCount
+		tableLines := make([]interface{}, 0, 4)
 		for _, department := range departments {
-			line := make(map[string]interface{})
-			line["id"] = department.Id
-			line["name"] = department.Name
-			if department.Leader != nil {
-				line["leader"] = department.Leader.Name
-			} else {
-				line["leader"] = "-"
-			}
-			items = append(items, line)
+			oneLine := make(map[string]interface{})
+
+			oneLine["id"] = department.Id
+			oneLine["name"] = department.Name
+
+			tableLines = append(tableLines, oneLine)
 		}
-		data["items"] = items
-		data["total_count"] = paginator.TotalCount
-		data["pageSize"] = paginator.PageSize
-		data["page"] = 2 //paginator.CurrentPage
-	} else {
-		data["msg"] = "failed"
+		fmt.Println(tableLines)
+		result["data"] = tableLines
+		if jsonResult, er := json.Marshal(&paginator); er == nil {
+			result["paginator"] = string(jsonResult)
+			result["total"] = paginator.TotalCount
+		}
 	}
-	this.Data["json"] = data
+	return result, err
+}
+func (this *DepartmentController) PostList() {
+	condArr := make(map[string]interface{})
+	start := this.Input().Get("offset")
+	length := this.Input().Get("limit")
+	var (
+		startInt64  int64
+		lengthInt64 int64
+	)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
+	}
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
+	}
+	if result, err := this.departmentList(startInt64, lengthInt64, condArr); err == nil {
+		this.Data["json"] = result
+	}
+	this.ServeJSON()
+
+}
+
+func (this *DepartmentController) GetList() {
+	this.Data["tableId"] = "table-department"
+	this.TplName = "base/table_base.html"
 }

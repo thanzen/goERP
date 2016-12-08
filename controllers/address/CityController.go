@@ -19,6 +19,8 @@ func (this *CityController) Post() {
 		this.Validator()
 	case "table": //bootstrap table的post请求
 		this.PostList()
+	case "selectSearch":
+		this.PostList()
 	default:
 		this.PostList()
 	}

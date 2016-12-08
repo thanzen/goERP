@@ -3,7 +3,6 @@ package base
 import (
 	"pms/utils"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -44,23 +43,16 @@ func GetPositionByName(name string) (Position, error) {
 	return position, err
 
 }
-func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Position, error) {
-	if page < 1 {
-		page = 1
-	}
 
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
+func ListPosition(condArr map[string]interface{}, start, length int64) (utils.Paginator, []Position, error) {
 
 	o := orm.NewOrm()
 	o.Using("default")
 	qs := o.QueryTable(new(Position))
 	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
-
 	if name, ok := condArr["name"]; ok {
-		cond = cond.And("name__icontains", name)
+		cond = cond.And("name_icontains", name)
 	}
 	var (
 		positions []Position
@@ -73,10 +65,10 @@ func ListPosition(condArr map[string]interface{}, page, offset int64) (utils.Pag
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
-	start := (page - 1) * offset
-	if num, err = qs.Limit(offset, start).All(&positions); err == nil {
+
+	if num, err = qs.OrderBy("id").Limit(length, start).All(&positions); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

@@ -19,7 +19,8 @@
         <ul class="sidebar-menu">
             <li class="header text-center">MAIN NAVIGATION</li>
             <li class="treeview {{.MenuSelfInfoActive}}{{.MenuChangePwdActive}}{{.MenuRecordActive}}
-            {{.MenuCountryActive}}{{.MenuProvinceActive}}{{.MenuCityActive}}{{.MenuDistrictActive}}{{.MenuUserActive}}">
+            {{.MenuCountryActive}}{{.MenuProvinceActive}}{{.MenuCityActive}}{{.MenuDistrictActive}}{{.MenuUserActive}}
+            {{.MenuGroupActive}}{{.MenuCompanyActive}}{{.MenuDepartmentActive}}{{.MenuTeamActive}}">
                 <a href="#">
                     <i class="fa fa-gears"></i>
                     <span>设置</span>
@@ -32,12 +33,13 @@
                             <li class="{{.MenuRecordActive}}"><a href="/record/"><i class="fa fa-list-ol"></i>登录记录</a></li>
                         </ul>
                     </li>
-                    <li><a href="#"><i class="fa fa-gavel" aria-hidden="true"></i>权限管理</a></li>
-                    <li class="treeview"><a href="#"><i class="fa fa-indent" aria-hidden="true"></i>公司管理</a>
+                    <li class="{{.MenuGroupActive}}"><a class="{{.MenuGroupActive}}" href="/group/"><i class="fa fa-gavel" aria-hidden="true"></i>权限管理</a></li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-indent" aria-hidden="true"></i>公司管理</a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-check-circle-o"></i>公司资料</a></li>
-                            <li><a href="#"><i class="fa fa-arrow-circle-right"></i>部门管理</a></li>
-                            <li><a href="#"><i class="fa fa-arrow-circle-right"></i>团队管理</a></li>
+                            <li><a class="{{.MenuCompanyActive}}" href="/company/"><i class="fa fa-check-circle-o"></i>公司资料</a></li>
+                            <li><a class="{{.MenuDepartmentActive}}" href="/department/"><i class="fa fa-arrow-circle-right"></i>部门管理</a></li>
+                            <li><a class="{{.MenuTeamActive}}" href="/team/"><i class="fa fa-arrow-circle-right"></i>团队管理</a></li>
                         </ul>
                     </li>
                     <li class="{{.MenuUserActive}}"><a href="/user/"><i class="fa fa-users" aria-hidden="true"></i></i>用户管理</a></li>

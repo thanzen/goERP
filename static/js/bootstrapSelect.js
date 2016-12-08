@@ -1,3 +1,0 @@
-$(function() {
-    $("#department").selectpicker({});
-});

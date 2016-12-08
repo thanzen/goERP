@@ -1,8 +1,11 @@
 package base
 
 import (
-	"pms/models/base"
+	"encoding/json"
+	"fmt"
+	mb "pms/models/base"
 	"strconv"
+	"strings"
 )
 
 type GroupController struct {
@@ -10,17 +13,35 @@ type GroupController struct {
 }
 
 func (this *GroupController) Post() {
-
-	this.PostList()
+	action := this.Input().Get("action")
+	switch action {
+	case "validator":
+		this.Validator()
+	case "table": //bootstrap table的post请求
+		this.PostList()
+	case "selectSearch":
+		this.PostList()
+	default:
+		this.PostList()
+	}
 }
-
+func (this *GroupController) Validator() {
+	name := this.GetString("name")
+	name = strings.TrimSpace(name)
+	result := make(map[string]bool)
+	if _, err := mb.GetGroupByName(name); err != nil {
+		result["valid"] = true
+	} else {
+		result["valid"] = false
+	}
+	this.Data["json"] = result
+	this.ServeJSON()
+}
 func (this *GroupController) PostList() {
-	start := this.Input().Get("start")
-	length := this.Input().Get("length")
-
 	condArr := make(map[string]interface{})
+	start := this.Input().Get("offset")
+	length := this.Input().Get("limit")
 	var (
-		err         error
 		startInt64  int64
 		lengthInt64 int64
 	)
@@ -30,23 +51,22 @@ func (this *GroupController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	var groups []base.Group
-	paginator, groups, err := base.ListGroup(condArr, startInt64, lengthInt64)
+	if result, err := this.groupList(startInt64, lengthInt64, condArr); err == nil {
+		this.Data["json"] = result
+	}
+	this.ServeJSON()
+
+}
+func (this *GroupController) groupList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+
+	var groups []mb.Group
+	paginator, groups, err := mb.ListGroup(condArr, start, length)
+	fmt.Println(groups)
 	result := make(map[string]interface{})
 	if err == nil {
 
-		result["draw"] = this.Input().Get("draw")
-		result["recordsTotal"] = paginator.TotalCount
-		result["recordsFiltered"] = paginator.TotalCount
-
-		result["page"] = paginator.CurrentPage
-		result["pages"] = paginator.TotalPage
-		result["start"] = paginator.CurrentPage * paginator.PageSize
-		result["length"] = length
-		result["serverSide"] = true
-		result["currentPageSize"] = paginator.CurrentPageSize
 		// result["recordsFiltered"] = paginator.TotalCount
-		tableLines := make([]interface{}, 0, ListNum)
+		tableLines := make([]interface{}, 0, 4)
 		for _, group := range groups {
 			oneLine := make(map[string]interface{})
 			oneLine["name"] = group.Name
@@ -55,7 +75,10 @@ func (this *GroupController) PostList() {
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines
+		if jsonResult, er := json.Marshal(&paginator); er == nil {
+			result["paginator"] = string(jsonResult)
+			result["total"] = paginator.TotalCount
+		}
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	return result, err
 }

@@ -3,7 +3,6 @@ package base
 import (
 	"pms/utils"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -42,14 +41,6 @@ func (u *User) TableName() string {
 	return "auth_user"
 }
 func ListUser(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []User, error) {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
 
 	o := orm.NewOrm()
 	o.Using("default")

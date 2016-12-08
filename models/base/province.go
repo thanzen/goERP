@@ -3,7 +3,6 @@ package base
 import (
 	"pms/utils"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -54,14 +53,6 @@ func GetProvinceByName(name string) (Province, error) {
 
 //列出记录
 func ListProvince(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Province, error) {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if offset < 1 {
-		offset, _ = beego.AppConfig.Int64("pageoffset")
-	}
 
 	o := orm.NewOrm()
 	o.Using("default")

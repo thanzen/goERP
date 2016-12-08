@@ -16,9 +16,9 @@ func init() {
 	//用户
 	beego.Router("/user/?:id", &base.UserController{})
 	//部门
-	beego.Router("/department/:action([A-Za-z]+)/?:id", &base.DepartmentController{})
+	beego.Router("/department/?:id", &base.DepartmentController{})
 	//职位
-	beego.Router("/position/:action([A-Za-z]+)/?:id", &base.PositionController{})
+	beego.Router("/position/?:id", &base.PositionController{})
 
 	//用户
 	beego.Router("/group/?:id", &base.GroupController{})
