@@ -27,7 +27,7 @@ $(document).ready(function() {
         //     $element.css("background-color", "green");
         // },//单击row事件
     });
-    var displayTable = function(selectId, ajaxUrl, columns, detailView) {
+    var displayTable = function(selectId, ajaxUrl, columns, detailView, onExpandRow) {
             var $tableNode = $(selectId);
             $tableNode.bootstrapTable({
                 url: ajaxUrl,
@@ -41,6 +41,7 @@ $(document).ready(function() {
                 },
                 columns: columns,
                 detailView: detailView,
+                onExpandRow: onExpandRow,
             });
         }
         //用户表
@@ -60,7 +61,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 if (row.active == "有效") {
                     html += "<a href='/user/" + row.Id + "?action=invalid' class='table-action btn btn-xs btn-danger'>无效&nbsp<i class='fa fa-close'></i></a>";
@@ -73,7 +74,41 @@ $(document).ready(function() {
             }
         }
 
-    ], true);
+    ], true, function(index, row, $detail) {
+        console.log(row);
+        var html = "1231231";
+        var params = (function() {
+            var params = {};
+            var xsrf = $("input[name ='_xsrf']");
+            if (xsrf != undefined) {
+                params._xsrf = xsrf[0].value;
+            }
+            params.action = 'table';
+            params.offset = 0;
+            params.limit = 5;
+            return params;
+        })();
+        $.ajax({
+            url: "/user/",
+            dataType: "json",
+            type: "POST",
+            async: false,
+            data: params,
+            success: function(data) {
+                console.log(data);
+                html = "ok";
+                $detail.html(data.total);
+            },
+            error: function(error) {
+
+                html = error;
+                $detail.html(html);
+            },
+
+        });
+
+
+    });
     //登录记录表
     displayTable("#table-record", "/record/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
@@ -94,7 +129,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/address/country/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/address/country/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
@@ -111,7 +146,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/address/province/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/address/province/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
@@ -130,7 +165,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/address/city/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/address/city/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
@@ -149,7 +184,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/address/district/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/address/district/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
@@ -168,7 +203,7 @@ $(document).ready(function() {
             title: "属性值",
             field: 'childs',
             align: "center",
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var datas = row.values;
                 var html = "";
                 for (key in datas) {
@@ -181,7 +216,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/product/attribute/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/product/attribute/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
@@ -200,7 +235,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/product/category/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/product/category/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
@@ -220,7 +255,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/product/template/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/product/template/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
@@ -241,7 +276,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/product/product/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/product/product/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
@@ -259,7 +294,7 @@ $(document).ready(function() {
             title: "操作",
             align: "center",
             field: 'action',
-            formatter: function cellStyle(col, row, d) {
+            formatter: function cellStyle(value, row, index) {
                 var html = "";
                 html += "<a href='/product/attributevalue/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
                 html += "<a href='/product/attributevalue/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";

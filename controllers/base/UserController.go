@@ -39,7 +39,7 @@ func (this *UserController) Get() {
 				userMap["Position"] = position
 
 			}
-			fmt.Println(userMap)
+
 			this.Data["User"] = userMap
 
 			this.Data["Readonly"] = "readonly"
