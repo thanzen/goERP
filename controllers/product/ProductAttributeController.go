@@ -60,7 +60,7 @@ func (this *ProductAttributeController) productAttributeList(start, length int64
 			oneLine["code"] = line.Code
 			oneLine["sequence"] = line.Sequence
 			mapValues := make(map[int64]string)
-			oneLine["id"] = line.Id
+			oneLine["Id"] = line.Id
 			values := line.ValueIds
 			for _, line := range values {
 				mapValues[line.Id] = line.Name

@@ -145,7 +145,9 @@ func (this *UserController) userList(start, length int64, condArr map[string]int
 				oneLine["active"] = "无效"
 			}
 			oneLine["qq"] = user.Qq
+			oneLine["Id"] = user.Id
 			oneLine["wechat"] = user.WeChat
+
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

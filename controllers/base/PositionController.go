@@ -63,7 +63,7 @@ func (this *PositionController) positionList(start, length int64, condArr map[st
 		for _, position := range positions {
 			oneLine := make(map[string]interface{})
 
-			oneLine["id"] = position.Id
+			oneLine["Id"] = position.Id
 			oneLine["name"] = position.Name
 
 			tableLines = append(tableLines, oneLine)

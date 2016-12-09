@@ -26,12 +26,16 @@ func (this *RecordController) Get() {
 func (this *RecordController) Post() {
 	action := this.Input().Get("action")
 	switch action {
-
 	case "table":
 		this.PostList()
+	case "one":
+		this.GetOneRecord()
 	default:
 		this.PostList()
 	}
+}
+func (this *RecordController) GetOneRecord() {
+
 }
 func (this *RecordController) PostList() {
 	condArr := make(map[string]interface{})
@@ -72,7 +76,7 @@ func (this *RecordController) recordList(start, length int64, condArr map[string
 			oneLine["start_time"] = record.CreateDate.Format("2006-01-02 15:04:05")
 			oneLine["end_time"] = record.Logout.Format("2006-01-02 15:04:05")
 			oneLine["ip"] = record.Ip
-			oneLine["id"] = record.Id
+			oneLine["Id"] = record.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

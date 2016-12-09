@@ -58,7 +58,7 @@ func (this *ProductTemplateController) productTemplateList(start, length int64, 
 			oneLine := make(map[string]interface{})
 			oneLine["name"] = line.Name
 			oneLine["sequence"] = line.Sequence
-			oneLine["id"] = line.Id
+			oneLine["Id"] = line.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

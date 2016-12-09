@@ -22,7 +22,11 @@ fieldset legend {
     height: 30px;
 }
 
-.attribute-value-table-display {
+.display-block {
+    margin: 2px;
+}
+
+.table-action {
     margin: 2px;
 }
 

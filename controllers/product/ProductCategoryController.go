@@ -80,7 +80,7 @@ func (this *ProductCategoryController) productCategoryList(start, length int64, 
 				oneLine["parent"] = "-"
 			}
 			oneLine["path"] = line.ParentFullPath
-			oneLine["id"] = line.Id
+			oneLine["Id"] = line.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

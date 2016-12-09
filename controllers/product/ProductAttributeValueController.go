@@ -62,7 +62,7 @@ func (this *ProductAttributeValueController) productAttributeList(start, length 
 			oneLine := make(map[string]interface{})
 			oneLine["value"] = line.Name
 			oneLine["attribute"] = line.Attribute.Name
-			oneLine["id"] = line.Id
+			oneLine["Id"] = line.Id
 
 			tableLines = append(tableLines, oneLine)
 		}

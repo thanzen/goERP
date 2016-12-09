@@ -27,7 +27,7 @@ $(document).ready(function() {
         //     $element.css("background-color", "green");
         // },//单击row事件
     });
-    var displayTable = function(selectId, ajaxUrl, columns) {
+    var displayTable = function(selectId, ajaxUrl, columns, detailView) {
             var $tableNode = $(selectId);
             $tableNode.bootstrapTable({
                 url: ajaxUrl,
@@ -40,6 +40,7 @@ $(document).ready(function() {
                     return params;
                 },
                 columns: columns,
+                detailView: detailView,
             });
         }
         //用户表
@@ -54,9 +55,25 @@ $(document).ready(function() {
         { title: "QQ", field: 'qq', sortable: true, order: "desc" },
         { title: "微信", field: 'wechat', sortable: true, order: "desc" },
         { title: "管理员", field: 'isadmin', sortable: true, order: "desc" },
-        { title: "有效", field: 'active', sortable: true, order: "desc" }
+        { title: "有效", field: 'active', sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                if (row.active == "有效") {
+                    html += "<a href='/user/" + row.Id + "?action=invalid' class='table-action btn btn-xs btn-danger'>无效&nbsp<i class='fa fa-close'></i></a>";
+                } else {
+                    html += "<a href='/user/" + row.Id + "?action=active' class='table-action btn btn-xs btn-success'>有效&nbsp<i class='fa fa-check'></i></a>";
+                }
+                html += "<a href='/user/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/user/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
 
-    ]);
+    ], true);
     //登录记录表
     displayTable("#table-record", "/record/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
@@ -70,31 +87,75 @@ $(document).ready(function() {
 
     ]);
     //国家表
-    displayTable("#table-country", "/country/", [
+    displayTable("#table-country", "/address/country/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "国家", field: 'name', sortable: true, order: "desc" }
-    ]);
+        { title: "国家", field: 'name', sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/address/country/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/address/country/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
+    ], true);
     //省份表
-    displayTable("#table-province", "/province/", [
+    displayTable("#table-province", "/address/province/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "省份", field: 'name', sortable: true, order: "desc" },
-        { title: "国家", field: 'country', sortable: true, order: "desc" }
-    ]);
+        { title: "国家", field: 'country', sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/address/province/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/address/province/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
+    ], true);
 
     //城市表
-    displayTable("#table-city", "/city/", [
+    displayTable("#table-city", "/address/city/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "城市", field: 'name', sortable: true, order: "desc" },
         { title: "省份", field: 'province', sortable: true, order: "desc" },
-        { title: "国家", field: 'country', sortable: true, order: "desc" }
-    ]);
+        { title: "国家", field: 'country', sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/address/city/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/address/city/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
+    ], true);
     //区县表
-    displayTable("#table-district", "/district/", [
+    displayTable("#table-district", "/address/district/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "地区", field: 'name', sortable: true, order: "desc" },
         { title: "城市", field: 'city', sortable: true, order: "desc" },
         { title: "省份", field: 'province', sortable: true, order: "desc" },
-        { title: "国家", field: 'country', sortable: true, order: "desc" }
+        { title: "国家", field: 'country', sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/address/district/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/address/district/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
     ]);
 
     //产品属性
@@ -111,8 +172,19 @@ $(document).ready(function() {
                 var datas = row.values;
                 var html = "";
                 for (key in datas) {
-                    html += "<span  class='attribute-value-table-display label label-primary'>" + datas[key] + "</span>";
+                    html += "<span  class='display-block label label-primary'>" + datas[key] + "</span>";
                 }
+                return html;
+            }
+        },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/product/attribute/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/product/attribute/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
                 return html;
             }
         }
@@ -123,7 +195,18 @@ $(document).ready(function() {
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "类别名", field: 'name', sortable: true, order: "desc" },
         { title: "上级", field: 'parent', sortable: true, order: "desc" },
-        { title: "上级路径", field: 'path', sortable: true, order: "desc" }
+        { title: "上级路径", field: 'path', sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/product/category/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/product/category/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
     ]);
 
     //产品款式
@@ -132,7 +215,18 @@ $(document).ready(function() {
         { title: "款式编码", field: 'defaultCode', sortable: true, order: "desc" },
         { title: "款式类别", field: 'category', sortable: true, order: "desc" },
         { title: "产品款式", field: 'name', sortable: true, order: "desc" },
-        { title: "规格数量", field: 'productCnt', sortable: true, order: "desc" }
+        { title: "规格数量", field: 'productCnt', sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/product/template/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/product/template/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
     ]);
 
     //产品规格
@@ -142,14 +236,36 @@ $(document).ready(function() {
         { title: "规格类别", field: 'category', sortable: true, order: "desc" },
         { title: "产品规格", field: 'name', sortable: true, order: "desc" },
         { title: "产品款式", field: 'parent', sortable: true, order: "desc" },
-        { title: "规格属性", field: 'attributes', sortable: true, order: "desc" }
+        { title: "规格属性", field: 'attributes', align: "center", sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/product/product/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/product/product/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
     ]);
 
     //产品属性值
     displayTable("#table-product-attributevalue", "/product/attributevalue/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "属性", field: 'attribute', sortable: true, order: "desc" },
-        { title: "属性值", field: 'value', sortable: true, order: "desc" }
+        { title: "属性值", field: 'value', align: "center", sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(col, row, d) {
+                var html = "";
+                html += "<a href='/product/attributevalue/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/product/attributevalue/" + row.Id + "?action=detial' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
     ]);
 
 

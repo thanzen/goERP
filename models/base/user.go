@@ -40,7 +40,7 @@ func (u *User) TableIndex() [][]string {
 func (u *User) TableName() string {
 	return "auth_user"
 }
-func ListUser(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []User, error) {
+func ListUser(condArr map[string]interface{}, start, length int64) (utils.Paginator, []User, error) {
 
 	o := orm.NewOrm()
 	o.Using("default")
@@ -70,10 +70,9 @@ func ListUser(condArr map[string]interface{}, page, offset int64) (utils.Paginat
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
-	start := (page - 1) * offset
-	if num, err = qs.Limit(offset, start).All(&users); err == nil {
+	if num, err = qs.Limit(length, start).All(&users); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

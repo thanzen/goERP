@@ -71,7 +71,7 @@ func (this *GroupController) groupList(start, length int64, condArr map[string]i
 			oneLine := make(map[string]interface{})
 			oneLine["name"] = group.Name
 
-			oneLine["id"] = group.Id
+			oneLine["Id"] = group.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

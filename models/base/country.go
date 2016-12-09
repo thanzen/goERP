@@ -46,7 +46,7 @@ func GetCountryByName(name string) (Country, error) {
 }
 
 //列出记录
-func ListCountry(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []Country, error) {
+func ListCountry(condArr map[string]interface{}, start, length int64) (utils.Paginator, []Country, error) {
 
 	o := orm.NewOrm()
 	o.Using("default")
@@ -67,11 +67,10 @@ func ListCountry(condArr map[string]interface{}, page, offset int64) (utils.Pagi
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
-		paginator = utils.GenPaginator(page, offset, cnt)
+		paginator = utils.GenPaginator(start, length, cnt)
 	}
 
-	start := (page - 1) * offset
-	if num, err = qs.OrderBy("id").Limit(offset, start).All(&countrys); err == nil {
+	if num, err = qs.OrderBy("id").Limit(length, start).All(&countrys); err == nil {
 		paginator.CurrentPageSize = num
 	}
 

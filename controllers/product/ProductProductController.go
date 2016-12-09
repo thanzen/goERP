@@ -57,7 +57,7 @@ func (this *ProductProductController) productProductList(start, length int64, co
 		for _, line := range arrs {
 			oneLine := make(map[string]interface{})
 			oneLine["name"] = line.Name
-			oneLine["id"] = line.Id
+			oneLine["Id"] = line.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

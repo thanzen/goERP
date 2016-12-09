@@ -66,7 +66,7 @@ func AddRecord(user User, IP, UserAgent string) (int64, error) {
 }
 
 //获得某一个用户记录信息
-func GetRecordByUser(user User) (*Record, error) {
+func GetLastRecordByUserID(userId int64) (Record, error) {
 	o := orm.NewOrm()
 	var (
 		record Record
@@ -74,8 +74,8 @@ func GetRecordByUser(user User) (*Record, error) {
 	)
 
 	o.Using("default")
-	err = o.QueryTable(&record).Filter("User", user.Id).RelatedSel().OrderBy("-id").Limit(1).One(&record)
-	return &record, err
+	err = o.QueryTable(&record).Filter("User", userId).RelatedSel().OrderBy("-id").Limit(1).One(&record)
+	return record, err
 }
 
 //更新

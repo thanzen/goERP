@@ -70,7 +70,7 @@ func (this *DistrictController) districtList(start, length int64, condArr map[st
 				oneLine["country"] = provinceMap[provinceId]
 			}
 			oneLine["city"] = district.City.Name
-			oneLine["id"] = district.Id
+			oneLine["Id"] = district.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

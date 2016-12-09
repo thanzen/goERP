@@ -67,7 +67,7 @@ func (this *CountryController) countryList(start, length int64, condArr map[stri
 		for _, country := range countries {
 			oneLine := make(map[string]interface{})
 			oneLine["name"] = country.Name
-			oneLine["id"] = country.Id
+			oneLine["Id"] = country.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

@@ -62,7 +62,7 @@ func (this *DepartmentController) departmentList(start, length int64, condArr ma
 		for _, department := range departments {
 			oneLine := make(map[string]interface{})
 
-			oneLine["id"] = department.Id
+			oneLine["Id"] = department.Id
 			oneLine["name"] = department.Name
 
 			tableLines = append(tableLines, oneLine)
