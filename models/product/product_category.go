@@ -10,9 +10,9 @@ import (
 
 type ProductCategory struct {
 	base.Base
-	Name           string             `orm:"unique"`        //产品属性名称
-	Parent         *ProductCategory   `orm:"rel(fk);null"`  //上级分类
-	Childs         []*ProductCategory `orm:"reverse(many)"` //下级分类
+	Name           string             `orm:"unique" form:"name" json:"name"` //产品属性名称
+	Parent         *ProductCategory   `orm:"rel(fk);null"`                   //上级分类
+	Childs         []*ProductCategory `orm:"reverse(many)"`                  //下级分类
 	Sequence       int64              //序列
 	ParentFullPath string             //上级全路径
 }
@@ -51,7 +51,7 @@ func ListProductCategory(condArr map[string]interface{}, start, length int64) (u
 }
 
 //添加属性
-func AddProductCategory(obj ProductCategory, user base.User) (int64, error) {
+func AddProductCategory(obj *ProductCategory, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 
@@ -67,15 +67,9 @@ func AddProductCategory(obj ProductCategory, user base.User) (int64, error) {
 func GetProductCategoryByID(id int64) (ProductCategory, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		obj ProductCategory
-		err error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(ProductCategory))
-	qs = qs.RelatedSel()
-	err = qs.One(&obj)
+	obj := ProductCategory{Base: base.Base{Id: id}}
+	err := o.Read(&obj)
+	fmt.Println(obj)
 	return obj, err
 }
 

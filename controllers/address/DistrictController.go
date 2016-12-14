@@ -71,6 +71,7 @@ func (this *DistrictController) districtList(start, length int64, condArr map[st
 			}
 			oneLine["city"] = district.City.Name
 			oneLine["Id"] = district.Id
+			oneLine["id"] = district.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

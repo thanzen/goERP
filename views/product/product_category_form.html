@@ -2,7 +2,7 @@
     <p id="list-title">{{.listName}}</p>
 </div>
 
-<form id="productCategoryForm" action="/product/category/" method="post" class="form-horizontal" role="form">
+<form id="productCategoryForm" action="/product/category/?action=create" method="post" class="form-horizontal" role="form">
     <div class="row">
         <button type="submit" form="productCategoryForm" id="productCategoryForm" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
         <a href="{{.URL}}/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a>
@@ -22,7 +22,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="parent" class="col-md-4 control-label label-start" multiple="multiple">上级类别</label>
+                    <label for="parent" class="col-md-4 control-label label-start">上级类别</label>
                     <div class="col-md-8">
                         <select name="parent" id="parent" class="form-control select-product-category"></select>
                     </div>

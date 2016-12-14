@@ -50,6 +50,7 @@ $(document).ready(function() {
         { title: "用户名", field: 'username', sortable: true, order: "desc" },
         { title: "中文名称", field: 'namezh', sortable: true, order: "desc" },
         { title: "部门", field: 'department', sortable: true, order: "desc" },
+        { title: "职位", field: 'position', sortable: true, order: "desc" },
         { title: "邮箱", field: 'email', sortable: true, order: "desc" },
         { title: "手机号码", field: 'mobile', sortable: true, order: "desc" },
         { title: "座机", field: 'tel', sortable: true, order: "desc" },

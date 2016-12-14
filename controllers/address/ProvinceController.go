@@ -80,6 +80,8 @@ func (this *ProvinceController) provinceList(start, length int64, condArr map[st
 			oneLine["name"] = province.Name
 			oneLine["country"] = province.Country.Name
 			oneLine["Id"] = province.Id
+			oneLine["id"] = province.Id
+
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

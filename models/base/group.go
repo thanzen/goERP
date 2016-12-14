@@ -85,8 +85,7 @@ func ListGroup(condArr map[string]interface{}, start, length int64) (utils.Pagin
 	if cnt, err := qs.Count(); err == nil {
 		paginator = utils.GenPaginator(start, length, cnt)
 	}
-	fmt.Println(length)
-	fmt.Println(start)
+
 	if num, err = qs.Limit(length, start).All(&groups); err == nil {
 		paginator.CurrentPageSize = num
 	}

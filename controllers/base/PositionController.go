@@ -2,7 +2,6 @@ package base
 
 import (
 	"encoding/json"
-	"fmt"
 	mb "pms/models/base"
 	"strconv"
 	"strings"
@@ -54,7 +53,7 @@ func (this *PositionController) positionList(start, length int64, condArr map[st
 
 	var positions []mb.Position
 	paginator, positions, err := mb.ListPosition(condArr, start, length)
-	fmt.Println(positions)
+
 	result := make(map[string]interface{})
 	if err == nil {
 
@@ -64,11 +63,12 @@ func (this *PositionController) positionList(start, length int64, condArr map[st
 			oneLine := make(map[string]interface{})
 
 			oneLine["Id"] = position.Id
+			oneLine["id"] = position.Id
 			oneLine["name"] = position.Name
 
 			tableLines = append(tableLines, oneLine)
 		}
-		fmt.Println(tableLines)
+
 		result["data"] = tableLines
 		if jsonResult, er := json.Marshal(&paginator); er == nil {
 			result["paginator"] = string(jsonResult)

@@ -62,6 +62,7 @@ func (this *CityController) cityList(start, length int64, condArr map[string]int
 			oneLine["province"] = city.Province.Name
 			oneLine["country"] = city.Province.Country.Name
 			oneLine["Id"] = city.Id
+			oneLine["id"] = city.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

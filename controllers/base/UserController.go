@@ -2,7 +2,6 @@ package base
 
 import (
 	"encoding/json"
-	"fmt"
 	mb "pms/models/base"
 	"strconv"
 	"strings"
@@ -130,6 +129,11 @@ func (this *UserController) userList(start, length int64, condArr map[string]int
 			} else {
 				oneLine["department"] = "-"
 			}
+			if user.Position != nil {
+				oneLine["position"] = user.Position.Name
+			} else {
+				oneLine["position"] = "-"
+			}
 
 			oneLine["email"] = user.Email
 			oneLine["mobile"] = user.Mobile
@@ -146,6 +150,7 @@ func (this *UserController) userList(start, length int64, condArr map[string]int
 			}
 			oneLine["qq"] = user.Qq
 			oneLine["Id"] = user.Id
+			oneLine["id"] = user.Id
 			oneLine["wechat"] = user.WeChat
 
 			tableLines = append(tableLines, oneLine)
@@ -175,14 +180,13 @@ func (this *UserController) PostCreate() {
 	user := new(mb.User)
 	if err := this.ParseForm(user); err == nil {
 
-		departmentStr := this.Input().Get("department")
-		if deparentId, err := strconv.ParseInt(departmentStr, 10, 64); err == nil {
+		if deparentId, err := this.GetInt64("department"); err == nil {
 			if department, err := mb.GetDepartmentByID(deparentId); err == nil {
 				user.Department = &department
 			}
 		}
-		positionStr := this.Input().Get("position")
-		if positionId, err := strconv.ParseInt(positionStr, 10, 64); err == nil {
+
+		if positionId, err := this.GetInt64("position"); err == nil {
 			if position, err := mb.GetPositionByID(positionId); err == nil {
 				user.Position = &position
 			}
@@ -191,20 +195,16 @@ func (this *UserController) PostCreate() {
 		if id, err := mb.AddUser(user, this.User); err == nil {
 			this.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
 		}
-	} else {
-		fmt.Print("%T", err)
 	}
 
 }
 func (this *UserController) Edit() {
-	id, _ := this.GetInt64(":id")
-	user, _ := mb.GetUserByID(id)
-	fmt.Println(user)
+	// id, _ := this.GetInt64(":id")
+
 	this.TplName = "user/user_form.html"
 }
 func (this *UserController) Show() {
 	this.Data["MenuSelfInfoActive"] = "active"
-	id, _ := this.GetInt64(":id")
-	fmt.Print(id)
+
 	this.TplName = "user/user_form.html"
 }

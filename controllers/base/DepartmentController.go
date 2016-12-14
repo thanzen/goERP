@@ -2,7 +2,6 @@ package base
 
 import (
 	"encoding/json"
-	"fmt"
 	mb "pms/models/base"
 	"strconv"
 	"strings"
@@ -54,6 +53,7 @@ func (this *DepartmentController) departmentList(start, length int64, condArr ma
 
 	var departments []mb.Department
 	paginator, departments, err := mb.ListDepartment(condArr, start, length)
+
 	result := make(map[string]interface{})
 	if err == nil {
 
@@ -63,11 +63,12 @@ func (this *DepartmentController) departmentList(start, length int64, condArr ma
 			oneLine := make(map[string]interface{})
 
 			oneLine["Id"] = department.Id
+			oneLine["id"] = department.Id
 			oneLine["name"] = department.Name
 
 			tableLines = append(tableLines, oneLine)
 		}
-		fmt.Println(tableLines)
+
 		result["data"] = tableLines
 		if jsonResult, er := json.Marshal(&paginator); er == nil {
 			result["paginator"] = string(jsonResult)

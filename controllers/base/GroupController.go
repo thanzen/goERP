@@ -2,7 +2,6 @@ package base
 
 import (
 	"encoding/json"
-	"fmt"
 	mb "pms/models/base"
 	"strconv"
 	"strings"
@@ -61,7 +60,7 @@ func (this *GroupController) groupList(start, length int64, condArr map[string]i
 
 	var groups []mb.Group
 	paginator, groups, err := mb.ListGroup(condArr, start, length)
-	fmt.Println(groups)
+
 	result := make(map[string]interface{})
 	if err == nil {
 
@@ -72,6 +71,7 @@ func (this *GroupController) groupList(start, length int64, condArr map[string]i
 			oneLine["name"] = group.Name
 
 			oneLine["Id"] = group.Id
+			oneLine["id"] = group.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

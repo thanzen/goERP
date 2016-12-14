@@ -20,6 +20,8 @@ func (this *ProductCategoryController) Post() {
 		this.Validator()
 	case "table": //bootstrap table的post请求
 		this.PostList()
+	case "create":
+		this.PostCreate()
 	default:
 		this.PostList()
 	}
@@ -38,6 +40,30 @@ func (this *ProductCategoryController) Get() {
 	this.Data["URL"] = this.URL
 	this.Layout = "base/base.html"
 	this.Data["MenuProductCategoryActive"] = "active"
+}
+func (this *ProductCategoryController) PostCreate() {
+
+	category := new(mp.ProductCategory)
+	fmt.Println(this.GetString("name"))
+	if err := this.ParseForm(category); err == nil {
+
+		if parentId, err := this.GetInt64("parent"); err == nil {
+			if parent, err := mp.GetProductCategoryByID(parentId); err == nil {
+				category.Parent = &parent
+
+			}
+		}
+		fmt.Println(category)
+		if id, err := mp.AddProductCategory(category, this.User); err == nil {
+			this.Redirect("/product/category/"+strconv.FormatInt(id, 10), 302)
+		} else {
+			fmt.Println(err)
+			this.PostList()
+		}
+	} else {
+		this.PostList()
+	}
+
 }
 func (this *ProductCategoryController) Create() {
 	method := strings.ToUpper(this.Ctx.Request.Method)
@@ -81,6 +107,7 @@ func (this *ProductCategoryController) productCategoryList(start, length int64, 
 			}
 			oneLine["path"] = line.ParentFullPath
 			oneLine["Id"] = line.Id
+			oneLine["id"] = line.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines
@@ -95,8 +122,6 @@ func (this *ProductCategoryController) PostList() {
 	condArr := make(map[string]interface{})
 	start := this.Input().Get("offset")
 	length := this.Input().Get("limit")
-	fmt.Println(start)
-	fmt.Println(length)
 
 	var (
 		startInt64  int64
