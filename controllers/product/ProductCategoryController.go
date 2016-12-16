@@ -2,7 +2,6 @@ package product
 
 import (
 	"encoding/json"
-	"fmt"
 	"pms/controllers/base"
 	mp "pms/models/product"
 	"strconv"
@@ -26,12 +25,17 @@ func (this *ProductCategoryController) Post() {
 		this.PostList()
 	}
 }
+
 func (this *ProductCategoryController) Get() {
 	this.GetList()
 	action := this.Input().Get("action")
 	switch action {
 	case "create":
 		this.Create()
+	case "edit":
+		this.Edit()
+	case "detail":
+		this.Detail()
 	default:
 		this.GetList()
 
@@ -41,10 +45,41 @@ func (this *ProductCategoryController) Get() {
 	this.Layout = "base/base.html"
 	this.Data["MenuProductCategoryActive"] = "active"
 }
+func (this *ProductCategoryController) Edit() {
+	id := this.Ctx.Input.Param(":id")
+	categoryInfo := make(map[string]interface{})
+	if id != "" {
+		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+
+			if category, err := mp.GetProductCategoryByID(idInt64); err == nil {
+
+				categoryInfo["name"] = category.Name
+				parent := make(map[string]interface{})
+				if category.Parent != nil {
+					parent["id"] = category.Parent.Id
+					parent["name"] = category.Parent.Name
+				}
+				categoryInfo["parent"] = parent
+
+			}
+		}
+
+	}
+	this.Data["Action"] = "edit"
+	this.Data["RecordId"] = id
+	this.Data["Category"] = categoryInfo
+
+	this.TplName = "product/product_category_form.html"
+}
+
+func (this *ProductCategoryController) Detail() {
+	this.Data["Action"] = "detial"
+}
+
 func (this *ProductCategoryController) PostCreate() {
 
 	category := new(mp.ProductCategory)
-	fmt.Println(this.GetString("name"))
+
 	if err := this.ParseForm(category); err == nil {
 
 		if parentId, err := this.GetInt64("parent"); err == nil {
@@ -53,11 +88,10 @@ func (this *ProductCategoryController) PostCreate() {
 
 			}
 		}
-		fmt.Println(category)
+
 		if id, err := mp.AddProductCategory(category, this.User); err == nil {
 			this.Redirect("/product/category/"+strconv.FormatInt(id, 10), 302)
 		} else {
-			fmt.Println(err)
 			this.PostList()
 		}
 	} else {
@@ -68,6 +102,7 @@ func (this *ProductCategoryController) PostCreate() {
 func (this *ProductCategoryController) Create() {
 	method := strings.ToUpper(this.Ctx.Request.Method)
 	if method == "GET" {
+		this.Data["Action"] = "create"
 		this.Data["Readonly"] = false
 		this.Data["listName"] = "创建类别"
 		this.TplName = "product/product_category_form.html"
@@ -76,12 +111,24 @@ func (this *ProductCategoryController) Create() {
 }
 func (this *ProductCategoryController) Validator() {
 	name := this.GetString("name")
+	recordId := this.GetString("recordId")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
-	if _, err := mp.GetProductCategoryByName(name); err != nil {
+	obj, err := mp.GetProductCategoryByName(name)
+	if err != nil {
 		result["valid"] = true
 	} else {
-		result["valid"] = false
+		if obj.Name == name {
+			if recordId != "" {
+				result["valid"] = true
+			} else {
+				result["valid"] = false
+			}
+
+		} else {
+			result["valid"] = true
+		}
+
 	}
 	this.Data["json"] = result
 	this.ServeJSON()
@@ -122,7 +169,11 @@ func (this *ProductCategoryController) PostList() {
 	condArr := make(map[string]interface{})
 	start := this.Input().Get("offset")
 	length := this.Input().Get("limit")
-
+	name := this.Input().Get("name")
+	name = strings.TrimSpace(name)
+	if name != "" {
+		condArr["name"] = name
+	}
 	var (
 		startInt64  int64
 		lengthInt64 int64

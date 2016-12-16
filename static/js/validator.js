@@ -160,11 +160,17 @@ $(function() {
                         type: "POST",
                         data: function() {
                             var xsrf = $("input[name ='_xsrf']")[0].value;
-                            return {
+                            var recordId = $("input[name ='_recordId']");
+                            res = {
                                 _xsrf: xsrf,
                                 action: "validator",
 
                             }
+                            if (recordId != undefined && recordId[0]) {
+                                recordId = recordId[0].value;
+                                res.recordId = recordId;
+                            }
+                            return res
                         },
                     },
                 },

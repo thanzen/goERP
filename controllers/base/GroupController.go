@@ -40,6 +40,11 @@ func (this *GroupController) PostList() {
 	condArr := make(map[string]interface{})
 	start := this.Input().Get("offset")
 	length := this.Input().Get("limit")
+	name := this.Input().Get("name")
+	name = strings.TrimSpace(name)
+	if name != "" {
+		condArr["name"] = name
+	}
 	var (
 		startInt64  int64
 		lengthInt64 int64

@@ -71,7 +71,9 @@ func ListGroup(condArr map[string]interface{}, start, length int64) (utils.Pagin
 	qs := o.QueryTable(new(Group))
 	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
-
+	if name, ok := condArr["name"]; ok {
+		cond = cond.And("name__icontains", name)
+	}
 	var (
 		groups []Group
 		num    int64

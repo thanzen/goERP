@@ -27,9 +27,9 @@ $(document).ready(function() {
         //     $element.css("background-color", "green");
         // },//单击row事件
     });
-    var displayTable = function(selectId, ajaxUrl, columns, detailView, onExpandRow) {
+    var displayTable = function(selectId, ajaxUrl, columns, onExpandRow) {
             var $tableNode = $(selectId);
-            $tableNode.bootstrapTable({
+            var options = {
                 url: ajaxUrl,
                 queryParams: function(params) {
                     var xsrf = $("input[name ='_xsrf']");
@@ -40,9 +40,12 @@ $(document).ready(function() {
                     return params;
                 },
                 columns: columns,
-                detailView: detailView,
-                onExpandRow: onExpandRow,
-            });
+            }
+            if (onExpandRow != undefined) {
+                options.detailView = true;
+                options.onExpandRow = onExpandRow;
+            }
+            $tableNode.bootstrapTable(options);
         }
         //用户表
     displayTable("#table-user", "/user/", [
@@ -75,7 +78,7 @@ $(document).ready(function() {
             }
         }
 
-    ], true, function(index, row, $detail) {
+    ], function(index, row, $detail) {
         console.log(row);
         var html = "1231231";
         var params = (function() {
@@ -137,7 +140,7 @@ $(document).ready(function() {
                 return html;
             }
         }
-    ], true);
+    ]);
     //省份表
     displayTable("#table-province", "/address/province/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
@@ -154,7 +157,7 @@ $(document).ready(function() {
                 return html;
             }
         }
-    ], true);
+    ]);
 
     //城市表
     displayTable("#table-city", "/address/city/", [
@@ -173,7 +176,7 @@ $(document).ready(function() {
                 return html;
             }
         }
-    ], true);
+    ]);
     //区县表
     displayTable("#table-district", "/address/district/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },

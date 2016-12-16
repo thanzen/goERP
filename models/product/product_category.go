@@ -27,7 +27,7 @@ func ListProductCategory(condArr map[string]interface{}, start, length int64) (u
 	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
 	if name, ok := condArr["name"]; ok {
-		cond = cond.And("name_icontains", name)
+		cond = cond.And("name__icontains", name)
 	}
 	var (
 		arrs []ProductCategory
@@ -59,6 +59,7 @@ func AddProductCategory(obj *ProductCategory, user base.User) (int64, error) {
 	productCategory.Name = obj.Name
 	productCategory.CreateUser = &user
 	productCategory.UpdateUser = &user
+	productCategory.Parent = obj.Parent
 	id, err := o.Insert(productCategory)
 	return id, err
 }
@@ -69,7 +70,9 @@ func GetProductCategoryByID(id int64) (ProductCategory, error) {
 	o.Using("default")
 	obj := ProductCategory{Base: base.Base{Id: id}}
 	err := o.Read(&obj)
-	fmt.Println(obj)
+	if obj.Parent != nil {
+		o.Read(obj.Parent)
+	}
 	return obj, err
 }
 

@@ -63,7 +63,7 @@ func ListCity(condArr map[string]interface{}, start, length int64) (utils.Pagina
 	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
 	if name, ok := condArr["name"]; ok {
-		cond = cond.And("name_icontains", name)
+		cond = cond.And("name__icontains", name)
 	}
 	var (
 		citys []City
