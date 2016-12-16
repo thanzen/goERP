@@ -4,7 +4,9 @@
 
 <form id="productCategoryForm" action="/product/category/{{.RecordId}}?action={{.Action}}" method="post" class="form-horizontal" role="form">
     <div class="row">
-        <button type="submit" form="productCategoryForm" id="productCategoryForm" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
+        {{if .Readonly}}
+        <button class="btn btn-success fa fa-pencil pull-left form-edit">&nbsp编辑</button>{{else}}
+        <button type="submit" form="productCategoryForm" id="productCategoryForm" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button> {{end}}
         <a href="{{.URL}}/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a>
         <a href="{{.URL}}/" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
     </div>
@@ -18,7 +20,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-4 control-label label-start">产品类别<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="name" type="text" {{if .Category}} value="{{.Category.name}}" {{end}} />
+                        <input class="form-control" name="name" type="text" {{if .Category}} value="{{.Category.name}}" {{end}} {{if .Readonly}}readonly{{end}} />
                     </div>
                 </div>
             </div>
@@ -26,7 +28,7 @@
                 <div class="form-group">
                     <label for="parent" class="col-md-4 control-label label-start">上级类别</label>
                     <div class="col-md-8">
-                        <select name="parent" id="parent" class="form-control select-product-category" {{if .Category}} {{if .Category.parent}} data-default-id="{{.Category.parent.id}}" data-default-name="{{.Category.parent.name}}" {{end}} {{end}}>
+                        <select name="parent" id="parent" class="form-control select-product-category" {{if .Readonly}}readonly{{end}} {{if .Category}} {{if .Category.parent}} data-default-id="{{.Category.parent.id}}" data-default-name="{{.Category.parent.name}}" {{end}} {{end}}>
                         </select>
                     </div>
                 </div>

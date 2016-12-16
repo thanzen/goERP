@@ -73,6 +73,9 @@ func (this *ProductCategoryController) Edit() {
 }
 
 func (this *ProductCategoryController) Detail() {
+	//获取信息一样，直接调用Edit
+	this.Edit()
+	this.Data["Readonly"] = true
 	this.Data["Action"] = "detial"
 }
 
