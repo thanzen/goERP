@@ -63,10 +63,11 @@ func CreateProductAttributeValue(obj *ProductAttributeValue, user base.User) (in
 func UpdateProductAttributeValue(obj *ProductAttributeValue, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	updateObj := ProductCategory{Base: base.Base{Id: obj.Id}}
+	updateObj := ProductAttributeValue{Base: base.Base{Id: obj.Id}}
 	updateObj.UpdateUser = &user
 	updateObj.Name = obj.Name
-	if num, err := o.Update(&updateObj, "Name", "UpdateUser", "UpdateDate"); err == nil {
+	updateObj.Attribute = obj.Attribute
+	if num, err := o.Update(&updateObj, "Name", "Attribute", "UpdateUser", "UpdateDate"); err == nil {
 		return num, err
 	} else {
 		return 0, err

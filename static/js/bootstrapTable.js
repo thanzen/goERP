@@ -211,7 +211,7 @@ $(document).ready(function() {
                 var datas = row.values;
                 var html = "";
                 for (key in datas) {
-                    html += "<span  class='display-block label label-primary'>" + datas[key] + "</span>";
+                    html += "<a  class='display-block label label-primary' href='/product/attributevalue/" + key + "?action=detail'>" + datas[key] + "</a>";
                 }
                 return html;
             }
