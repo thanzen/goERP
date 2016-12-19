@@ -106,14 +106,14 @@ func (ctl *ProductAttributeController) PostCreate() {
 func (ctl *ProductAttributeController) Validator() {
 	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
-	recordId := ctl.GetString("recordId")
+	recordID := ctl.GetString("recordId")
 	result := make(map[string]bool)
 	obj, err := mp.GetProductAttributeByName(name)
 	if err != nil {
 		result["valid"] = true
 	} else {
 		if obj.Name == name {
-			if recordId != "" {
+			if recordID != "" {
 				result["valid"] = true
 			} else {
 				result["valid"] = false

@@ -31,7 +31,11 @@ func (ctl *ProductAttributeValueController) Put() {
 	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
 		if attrValue, err := mp.GetProductAttributeValueByID(idInt64); err == nil {
 			if err := ctl.ParseForm(&attrValue); err == nil {
-
+				if attributeID, err := ctl.GetInt64("productAttributeID"); err == nil {
+					if attribute, err := mp.GetProductAttributeByID(attributeID); err == nil {
+						attrValue.Attribute = &attribute
+					}
+				}
 				if _, err := mp.UpdateProductAttributeValue(&attrValue, ctl.User); err == nil {
 					ctl.Redirect(ctl.URL+"/"+id+"?action=detail", 302)
 				}
@@ -113,11 +117,23 @@ func (ctl *ProductAttributeValueController) PostCreate() {
 func (ctl *ProductAttributeValueController) Validator() {
 	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
+	recordID := ctl.GetString("recordId")
 	result := make(map[string]bool)
-	if _, err := mp.GetProductAttributeValueByName(name); err != nil {
+	obj, err := mp.GetProductAttributeValueByName(name)
+	if err != nil {
 		result["valid"] = true
 	} else {
-		result["valid"] = false
+		if obj.Name == name {
+			if recordID != "" {
+				result["valid"] = true
+			} else {
+				result["valid"] = false
+			}
+
+		} else {
+			result["valid"] = true
+		}
+
 	}
 	ctl.Data["json"] = result
 	ctl.ServeJSON()
