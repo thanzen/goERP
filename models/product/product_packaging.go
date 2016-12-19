@@ -15,7 +15,7 @@ type ProductPackaging struct {
 	ProductTemplate *ProductTemplate `orm:"rel(fk);null"` //产品款式
 	ProductProduct  *ProductProduct  `orm:"rel(fk);null"` //产品规格
 	FirstQty        float64          //第一单位最大数量
-	SecondQty       float64          //第二单位最大数量
+	// SecondQty       float64          //第二单位最大数量
 
 }
 

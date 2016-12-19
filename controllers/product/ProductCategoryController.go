@@ -57,7 +57,6 @@ func (ctl *ProductCategoryController) Get() {
 		ctl.Detail()
 	default:
 		ctl.GetList()
-
 	}
 	ctl.URL = "/product/category"
 	ctl.Data["URL"] = ctl.URL
@@ -112,7 +111,6 @@ func (ctl *ProductCategoryController) PostCreate() {
 	} else {
 		ctl.Get()
 	}
-
 }
 func (ctl *ProductCategoryController) Create() {
 	ctl.Data["Action"] = "create"

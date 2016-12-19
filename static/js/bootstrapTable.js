@@ -20,7 +20,7 @@ $(document).ready(function() {
         dataField: "data",
         pagination: true,
         pageNumber: 1,
-        pageSize: 10,
+        pageSize: 20,
         pageList: [10, 25, 50, 100, 500, 1000],
         // onClickRow: function(row, $element) {
         //     //$element是当前tr的jquery对象
@@ -306,6 +306,24 @@ $(document).ready(function() {
             }
         }
     ]);
+    //产品单位
+    displayTable("#table-product-uom", "/product/uom/", [
+        { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+        { title: "类别", field: 'attribute', sortable: true, order: "desc" },
+        { title: "属性值", field: 'value', align: "center", sortable: true, order: "desc" },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                html += "<a href='/product/uom/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/product/uom/" + row.Id + "?action=detail' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
+    ]);
+
 
 
 });

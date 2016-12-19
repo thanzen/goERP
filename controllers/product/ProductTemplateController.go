@@ -19,18 +19,39 @@ func (ctl *ProductTemplateController) Post() {
 		ctl.Validator()
 	case "table": //bootstrap table的post请求
 		ctl.PostList()
+	case "create":
+		ctl.PostCreate()
 	default:
 		ctl.PostList()
 	}
 }
 func (ctl *ProductTemplateController) Get() {
-	ctl.GetList()
-
+	action := ctl.Input().Get("action")
+	switch action {
+	case "create":
+		ctl.Create()
+	case "edit":
+		ctl.Edit()
+	case "detail":
+		ctl.Detail()
+	default:
+		ctl.GetList()
+	}
 	ctl.URL = "/product/template"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductTemplateActive"] = "active"
 }
+func (ctl *ProductTemplateController) PostCreate() {}
+func (ctl *ProductTemplateController) Edit()       {}
+func (ctl *ProductTemplateController) Detail()     {}
+func (ctl *ProductTemplateController) Create() {
+	ctl.Data["Action"] = "create"
+	ctl.Data["Readonly"] = false
+	ctl.Data["listName"] = "创建款式"
+	ctl.TplName = "product/product_template_form.html"
+}
+
 func (ctl *ProductTemplateController) Validator() {
 	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)

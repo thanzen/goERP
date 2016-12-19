@@ -58,13 +58,12 @@ func ListProductUom(condArr map[string]interface{}, page, offset int64) (utils.P
 }
 
 //添加属性
-func CreateProductUom(obj ProductUom, user base.User) (int64, error) {
+func CreateProductUom(obj *ProductUom, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productUom := new(ProductUom)
 	productUom.CreateUser = &user
 	productUom.UpdateUser = &user
-
 	id, err := o.Insert(productUom)
 	return id, err
 }
@@ -75,5 +74,8 @@ func GetProductUom(id int64) (ProductUom, error) {
 	o.Using("default")
 	productUom := ProductUom{Base: base.Base{Id: id}}
 	err := o.Read(&productUom)
+	if productUom.Category != nil {
+		o.Read(productUom.Category)
+	}
 	return productUom, err
 }

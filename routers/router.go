@@ -54,8 +54,8 @@ func init() {
 	//产品属性价格
 	beego.Router("/product/attributeprice/:action([A-Za-z]+)/?:id", &product.ProductAttributePriceController{})
 	//产品计量单位
-	beego.Router("/product/uom/:action([A-Za-z]+)/?:id", &product.ProductUomController{})
+	beego.Router("/product/uom/?:id", &product.ProductUomController{})
 	//产品计量单位类别
-	beego.Router("/product/uomcateg/:action([A-Za-z]+)/?:id", &product.ProductUomCategController{})
+	beego.Router("/product/uomcateg/?:id", &product.ProductUomCategController{})
 
 }

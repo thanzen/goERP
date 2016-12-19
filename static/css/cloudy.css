@@ -2,6 +2,10 @@
     padding: 10px 30px;
 }
 
+#display-table {
+    margin-top: 5px;
+}
+
 
 /*删选条件*/
 
@@ -33,4 +37,8 @@ fieldset legend {
 .table-diplay-info thead,
 .fix-sticky thead {
     background-color: #5bc0de;
+}
+
+.tab-content {
+    margin-top: 20px;
 }
