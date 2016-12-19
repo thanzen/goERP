@@ -10,10 +10,10 @@ import (
 
 type ProductAttribute struct {
 	base.Base
-	Name           string                   `orm:"unique"`        //产品属性名称
-	Code           string                   `orm:"default(\"\")"` //产品属性编码
-	Sequence       int32                    //序列
-	ValueIds       []*ProductAttributeValue `orm:"reverse(many)"` //属性值
+	Name           string                   `orm:"unique" form:"name"`        //产品属性名称
+	Code           string                   `orm:"default(\"\")" form:"code"` //产品属性编码
+	Sequence       int32                    `form:"sequence"`                 //序列
+	ValueIds       []*ProductAttributeValue `orm:"reverse(many)"`             //属性值
 	AttributeLines []*ProductAttributeLine  `orm:"reverse(many)"`
 }
 
@@ -49,16 +49,12 @@ func ListProductAttribute(condArr map[string]interface{}, start, length int64) (
 }
 
 //添加属性
-func CreateProductAttribute(obj ProductAttribute, user base.User) (int64, error) {
+func CreateProductAttribute(obj *ProductAttribute, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	productAttribute := new(ProductAttribute)
-	productAttribute.Name = obj.Name
-	productAttribute.CreateUser = &user
-	productAttribute.UpdateUser = &user
-	productAttribute.Code = obj.Code
-	productAttribute.Sequence = obj.Sequence
-	id, err := o.Insert(productAttribute)
+	obj.CreateUser = &user
+	obj.UpdateUser = &user
+	id, err := o.Insert(obj)
 	return id, err
 }
 
@@ -69,8 +65,10 @@ func UpdateProductAttribute(obj *ProductAttribute, user base.User) (int64, error
 	updateObj := ProductAttribute{Base: base.Base{Id: obj.Id}}
 	updateObj.UpdateUser = &user
 	updateObj.Name = obj.Name
+	updateObj.Code = obj.Code
+	updateObj.Sequence = obj.Sequence
 
-	if num, err := o.Update(&updateObj, "Name", "UpdateUser", "UpdateDate"); err == nil {
+	if num, err := o.Update(&updateObj, "Name", "Code", "Sequence", "UpdateUser", "UpdateDate"); err == nil {
 		return num, err
 	} else {
 		return 0, err
@@ -81,16 +79,9 @@ func UpdateProductAttribute(obj *ProductAttribute, user base.User) (int64, error
 func GetProductAttributeByID(id int64) (ProductAttribute, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		productAttribute ProductAttribute
-		err              error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(ProductAttribute))
-	qs = qs.RelatedSel()
-	err = qs.One(&productAttribute)
-	return productAttribute, err
+	obj := ProductAttribute{Base: base.Base{Id: id}}
+	err := o.Read(&obj)
+	return obj, err
 }
 func GetProductAttributeByName(name string) (ProductAttribute, error) {
 	o := orm.NewOrm()

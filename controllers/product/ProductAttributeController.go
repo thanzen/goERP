@@ -2,6 +2,7 @@ package product
 
 import (
 	"encoding/json"
+	"fmt"
 	"pms/controllers/base"
 	mp "pms/models/product"
 	"strconv"
@@ -25,11 +26,29 @@ func (ctl *ProductAttributeController) Post() {
 		ctl.PostList()
 	}
 }
+func (ctl *ProductAttributeController) Put() {
+	id := ctl.Ctx.Input.Param(":id")
+	ctl.URL = "/product/attribute"
+	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+		if attribute, err := mp.GetProductAttributeByID(idInt64); err == nil {
+			if err := ctl.ParseForm(&attribute); err == nil {
+
+				if _, err := mp.UpdateProductAttribute(&attribute, ctl.User); err == nil {
+					ctl.Redirect(ctl.URL+"/"+id+"?action=detail", 302)
+				}
+			}
+		}
+	}
+	ctl.Redirect(ctl.URL+"/"+id+"?action=edit", 302)
+
+}
 func (ctl *ProductAttributeController) Get() {
 	action := ctl.Input().Get("action")
 	switch action {
 	case "create":
 		ctl.Create()
+	case "edit":
+		ctl.Edit()
 	case "detail":
 		ctl.Detail()
 	default:
@@ -42,7 +61,22 @@ func (ctl *ProductAttributeController) Get() {
 	ctl.Data["MenuProductAttributeActive"] = "active"
 }
 func (ctl *ProductAttributeController) Edit() {
-
+	id := ctl.Ctx.Input.Param(":id")
+	attributeInfo := make(map[string]interface{})
+	if id != "" {
+		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+			if attribute, err := mp.GetProductAttributeByID(idInt64); err == nil {
+				attributeInfo["name"] = attribute.Name
+				attributeInfo["code"] = attribute.Code
+				attributeInfo["sequence"] = attribute.Sequence
+			}
+		}
+	}
+	ctl.Data["Action"] = "edit"
+	ctl.Data["RecordId"] = id
+	ctl.Data["Attribute"] = attributeInfo
+	fmt.Println(attributeInfo)
+	ctl.TplName = "product/product_attribute_form.html"
 }
 func (ctl *ProductAttributeController) Create() {
 	method := strings.ToUpper(ctl.Ctx.Request.Method)
@@ -61,16 +95,38 @@ func (ctl *ProductAttributeController) Detail() {
 	ctl.Data["Action"] = "detail"
 }
 func (ctl *ProductAttributeController) PostCreate() {
+	attribute := new(mp.ProductAttribute)
+	if err := ctl.ParseForm(attribute); err == nil {
 
+		if id, err := mp.CreateProductAttribute(attribute, ctl.User); err == nil {
+			ctl.Redirect("/product/attribute/"+strconv.FormatInt(id, 10)+"?action=detail", 302)
+		} else {
+			ctl.PostList()
+		}
+	} else {
+		ctl.PostList()
+	}
 }
 func (ctl *ProductAttributeController) Validator() {
 	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
+	recordId := ctl.GetString("recordId")
 	result := make(map[string]bool)
-	if _, err := mp.GetProductAttributeByName(name); err != nil {
+	obj, err := mp.GetProductAttributeByName(name)
+	if err != nil {
 		result["valid"] = true
 	} else {
-		result["valid"] = false
+		if obj.Name == name {
+			if recordId != "" {
+				result["valid"] = true
+			} else {
+				result["valid"] = false
+			}
+
+		} else {
+			result["valid"] = true
+		}
+
 	}
 	ctl.Data["json"] = result
 	ctl.ServeJSON()

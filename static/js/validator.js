@@ -207,7 +207,6 @@ $(function() {
                             res = {
                                 _xsrf: xsrf,
                                 action: "validator",
-
                             }
                             if (recordId != undefined && recordId[0]) {
                                 recordId = recordId[0].value;
