@@ -13,21 +13,21 @@ type DistrictController struct {
 	base.BaseController
 }
 
-func (this *DistrictController) Post() {
-	action := this.Input().Get("action")
+func (ctl *DistrictController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *DistrictController) PostList() {
+func (ctl *DistrictController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
 	var (
 		startInt64  int64
 		lengthInt64 int64
@@ -38,15 +38,15 @@ func (this *DistrictController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.districtList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.districtList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
 
 // 获得符合要求的地区数据
-func (this *DistrictController) districtList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *DistrictController) districtList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var districtes []mb.District
 	paginator, districtes, err := mb.ListDistrict(condArr, start, length)
@@ -82,8 +82,8 @@ func (this *DistrictController) districtList(start, length int64, condArr map[st
 	}
 	return result, err
 }
-func (this *DistrictController) Validator() {
-	name := this.GetString("name")
+func (ctl *DistrictController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mb.GetDistrictByName(name); err != nil {
@@ -91,20 +91,20 @@ func (this *DistrictController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
-func (this *DistrictController) Get() {
-	this.GetList()
+func (ctl *DistrictController) Get() {
+	ctl.GetList()
 
-	this.URL = "/address/district"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuDistrictActive"] = "active"
+	ctl.URL = "/address/district"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuDistrictActive"] = "active"
 
 }
-func (this *DistrictController) GetList() {
-	this.Data["tableId"] = "table-district"
-	this.TplName = "base/table_base.html"
+func (ctl *DistrictController) GetList() {
+	ctl.Data["tableId"] = "table-district"
+	ctl.TplName = "base/table_base.html"
 }

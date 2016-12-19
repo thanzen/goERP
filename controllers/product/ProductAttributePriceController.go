@@ -6,23 +6,23 @@ type ProductAttributePriceController struct {
 	base.BaseController
 }
 
-func (this *ProductAttributePriceController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
+func (ctl *ProductAttributePriceController) Get() {
+	action := ctl.GetString(":action")
+	viewType := ctl.Input().Get("view_type")
 	switch action {
 	case "list":
 		switch viewType {
 		case "list":
-			this.List()
+			ctl.List()
 		default:
-			this.List()
+			ctl.List()
 		}
 	default:
-		this.List()
+		ctl.List()
 	}
-	this.Data["searchKeyWords"] = "属性值价格"
-	this.Layout = "base/base.html"
+	ctl.Data["searchKeyWords"] = "属性值价格"
+	ctl.Layout = "base/base.html"
 }
-func (this *ProductAttributePriceController) List() {
+func (ctl *ProductAttributePriceController) List() {
 
 }

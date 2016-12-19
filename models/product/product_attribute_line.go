@@ -57,7 +57,7 @@ func ListProductAttributeLine(condArr map[string]interface{}, page, offset int64
 }
 
 //添加属性
-func AddProductAttributeLine(obj ProductAttributeLine, user base.User) (int64, error) {
+func CreateProductAttributeLine(obj ProductAttributeLine, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productAttributeLine := new(ProductAttributeLine)

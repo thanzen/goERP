@@ -21,7 +21,7 @@ type Company struct {
 }
 
 //添加公司
-func AddCompany(obj Company, user User) (int64, error) {
+func CreateCompany(obj Company, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	company := new(Company)

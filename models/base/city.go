@@ -14,7 +14,7 @@ type City struct {
 }
 
 //添加城市
-func AddCity(obj City, user User) (int64, error) {
+func CreateCity(obj City, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	city := new(City)

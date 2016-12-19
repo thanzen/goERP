@@ -67,7 +67,7 @@ func ListProductSupplier(condArr map[string]interface{}, page, offset int64) (ut
 }
 
 //添加属性
-func AddProductSupplier(obj ProductSupplier, user base.User) (int64, error) {
+func CreateProductSupplier(obj ProductSupplier, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productSupplier := new(ProductSupplier)

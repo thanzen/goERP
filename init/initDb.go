@@ -44,7 +44,7 @@ func initUser(filename string) {
 			if xml.Unmarshal(data, &initUsers) == nil {
 				for _, k := range initUsers.Users {
 					//admin系统管理员
-					base.AddUser(&k, k)
+					base.CreateUser(&k, k)
 				}
 			}
 		}
@@ -58,7 +58,7 @@ func initGroup(filename string, user base.User) {
 			var initGroups InitGroups
 			if xml.Unmarshal(data, &initGroups) == nil {
 				for _, k := range initGroups.Groups {
-					base.AddGroup(k, user)
+					base.CreateGroup(k, user)
 				}
 			}
 		}
@@ -73,7 +73,7 @@ func initCountry(filename string, user base.User) {
 			var initCountries InitCountries
 			if xml.Unmarshal(data, &initCountries) == nil {
 				for _, k := range initCountries.Countries {
-					base.AddCountry(k, user)
+					base.CreateCountry(k, user)
 				}
 			}
 		}
@@ -91,7 +91,7 @@ func initProvince(filename string, user base.User) {
 					if country, err := base.GetCountryByID(pid); err == nil {
 						province.Country = &country
 						province.Name = k.Name
-						base.AddProvince(province, user)
+						base.CreateProvince(province, user)
 					}
 				}
 			}
@@ -114,7 +114,7 @@ func initCity(filename string, user base.User) {
 					if province, e = base.GetProvinceByID(pid); e == nil {
 						city.Province = &province
 						city.Name = k.Name
-						base.AddCity(city, user)
+						base.CreateCity(city, user)
 					}
 				}
 			}
@@ -138,7 +138,7 @@ func initDistrict(filename string, user base.User) {
 					if city, e = base.GetCityByID(pid); e == nil {
 						district.City = &city
 						district.Name = k.Name
-						base.AddDistrict(district, user)
+						base.CreateDistrict(district, user)
 					}
 				}
 			}

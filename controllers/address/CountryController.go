@@ -12,31 +12,31 @@ type CountryController struct {
 	base.BaseController
 }
 
-func (this *CountryController) Post() {
-	action := this.Input().Get("action")
+func (ctl *CountryController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *CountryController) Get() {
+func (ctl *CountryController) Get() {
 
-	this.GetList()
+	ctl.GetList()
 
-	this.URL = "/address/city"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuCountryActive"] = "active"
+	ctl.URL = "/address/city"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuCountryActive"] = "active"
 }
 
-func (this *CountryController) PostList() {
+func (ctl *CountryController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
 	var (
 		startInt64  int64
 		lengthInt64 int64
@@ -47,15 +47,15 @@ func (this *CountryController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.countryList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.countryList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
 
 // 获得符合要求的国家数据
-func (this *CountryController) countryList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *CountryController) countryList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var countries []mb.Country
 	paginator, countries, err := mb.ListCountry(condArr, start, length)
@@ -80,8 +80,8 @@ func (this *CountryController) countryList(start, length int64, condArr map[stri
 	return result, err
 }
 
-func (this *CountryController) Validator() {
-	name := this.GetString("name")
+func (ctl *CountryController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mb.GetCountryByName(name); err != nil {
@@ -89,11 +89,11 @@ func (this *CountryController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
-func (this *CountryController) GetList() {
-	this.Data["tableId"] = "table-country"
-	this.TplName = "base/table_base.html"
+func (ctl *CountryController) GetList() {
+	ctl.Data["tableId"] = "table-country"
+	ctl.TplName = "base/table_base.html"
 }

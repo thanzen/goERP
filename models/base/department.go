@@ -15,7 +15,7 @@ type Department struct {
 }
 
 //添加部门
-func AddDepartment(obj Department, user User) (int64, error) {
+func CreateDepartment(obj Department, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	department := new(Department)

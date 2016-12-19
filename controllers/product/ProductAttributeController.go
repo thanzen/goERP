@@ -12,27 +12,59 @@ type ProductAttributeController struct {
 	base.BaseController
 }
 
-func (this *ProductAttributeController) Post() {
-	action := this.Input().Get("action")
+func (ctl *ProductAttributeController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
+	case "create":
+		ctl.PostCreate()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *ProductAttributeController) Get() {
-	this.GetList()
+func (ctl *ProductAttributeController) Get() {
+	action := ctl.Input().Get("action")
+	switch action {
+	case "create":
+		ctl.Create()
+	case "detail":
+		ctl.Detail()
+	default:
+		ctl.GetList()
 
-	this.URL = "/product/attribute"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuProductAttributeActive"] = "active"
+	}
+	ctl.URL = "/product/attribute"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuProductAttributeActive"] = "active"
 }
-func (this *ProductAttributeController) Validator() {
-	name := this.GetString("name")
+func (ctl *ProductAttributeController) Edit() {
+
+}
+func (ctl *ProductAttributeController) Create() {
+	method := strings.ToUpper(ctl.Ctx.Request.Method)
+	if method == "GET" {
+		ctl.Data["Action"] = "create"
+		ctl.Data["Readonly"] = false
+		ctl.Data["listName"] = "创建属性"
+		ctl.TplName = "product/product_attribute_form.html"
+
+	}
+}
+func (ctl *ProductAttributeController) Detail() {
+	//获取信息一样，直接调用Edit
+	ctl.Edit()
+	ctl.Data["Readonly"] = true
+	ctl.Data["Action"] = "detail"
+}
+func (ctl *ProductAttributeController) PostCreate() {
+
+}
+func (ctl *ProductAttributeController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mp.GetProductAttributeByName(name); err != nil {
@@ -40,12 +72,12 @@ func (this *ProductAttributeController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
 // 获得符合要求的城市数据
-func (this *ProductAttributeController) productAttributeList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *ProductAttributeController) productAttributeList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var arrs []mp.ProductAttribute
 	paginator, arrs, err := mp.ListProductAttribute(condArr, start, length)
@@ -85,10 +117,10 @@ func (this *ProductAttributeController) productAttributeList(start, length int64
 	}
 	return result, err
 }
-func (this *ProductAttributeController) PostList() {
+func (ctl *ProductAttributeController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
 	var (
 		startInt64  int64
 		lengthInt64 int64
@@ -99,14 +131,14 @@ func (this *ProductAttributeController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.productAttributeList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.productAttributeList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
 
-func (this *ProductAttributeController) GetList() {
-	this.Data["tableId"] = "table-product-attribute"
-	this.TplName = "base/table_base.html"
+func (ctl *ProductAttributeController) GetList() {
+	ctl.Data["tableId"] = "table-product-attribute"
+	ctl.TplName = "base/table_base.html"
 }

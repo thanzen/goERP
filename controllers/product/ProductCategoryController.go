@@ -12,41 +12,60 @@ type ProductCategoryController struct {
 	base.BaseController
 }
 
-func (this *ProductCategoryController) Post() {
-	action := this.Input().Get("action")
+func (ctl *ProductCategoryController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	case "create":
-		this.PostCreate()
+		ctl.PostCreate()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
+func (ctl *ProductCategoryController) Put() {
+	id := ctl.Ctx.Input.Param(":id")
+	ctl.URL = "/product/category"
+	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+		if category, err := mp.GetProductCategoryByID(idInt64); err == nil {
+			if err := ctl.ParseForm(&category); err == nil {
+				if parentId, err := ctl.GetInt64("parent"); err == nil {
+					if parent, err := mp.GetProductCategoryByID(parentId); err == nil {
+						category.Parent = &parent
+					}
+				}
+				if _, err := mp.UpdateProductCategory(&category, ctl.User); err == nil {
+					ctl.Redirect(ctl.URL+"/"+id+"?action=detail", 302)
+				}
+			}
+		}
+	}
+	ctl.Redirect(ctl.URL+"/"+id+"?action=edit", 302)
 
-func (this *ProductCategoryController) Get() {
-	this.GetList()
-	action := this.Input().Get("action")
+}
+func (ctl *ProductCategoryController) Get() {
+
+	action := ctl.Input().Get("action")
 	switch action {
 	case "create":
-		this.Create()
+		ctl.Create()
 	case "edit":
-		this.Edit()
+		ctl.Edit()
 	case "detail":
-		this.Detail()
+		ctl.Detail()
 	default:
-		this.GetList()
+		ctl.GetList()
 
 	}
-	this.URL = "/product/category"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuProductCategoryActive"] = "active"
+	ctl.URL = "/product/category"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuProductCategoryActive"] = "active"
 }
-func (this *ProductCategoryController) Edit() {
-	id := this.Ctx.Input.Param(":id")
+func (ctl *ProductCategoryController) Edit() {
+	id := ctl.Ctx.Input.Param(":id")
 	categoryInfo := make(map[string]interface{})
 	if id != "" {
 		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
@@ -65,56 +84,52 @@ func (this *ProductCategoryController) Edit() {
 		}
 
 	}
-	this.Data["Action"] = "edit"
-	this.Data["RecordId"] = id
-	this.Data["Category"] = categoryInfo
+	ctl.Data["Action"] = "edit"
+	ctl.Data["RecordId"] = id
+	ctl.Data["Category"] = categoryInfo
 
-	this.TplName = "product/product_category_form.html"
+	ctl.TplName = "product/product_category_form.html"
 }
 
-func (this *ProductCategoryController) Detail() {
+func (ctl *ProductCategoryController) Detail() {
 	//获取信息一样，直接调用Edit
-	this.Edit()
-	this.Data["Readonly"] = true
-	this.Data["Action"] = "detial"
+	ctl.Edit()
+	ctl.Data["Readonly"] = true
+	ctl.Data["Action"] = "detail"
 }
 
-func (this *ProductCategoryController) PostCreate() {
-
+//post请求创建产品分类
+func (ctl *ProductCategoryController) PostCreate() {
 	category := new(mp.ProductCategory)
-
-	if err := this.ParseForm(category); err == nil {
-
-		if parentId, err := this.GetInt64("parent"); err == nil {
-			if parent, err := mp.GetProductCategoryByID(parentId); err == nil {
+	if err := ctl.ParseForm(category); err == nil {
+		if parentID, err := ctl.GetInt64("parent"); err == nil {
+			if parent, err := mp.GetProductCategoryByID(parentID); err == nil {
 				category.Parent = &parent
-
 			}
 		}
-
-		if id, err := mp.AddProductCategory(category, this.User); err == nil {
-			this.Redirect("/product/category/"+strconv.FormatInt(id, 10), 302)
+		if id, err := mp.CreateProductCategory(category, ctl.User); err == nil {
+			ctl.Redirect("/product/category/"+strconv.FormatInt(id, 10)+"?action=detail", 302)
 		} else {
-			this.PostList()
+			ctl.PostList()
 		}
 	} else {
-		this.PostList()
+		ctl.PostList()
 	}
 
 }
-func (this *ProductCategoryController) Create() {
-	method := strings.ToUpper(this.Ctx.Request.Method)
+func (ctl *ProductCategoryController) Create() {
+	method := strings.ToUpper(ctl.Ctx.Request.Method)
 	if method == "GET" {
-		this.Data["Action"] = "create"
-		this.Data["Readonly"] = false
-		this.Data["listName"] = "创建类别"
-		this.TplName = "product/product_category_form.html"
+		ctl.Data["Action"] = "create"
+		ctl.Data["Readonly"] = false
+		ctl.Data["listName"] = "创建类别"
+		ctl.TplName = "product/product_category_form.html"
 
 	}
 }
-func (this *ProductCategoryController) Validator() {
-	name := this.GetString("name")
-	recordId := this.GetString("recordId")
+func (ctl *ProductCategoryController) Validator() {
+	name := ctl.GetString("name")
+	recordId := ctl.GetString("recordId")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	obj, err := mp.GetProductCategoryByName(name)
@@ -133,12 +148,12 @@ func (this *ProductCategoryController) Validator() {
 		}
 
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
 // 获得符合要求的城市数据
-func (this *ProductCategoryController) productCategoryList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *ProductCategoryController) productCategoryList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var arrs []mp.ProductCategory
 	paginator, arrs, err := mp.ListProductCategory(condArr, start, length)
@@ -168,11 +183,11 @@ func (this *ProductCategoryController) productCategoryList(start, length int64, 
 	}
 	return result, err
 }
-func (this *ProductCategoryController) PostList() {
+func (ctl *ProductCategoryController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
-	name := this.Input().Get("name")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
+	name := ctl.Input().Get("name")
 	name = strings.TrimSpace(name)
 	if name != "" {
 		condArr["name"] = name
@@ -187,14 +202,14 @@ func (this *ProductCategoryController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.productCategoryList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.productCategoryList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
 
-func (this *ProductCategoryController) GetList() {
-	this.Data["tableId"] = "table-product-category"
-	this.TplName = "base/table_base.html"
+func (ctl *ProductCategoryController) GetList() {
+	ctl.Data["tableId"] = "table-product-category"
+	ctl.TplName = "base/table_base.html"
 }

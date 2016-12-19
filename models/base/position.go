@@ -11,7 +11,7 @@ type Position struct {
 	Name string `orm:"unique"` //职位名称
 }
 
-func AddPosition(obj Position, user User) (int64, error) {
+func CreatePosition(obj Position, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	position := new(Position)

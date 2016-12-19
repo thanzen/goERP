@@ -50,18 +50,29 @@ func ListProductCategory(condArr map[string]interface{}, start, length int64) (u
 	return paginator, arrs, err
 }
 
-//添加属性
-func AddProductCategory(obj *ProductCategory, user base.User) (int64, error) {
+//添加产品分类
+func CreateProductCategory(obj *ProductCategory, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-
-	productCategory := new(ProductCategory)
-	productCategory.Name = obj.Name
-	productCategory.CreateUser = &user
-	productCategory.UpdateUser = &user
-	productCategory.Parent = obj.Parent
-	id, err := o.Insert(productCategory)
+	obj.CreateUser = &user
+	obj.UpdateUser = &user
+	id, err := o.Insert(obj)
 	return id, err
+}
+
+//修改产品分类
+func UpdateProductCategory(obj *ProductCategory, user base.User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	updateObj := ProductCategory{Base: base.Base{Id: obj.Id}}
+	updateObj.UpdateUser = &user
+	updateObj.Name = obj.Name
+	updateObj.Parent = obj.Parent
+	if num, err := o.Update(&updateObj, "Name", "Parent", "UpdateUser", "UpdateDate"); err == nil {
+		return num, err
+	} else {
+		return 0, err
+	}
 }
 
 //根据ID查询类别

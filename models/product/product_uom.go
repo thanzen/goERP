@@ -58,7 +58,7 @@ func ListProductUom(condArr map[string]interface{}, page, offset int64) (utils.P
 }
 
 //添加属性
-func AddProductUom(obj ProductUom, user base.User) (int64, error) {
+func CreateProductUom(obj ProductUom, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productUom := new(ProductUom)

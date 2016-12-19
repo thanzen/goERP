@@ -54,7 +54,7 @@ func ListProductTag(condArr map[string]interface{}, page, offset int64) (utils.P
 }
 
 //添加属性
-func AddProductTag(obj ProductTag, user base.User) (int64, error) {
+func CreateProductTag(obj ProductTag, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productTag := new(ProductTag)

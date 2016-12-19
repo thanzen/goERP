@@ -6,22 +6,22 @@ type ProductPackagingController struct {
 	base.BaseController
 }
 
-func (this *ProductPackagingController) Get() {
-	action := this.GetString(":action")
-	viewType := this.Input().Get("view_type")
+func (ctl *ProductPackagingController) Get() {
+	action := ctl.GetString(":action")
+	viewType := ctl.Input().Get("view_type")
 	switch action {
 	case "list":
 		switch viewType {
 		case "list":
-			this.List()
+			ctl.List()
 		default:
-			this.List()
+			ctl.List()
 		}
 	default:
-		this.List()
+		ctl.List()
 	}
-	this.Data["searchKeyWords"] = "产品包装"
+	ctl.Data["searchKeyWords"] = "产品包装"
 }
-func (this *ProductPackagingController) List() {
+func (ctl *ProductPackagingController) List() {
 
 }

@@ -59,7 +59,7 @@ func ListProductProduct(condArr map[string]interface{}, start, length int64) (ut
 }
 
 //添加属性
-func AddProductProduct(obj ProductProduct, user base.User) (int64, error) {
+func CreateProductProduct(obj ProductProduct, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productProduct := new(ProductProduct)

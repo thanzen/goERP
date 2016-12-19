@@ -13,7 +13,7 @@ type District struct {
 }
 
 //添加区县
-func AddDistrict(obj District, user User) (int64, error) {
+func CreateDistrict(obj District, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	district := new(District)

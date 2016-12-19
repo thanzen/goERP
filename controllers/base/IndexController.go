@@ -4,10 +4,10 @@ type IndexController struct {
 	BaseController
 }
 
-func (this *IndexController) Get() {
+func (ctl *IndexController) Get() {
 
 	// 基础布局页面
-	this.Layout = "base/base.html"
-	this.TplName = "test.html"
+	ctl.Layout = "base/base.html"
+	ctl.TplName = "test.html"
 
 }

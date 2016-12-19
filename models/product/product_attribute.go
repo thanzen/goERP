@@ -49,7 +49,7 @@ func ListProductAttribute(condArr map[string]interface{}, start, length int64) (
 }
 
 //添加属性
-func AddProductAttribute(obj ProductAttribute, user base.User) (int64, error) {
+func CreateProductAttribute(obj ProductAttribute, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productAttribute := new(ProductAttribute)
@@ -60,6 +60,21 @@ func AddProductAttribute(obj ProductAttribute, user base.User) (int64, error) {
 	productAttribute.Sequence = obj.Sequence
 	id, err := o.Insert(productAttribute)
 	return id, err
+}
+
+//更新产品属性
+func UpdateProductAttribute(obj *ProductAttribute, user base.User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	updateObj := ProductAttribute{Base: base.Base{Id: obj.Id}}
+	updateObj.UpdateUser = &user
+	updateObj.Name = obj.Name
+
+	if num, err := o.Update(&updateObj, "Name", "UpdateUser", "UpdateDate"); err == nil {
+		return num, err
+	} else {
+		return 0, err
+	}
 }
 
 //获得某一个属性信息

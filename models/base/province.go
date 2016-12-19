@@ -15,7 +15,7 @@ type Province struct {
 }
 
 //添加省份
-func AddProvince(obj Province, user User) (int64, error) {
+func CreateProvince(obj Province, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	province := new(Province)

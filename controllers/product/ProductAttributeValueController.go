@@ -16,27 +16,27 @@ type ProductAttributeValueController struct {
 	base.BaseController
 }
 
-func (this *ProductAttributeValueController) Post() {
-	action := this.Input().Get("action")
+func (ctl *ProductAttributeValueController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *ProductAttributeValueController) Get() {
-	this.GetList()
+func (ctl *ProductAttributeValueController) Get() {
+	ctl.GetList()
 
-	this.URL = "/product/attribute"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuProductAttributeActive"] = "active"
+	ctl.URL = "/product/attribute"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuProductAttributeActive"] = "active"
 }
-func (this *ProductAttributeValueController) Validator() {
-	name := this.GetString("name")
+func (ctl *ProductAttributeValueController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mp.GetProductAttributeValueByName(name); err != nil {
@@ -44,12 +44,12 @@ func (this *ProductAttributeValueController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
 // 获得符合要求的城市数据
-func (this *ProductAttributeValueController) productAttributeList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *ProductAttributeValueController) productAttributeList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var arrs []mp.ProductAttributeValue
 	paginator, arrs, err := mp.ListProductAttributeValue(condArr, start, length)
@@ -74,10 +74,10 @@ func (this *ProductAttributeValueController) productAttributeList(start, length 
 	}
 	return result, err
 }
-func (this *ProductAttributeValueController) PostList() {
+func (ctl *ProductAttributeValueController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
 	var (
 		startInt64  int64
 		lengthInt64 int64
@@ -88,14 +88,14 @@ func (this *ProductAttributeValueController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.productAttributeList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.productAttributeList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
 
-func (this *ProductAttributeValueController) GetList() {
-	this.Data["tableId"] = "table-product-attributevalue"
-	this.TplName = "base/table_base.html"
+func (ctl *ProductAttributeValueController) GetList() {
+	ctl.Data["tableId"] = "table-product-attributevalue"
+	ctl.TplName = "base/table_base.html"
 }

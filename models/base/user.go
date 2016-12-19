@@ -80,7 +80,7 @@ func ListUser(condArr map[string]interface{}, start, length int64) (utils.Pagina
 }
 
 //添加用户
-func AddUser(insetUser *User, currentUser User) (int64, error) {
+func CreateUser(insetUser *User, currentUser User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 

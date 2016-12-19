@@ -53,7 +53,7 @@ func ListRecord(condArr map[string]interface{}, userId, start, length int64) (ut
 }
 
 //添加记录
-func AddRecord(user User, IP, UserAgent string) (int64, error) {
+func CreateRecord(user User, IP, UserAgent string) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	record := new(Record)

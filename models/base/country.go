@@ -13,7 +13,7 @@ type Country struct {
 }
 
 //添加国家
-func AddCountry(obj Country, user User) (int64, error) {
+func CreateCountry(obj Country, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	country := new(Country)

@@ -11,32 +11,32 @@ type DepartmentController struct {
 	BaseController
 }
 
-func (this *DepartmentController) Post() {
+func (ctl *DepartmentController) Post() {
 
-	action := this.Input().Get("action")
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	case "selectSearch":
-		this.PostList()
+		ctl.PostList()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
 
-func (this *DepartmentController) Get() {
-	this.GetList()
+func (ctl *DepartmentController) Get() {
+	ctl.GetList()
 
-	this.URL = "/department"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuDepartmentActive"] = "active"
+	ctl.URL = "/department"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuDepartmentActive"] = "active"
 }
 
-func (this *DepartmentController) Validator() {
-	name := this.GetString("name")
+func (ctl *DepartmentController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mb.GetDepartmentByName(name); err != nil {
@@ -44,12 +44,12 @@ func (this *DepartmentController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
 // 获得符合要求的城市数据
-func (this *DepartmentController) departmentList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *DepartmentController) departmentList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var departments []mb.Department
 	paginator, departments, err := mb.ListDepartment(condArr, start, length)
@@ -77,11 +77,11 @@ func (this *DepartmentController) departmentList(start, length int64, condArr ma
 	}
 	return result, err
 }
-func (this *DepartmentController) PostList() {
+func (ctl *DepartmentController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
-	name := this.Input().Get("name")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
+	name := ctl.Input().Get("name")
 	name = strings.TrimSpace(name)
 	if name != "" {
 		condArr["name"] = name
@@ -96,14 +96,14 @@ func (this *DepartmentController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.departmentList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.departmentList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
 
-func (this *DepartmentController) GetList() {
-	this.Data["tableId"] = "table-department"
-	this.TplName = "base/table_base.html"
+func (ctl *DepartmentController) GetList() {
+	ctl.Data["tableId"] = "table-department"
+	ctl.TplName = "base/table_base.html"
 }

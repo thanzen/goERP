@@ -11,21 +11,21 @@ type GroupController struct {
 	BaseController
 }
 
-func (this *GroupController) Post() {
-	action := this.Input().Get("action")
+func (ctl *GroupController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	case "selectSearch":
-		this.PostList()
+		ctl.PostList()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *GroupController) Validator() {
-	name := this.GetString("name")
+func (ctl *GroupController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mb.GetGroupByName(name); err != nil {
@@ -33,14 +33,14 @@ func (this *GroupController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
-func (this *GroupController) PostList() {
+func (ctl *GroupController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
-	name := this.Input().Get("name")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
+	name := ctl.Input().Get("name")
 	name = strings.TrimSpace(name)
 	if name != "" {
 		condArr["name"] = name
@@ -55,13 +55,13 @@ func (this *GroupController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.groupList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.groupList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
-func (this *GroupController) groupList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *GroupController) groupList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var groups []mb.Group
 	paginator, groups, err := mb.ListGroup(condArr, start, length)

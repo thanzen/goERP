@@ -12,29 +12,29 @@ type CityController struct {
 	base.BaseController
 }
 
-func (this *CityController) Post() {
-	action := this.Input().Get("action")
+func (ctl *CityController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	case "selectSearch":
-		this.PostList()
+		ctl.PostList()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *CityController) Get() {
-	this.GetList()
+func (ctl *CityController) Get() {
+	ctl.GetList()
 
-	this.URL = "/address/city"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuCityActive"] = "active"
+	ctl.URL = "/address/city"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuCityActive"] = "active"
 }
-func (this *CityController) Validator() {
-	name := this.GetString("name")
+func (ctl *CityController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mb.GetCityByName(name); err != nil {
@@ -42,12 +42,12 @@ func (this *CityController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
 // 获得符合要求的城市数据
-func (this *CityController) cityList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *CityController) cityList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var cities []mb.City
 	paginator, cities, err := mb.ListCity(condArr, start, length)
@@ -73,10 +73,10 @@ func (this *CityController) cityList(start, length int64, condArr map[string]int
 	}
 	return result, err
 }
-func (this *CityController) PostList() {
+func (ctl *CityController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
 	var (
 		startInt64  int64
 		lengthInt64 int64
@@ -87,14 +87,14 @@ func (this *CityController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.cityList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.cityList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
 
-func (this *CityController) GetList() {
-	this.Data["tableId"] = "table-city"
-	this.TplName = "base/table_base.html"
+func (ctl *CityController) GetList() {
+	ctl.Data["tableId"] = "table-city"
+	ctl.TplName = "base/table_base.html"
 }

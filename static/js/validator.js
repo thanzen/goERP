@@ -177,4 +177,47 @@ $(function() {
             },
         },
     });
+    $("#productAttributeForm").bootstrapValidator({
+        message: '该值无效',
+        feedbackIcons: { /*input状态样式图片*/
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        live: 'enabled',
+        submitButtons: 'button[type="submit"]',
+        trigger: null,
+        fields: {
+            name: {
+                message: "该值无效",
+                validators: {
+                    notEmpty: {
+                        message: "属性名称不能为空"
+                    },
+
+                    remote: {
+                        url: "/product/attribute/",
+                        message: "该属性名称已经存在",
+                        dataType: "json",
+                        delay: 200,
+                        type: "POST",
+                        data: function() {
+                            var xsrf = $("input[name ='_xsrf']")[0].value;
+                            var recordId = $("input[name ='_recordId']");
+                            res = {
+                                _xsrf: xsrf,
+                                action: "validator",
+
+                            }
+                            if (recordId != undefined && recordId[0]) {
+                                recordId = recordId[0].value;
+                                res.recordId = recordId;
+                            }
+                            return res
+                        },
+                    },
+                },
+            },
+        },
+    });
 });

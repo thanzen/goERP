@@ -52,7 +52,7 @@ func ListProductPricelistItem(condArr map[string]interface{}, page, offset int64
 }
 
 //添加属性
-func AddProductPricelistItem(obj ProductPricelistItem, user base.User) (int64, error) {
+func CreateProductPricelistItem(obj ProductPricelistItem, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productPricelistItem := new(ProductPricelistItem)

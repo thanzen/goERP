@@ -12,27 +12,27 @@ type ProductTemplateController struct {
 	base.BaseController
 }
 
-func (this *ProductTemplateController) Post() {
-	action := this.Input().Get("action")
+func (ctl *ProductTemplateController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *ProductTemplateController) Get() {
-	this.GetList()
+func (ctl *ProductTemplateController) Get() {
+	ctl.GetList()
 
-	this.URL = "/product/template"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuProductTemplateActive"] = "active"
+	ctl.URL = "/product/template"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuProductTemplateActive"] = "active"
 }
-func (this *ProductTemplateController) Validator() {
-	name := this.GetString("name")
+func (ctl *ProductTemplateController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mp.GetProductTemplateByName(name); err != nil {
@@ -40,12 +40,12 @@ func (this *ProductTemplateController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
 // 获得符合要求的城市数据
-func (this *ProductTemplateController) productTemplateList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *ProductTemplateController) productTemplateList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var arrs []mp.ProductTemplate
 	paginator, arrs, err := mp.ListProductTemplate(condArr, start, length)
@@ -69,10 +69,10 @@ func (this *ProductTemplateController) productTemplateList(start, length int64, 
 	}
 	return result, err
 }
-func (this *ProductTemplateController) PostList() {
+func (ctl *ProductTemplateController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
 	var (
 		startInt64  int64
 		lengthInt64 int64
@@ -83,14 +83,14 @@ func (this *ProductTemplateController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.productTemplateList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.productTemplateList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
 
-func (this *ProductTemplateController) GetList() {
-	this.Data["tableId"] = "table-product-template"
-	this.TplName = "base/table_base.html"
+func (ctl *ProductTemplateController) GetList() {
+	ctl.Data["tableId"] = "table-product-template"
+	ctl.TplName = "base/table_base.html"
 }

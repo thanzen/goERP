@@ -13,34 +13,34 @@ type RecordController struct {
 	BaseController
 }
 
-func (this *RecordController) Get() {
+func (ctl *RecordController) Get() {
 
-	this.GetList()
+	ctl.GetList()
 
-	this.URL = "/user"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuRecordActive"] = "active"
+	ctl.URL = "/user"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuRecordActive"] = "active"
 
 }
-func (this *RecordController) Post() {
-	action := this.Input().Get("action")
+func (ctl *RecordController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "table":
-		this.PostList()
+		ctl.PostList()
 	case "one":
-		this.GetOneRecord()
+		ctl.GetOneRecord()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *RecordController) GetOneRecord() {
+func (ctl *RecordController) GetOneRecord() {
 
 }
-func (this *RecordController) PostList() {
+func (ctl *RecordController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
 
 	var (
 		startInt64  int64
@@ -52,16 +52,16 @@ func (this *RecordController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.recordList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.recordList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
-func (this *RecordController) recordList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *RecordController) recordList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var records []mb.Record
-	paginator, records, err := mb.ListRecord(condArr, this.User.Id, start, length)
+	paginator, records, err := mb.ListRecord(condArr, ctl.User.Id, start, length)
 	result := make(map[string]interface{})
 	if err == nil {
 
@@ -88,7 +88,7 @@ func (this *RecordController) recordList(start, length int64, condArr map[string
 	}
 	return result, err
 }
-func (this *RecordController) GetList() {
-	this.Data["tableId"] = "table-record"
-	this.TplName = "base/table_base.html"
+func (ctl *RecordController) GetList() {
+	ctl.Data["tableId"] = "table-record"
+	ctl.TplName = "base/table_base.html"
 }

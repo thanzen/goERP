@@ -50,7 +50,7 @@ func ListProductAttributeValue(condArr map[string]interface{}, start, length int
 }
 
 //添加属性
-func AddProductAttributeValue(obj ProductAttributeValue, user base.User) (int64, error) {
+func CreateProductAttributeValue(obj ProductAttributeValue, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productAttributeValue := new(ProductAttributeValue)

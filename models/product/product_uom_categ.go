@@ -53,7 +53,7 @@ func ListProductUomCateg(condArr map[string]interface{}, page, offset int64) (ut
 }
 
 //添加属性
-func AddProductUomCateg(obj ProductUomCateg, user base.User) (int64, error) {
+func CreateProductUomCateg(obj ProductUomCateg, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productUomCateg := new(ProductUomCateg)

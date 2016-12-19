@@ -28,47 +28,47 @@ type BaseController struct {
 }
 
 // Prepare implemented Prepare method for baseRouter.
-func (this *BaseController) Prepare() {
+func (ctl *BaseController) Prepare() {
 	// Setting properties.
-	this.StartSession()
-	this.Data["AppVer"] = AppVer
-	this.Data["IsPro"] = IsPro
-	this.Data["xsrf"] = template.HTML(this.XSRFFormHTML())
-	this.Data["PageStartTime"] = time.Now()
+	ctl.StartSession()
+	ctl.Data["AppVer"] = AppVer
+	ctl.Data["IsPro"] = IsPro
+	ctl.Data["xsrf"] = template.HTML(ctl.XSRFFormHTML())
+	ctl.Data["PageStartTime"] = time.Now()
 	// Redirect to make URL clean.
-	if this.setLangVer() {
-		i := strings.Index(this.Ctx.Request.RequestURI, "?")
-		this.Redirect(this.Ctx.Request.RequestURI[:i], 302)
+	if ctl.setLangVer() {
+		i := strings.Index(ctl.Ctx.Request.RequestURI, "?")
+		ctl.Redirect(ctl.Ctx.Request.RequestURI[:i], 302)
 		return
 	}
 
-	user := this.GetSession("User")
+	user := ctl.GetSession("User")
 	if user != nil {
-		this.User = user.(base.User)
-		this.Data["user"] = user
-		this.Data["LastLogin"] = this.GetSession("LastLogin")
+		ctl.User = user.(base.User)
+		ctl.Data["user"] = user
+		ctl.Data["LastLogin"] = ctl.GetSession("LastLogin")
 	} else {
-		if this.Ctx.Request.RequestURI != "/login/in" {
-			this.Redirect("/login/in", 302)
+		if ctl.Ctx.Request.RequestURI != "/login/in" {
+			ctl.Redirect("/login/in", 302)
 		}
 
-		this.Data["LastLogin"] = this.GetSession("LastLogin")
-		this.Data["LastIp"] = this.GetSession("LastIp")
+		ctl.Data["LastLogin"] = ctl.GetSession("LastLogin")
+		ctl.Data["LastIp"] = ctl.GetSession("LastIp")
 	}
 
 }
 
 // setLangVer sets site language version.
-func (this *BaseController) setLangVer() bool {
+func (ctl *BaseController) setLangVer() bool {
 	isNeedRedir := false
 	hasCookie := false
 
 	// 1. Check URL arguments.
-	lang := this.Input().Get("lang")
+	lang := ctl.Input().Get("lang")
 
 	// 2. Get language information from cookies.
 	if len(lang) == 0 {
-		lang = this.Ctx.GetCookie("lang")
+		lang = ctl.Ctx.GetCookie("lang")
 		hasCookie = true
 	} else {
 		isNeedRedir = true
@@ -83,7 +83,7 @@ func (this *BaseController) setLangVer() bool {
 
 	// 3. Get language information from 'Accept-Language'.
 	if len(lang) == 0 {
-		al := this.Ctx.Request.Header.Get("Accept-Language")
+		al := ctl.Ctx.Request.Header.Get("Accept-Language")
 		if len(al) > 4 {
 			al = al[:5] // Only compare first 5 letters.
 			if i18n.IsExist(al) {
@@ -104,7 +104,7 @@ func (this *BaseController) setLangVer() bool {
 
 	// Save language information in cookies.
 	if !hasCookie {
-		this.Ctx.SetCookie("lang", curLang.Lang, 1<<31-1, "/")
+		ctl.Ctx.SetCookie("lang", curLang.Lang, 1<<31-1, "/")
 	}
 
 	restLangs := make([]*LangType, 0, len(LangTypes)-1)
@@ -117,10 +117,10 @@ func (this *BaseController) setLangVer() bool {
 	}
 
 	// Set language properties.
-	this.Lang = lang
-	this.Data["Lang"] = curLang.Lang
-	this.Data["CurLang"] = curLang.Name
-	this.Data["RestLangs"] = restLangs
+	ctl.Lang = lang
+	ctl.Data["Lang"] = curLang.Lang
+	ctl.Data["CurLang"] = curLang.Name
+	ctl.Data["RestLangs"] = restLangs
 
 	return isNeedRedir
 }

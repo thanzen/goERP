@@ -68,7 +68,7 @@ func ListProductTemplate(condArr map[string]interface{}, start, length int64) (u
 }
 
 //添加产品模版
-func AddProductTemplate(obj ProductTemplate, user base.User) (int64, error) {
+func CreateProductTemplate(obj ProductTemplate, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productTemplate := new(ProductTemplate)

@@ -11,11 +11,11 @@ type UserController struct {
 	BaseController
 }
 
-func (this *UserController) Put() {
+func (ctl *UserController) Put() {
 
 }
-func (this *UserController) Get() {
-	if id, err := this.GetInt64(":id"); err == nil {
+func (ctl *UserController) Get() {
+	if id, err := ctl.GetInt64(":id"); err == nil {
 		if user, err := mb.GetUserByID(id); err == nil {
 			userMap := make(map[string]interface{})
 			userMap["Id"] = user.Id
@@ -39,46 +39,46 @@ func (this *UserController) Get() {
 
 			}
 
-			this.Data["User"] = userMap
+			ctl.Data["User"] = userMap
 
-			this.Data["Readonly"] = "readonly"
-			this.TplName = "user/user_form.html"
+			ctl.Data["Readonly"] = "readonly"
+			ctl.TplName = "user/user_form.html"
 		}
 	} else {
-		action := this.Input().Get("action")
+		action := ctl.Input().Get("action")
 		switch action {
 		case "create":
-			this.GetCreate()
+			ctl.GetCreate()
 		default:
-			this.GetList()
+			ctl.GetList()
 		}
 	}
 
-	this.URL = "/user"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuUserActive"] = "active"
+	ctl.URL = "/user"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuUserActive"] = "active"
 
 }
-func (this *UserController) Post() {
-	action := this.Input().Get("action")
+func (ctl *UserController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table":
-		this.PostList()
+		ctl.PostList()
 	case "create":
-		this.PostCreate()
+		ctl.PostCreate()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *UserController) GetList() {
-	this.Data["tableId"] = "table-user"
-	this.TplName = "base/table_base.html"
+func (ctl *UserController) GetList() {
+	ctl.Data["tableId"] = "table-user"
+	ctl.TplName = "base/table_base.html"
 }
-func (this *UserController) Validator() {
-	username := this.GetString("username")
+func (ctl *UserController) Validator() {
+	username := ctl.GetString("username")
 	username = strings.TrimSpace(username)
 	result := make(map[string]bool)
 	if _, err := mb.GetUserByName(username); err != nil {
@@ -86,14 +86,14 @@ func (this *UserController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
-func (this *UserController) PostList() {
+func (ctl *UserController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
-	name := this.Input().Get("name")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
+	name := ctl.Input().Get("name")
 	name = strings.TrimSpace(name)
 	if name != "" {
 		condArr["name"] = name
@@ -108,13 +108,13 @@ func (this *UserController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.userList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.userList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
-func (this *UserController) userList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *UserController) userList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var users []mb.User
 	paginator, users, err := mb.ListUser(condArr, start, length)
@@ -169,46 +169,46 @@ func (this *UserController) userList(start, length int64, condArr map[string]int
 	return result, err
 }
 
-func (this *UserController) ChangePwd() {
-	this.Data["MenuChangePwdActive"] = "active"
-	this.TplName = "user/user_change_password_form.html"
+func (ctl *UserController) ChangePwd() {
+	ctl.Data["MenuChangePwdActive"] = "active"
+	ctl.TplName = "user/user_change_password_form.html"
 }
 
-func (this *UserController) GetCreate() {
-	this.Data["Readonly"] = "writeable"
-	this.Data["listName"] = "创建用户"
-	this.TplName = "user/user_form.html"
+func (ctl *UserController) GetCreate() {
+	ctl.Data["Readonly"] = "writeable"
+	ctl.Data["listName"] = "创建用户"
+	ctl.TplName = "user/user_form.html"
 }
-func (this *UserController) PostCreate() {
+func (ctl *UserController) PostCreate() {
 
 	user := new(mb.User)
-	if err := this.ParseForm(user); err == nil {
+	if err := ctl.ParseForm(user); err == nil {
 
-		if deparentId, err := this.GetInt64("department"); err == nil {
+		if deparentId, err := ctl.GetInt64("department"); err == nil {
 			if department, err := mb.GetDepartmentByID(deparentId); err == nil {
 				user.Department = &department
 			}
 		}
 
-		if positionId, err := this.GetInt64("position"); err == nil {
+		if positionId, err := ctl.GetInt64("position"); err == nil {
 			if position, err := mb.GetPositionByID(positionId); err == nil {
 				user.Position = &position
 			}
 		}
 
-		if id, err := mb.AddUser(user, this.User); err == nil {
-			this.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
+		if id, err := mb.CreateUser(user, ctl.User); err == nil {
+			ctl.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
 		}
 	}
 
 }
-func (this *UserController) Edit() {
-	// id, _ := this.GetInt64(":id")
+func (ctl *UserController) Edit() {
+	// id, _ := ctl.GetInt64(":id")
 
-	this.TplName = "user/user_form.html"
+	ctl.TplName = "user/user_form.html"
 }
-func (this *UserController) Show() {
-	this.Data["MenuSelfInfoActive"] = "active"
+func (ctl *UserController) Show() {
+	ctl.Data["MenuSelfInfoActive"] = "active"
 
-	this.TplName = "user/user_form.html"
+	ctl.TplName = "user/user_form.html"
 }

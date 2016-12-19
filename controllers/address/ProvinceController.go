@@ -12,30 +12,30 @@ type ProvinceController struct {
 	base.BaseController
 }
 
-func (this *ProvinceController) Post() {
-	action := this.Input().Get("action")
+func (ctl *ProvinceController) Post() {
+	action := ctl.Input().Get("action")
 	switch action {
 	case "validator":
-		this.Validator()
+		ctl.Validator()
 	case "table": //bootstrap table的post请求
-		this.PostList()
+		ctl.PostList()
 	default:
-		this.PostList()
+		ctl.PostList()
 	}
 }
-func (this *ProvinceController) Get() {
+func (ctl *ProvinceController) Get() {
 
-	this.GetList()
+	ctl.GetList()
 
-	this.URL = "/address/city"
-	this.Data["URL"] = this.URL
-	this.Layout = "base/base.html"
-	this.Data["MenuProvinceActive"] = "active"
+	ctl.URL = "/address/city"
+	ctl.Data["URL"] = ctl.URL
+	ctl.Layout = "base/base.html"
+	ctl.Data["MenuProvinceActive"] = "active"
 }
-func (this *ProvinceController) PostList() {
+func (ctl *ProvinceController) PostList() {
 	condArr := make(map[string]interface{})
-	start := this.Input().Get("offset")
-	length := this.Input().Get("limit")
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
 	var (
 		startInt64  int64
 		lengthInt64 int64
@@ -46,14 +46,14 @@ func (this *ProvinceController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := this.provinceList(startInt64, lengthInt64, condArr); err == nil {
-		this.Data["json"] = result
+	if result, err := ctl.provinceList(startInt64, lengthInt64, condArr); err == nil {
+		ctl.Data["json"] = result
 	}
-	this.ServeJSON()
+	ctl.ServeJSON()
 
 }
-func (this *ProvinceController) Validator() {
-	name := this.GetString("name")
+func (ctl *ProvinceController) Validator() {
+	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	if _, err := mb.GetProvinceByName(name); err != nil {
@@ -61,12 +61,12 @@ func (this *ProvinceController) Validator() {
 	} else {
 		result["valid"] = false
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
 }
 
 // 获得符合要求的地区数据
-func (this *ProvinceController) provinceList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *ProvinceController) provinceList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var provinces []mb.Province
 	paginator, provinces, err := mb.ListProvince(condArr, start, length)
@@ -93,7 +93,7 @@ func (this *ProvinceController) provinceList(start, length int64, condArr map[st
 	return result, err
 }
 
-func (this *ProvinceController) GetList() {
-	this.Data["tableId"] = "table-province"
-	this.TplName = "base/table_base.html"
+func (ctl *ProvinceController) GetList() {
+	ctl.Data["tableId"] = "table-province"
+	ctl.TplName = "base/table_base.html"
 }

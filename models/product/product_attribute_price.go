@@ -55,7 +55,7 @@ func ListProductAttributePrice(condArr map[string]interface{}, page, offset int6
 }
 
 //添加属性
-func AddProductAttributePrice(obj ProductAttributePrice, user base.User) (int64, error) {
+func CreateProductAttributePrice(obj ProductAttributePrice, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productAttributePrice := new(ProductAttributePrice)
