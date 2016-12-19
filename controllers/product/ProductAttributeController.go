@@ -79,14 +79,10 @@ func (ctl *ProductAttributeController) Edit() {
 	ctl.TplName = "product/product_attribute_form.html"
 }
 func (ctl *ProductAttributeController) Create() {
-	method := strings.ToUpper(ctl.Ctx.Request.Method)
-	if method == "GET" {
-		ctl.Data["Action"] = "create"
-		ctl.Data["Readonly"] = false
-		ctl.Data["listName"] = "创建属性"
-		ctl.TplName = "product/product_attribute_form.html"
-
-	}
+	ctl.Data["Action"] = "create"
+	ctl.Data["Readonly"] = false
+	ctl.Data["listName"] = "创建属性"
+	ctl.TplName = "product/product_attribute_form.html"
 }
 func (ctl *ProductAttributeController) Detail() {
 	//获取信息一样，直接调用Edit
@@ -101,10 +97,10 @@ func (ctl *ProductAttributeController) PostCreate() {
 		if id, err := mp.CreateProductAttribute(attribute, ctl.User); err == nil {
 			ctl.Redirect("/product/attribute/"+strconv.FormatInt(id, 10)+"?action=detail", 302)
 		} else {
-			ctl.PostList()
+			ctl.Get()
 		}
 	} else {
-		ctl.PostList()
+		ctl.Get()
 	}
 }
 func (ctl *ProductAttributeController) Validator() {
@@ -149,19 +145,11 @@ func (ctl *ProductAttributeController) productAttributeList(start, length int64,
 			oneLine["sequence"] = line.Sequence
 			mapValues := make(map[int64]string)
 			oneLine["Id"] = line.Id
+			oneLine["id"] = line.Id
 			values := line.ValueIds
 			for _, line := range values {
 				mapValues[line.Id] = line.Name
 			}
-			//测试代码
-			mapValues[12] = "11231232"
-			mapValues[2] = "21231230"
-			mapValues[3] = "121321"
-			mapValues[4] = "20123"
-			mapValues[52] = "12"
-			mapValues[72] = "20"
-			mapValues[21] = "12"
-			mapValues[37] = "20"
 			oneLine["values"] = mapValues
 			tableLines = append(tableLines, oneLine)
 		}

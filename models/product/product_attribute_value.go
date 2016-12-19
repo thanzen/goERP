@@ -10,10 +10,10 @@ import (
 
 type ProductAttributeValue struct {
 	base.Base
-	Name       string            `orm:"unique"`     //产品属性名称
-	Attribute  *ProductAttribute `orm:"rel(fk)"`    //属性
-	Products   []*ProductProduct `orm:"rel(m2m)"`   //产品规格
-	PriceExtra float64           `orm:"default(0)"` //额外价格
+	Name       string            `orm:"unique" form:"name"` //产品属性名称
+	Attribute  *ProductAttribute `orm:"rel(fk)"`            //属性
+	Products   []*ProductProduct `orm:"rel(m2m)"`           //产品规格
+	PriceExtra float64           `orm:"default(0)"`         //额外价格
 	// Prices     *ProductAttributePrice `orm:"reverse(many)"`
 	Sequence int32 //序列
 }
@@ -49,16 +49,28 @@ func ListProductAttributeValue(condArr map[string]interface{}, start, length int
 	return paginator, arrs, err
 }
 
-//添加属性
-func CreateProductAttributeValue(obj ProductAttributeValue, user base.User) (int64, error) {
+//创建属性值
+func CreateProductAttributeValue(obj *ProductAttributeValue, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	productAttributeValue := new(ProductAttributeValue)
-	productAttributeValue.Name = obj.Name
-	productAttributeValue.CreateUser = &user
-	productAttributeValue.UpdateUser = &user
-	id, err := o.Insert(productAttributeValue)
+	obj.CreateUser = &user
+	obj.UpdateUser = &user
+	id, err := o.Insert(obj)
 	return id, err
+}
+
+// 更新属性值
+func UpdateProductAttributeValue(obj *ProductAttributeValue, user base.User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	updateObj := ProductCategory{Base: base.Base{Id: obj.Id}}
+	updateObj.UpdateUser = &user
+	updateObj.Name = obj.Name
+	if num, err := o.Update(&updateObj, "Name", "UpdateUser", "UpdateDate"); err == nil {
+		return num, err
+	} else {
+		return 0, err
+	}
 }
 
 //获得某一个属性信息
@@ -67,6 +79,9 @@ func GetProductAttributeValueByID(id int64) (ProductAttributeValue, error) {
 	o.Using("default")
 	productProduct := ProductAttributeValue{Base: base.Base{Id: id}}
 	err := o.Read(&productProduct)
+	if productProduct.Attribute != nil {
+		o.Read(productProduct.Attribute)
+	}
 	return productProduct, err
 }
 

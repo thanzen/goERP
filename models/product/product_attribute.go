@@ -44,6 +44,12 @@ func ListProductAttribute(condArr map[string]interface{}, start, length int64) (
 	if num, err = qs.OrderBy("-id").Limit(length, start).All(&productAttributes); err == nil {
 		paginator.CurrentPageSize = num
 	}
+	//后期需要改成线程池来获得关联数据,下面为线程池两种实现
+	//https://github.com/Jeffail/tunny
+	//https://github.com/jolestar/go-commons-pool
+	for i, _ := range productAttributes {
+		o.LoadRelated(&productAttributes[i], "ValueIds")
+	}
 
 	return paginator, productAttributes, err
 }
@@ -81,6 +87,7 @@ func GetProductAttributeByID(id int64) (ProductAttribute, error) {
 	o.Using("default")
 	obj := ProductAttribute{Base: base.Base{Id: id}}
 	err := o.Read(&obj)
+	o.LoadRelated(&obj, "ValueIds")
 	return obj, err
 }
 func GetProductAttributeByName(name string) (ProductAttribute, error) {

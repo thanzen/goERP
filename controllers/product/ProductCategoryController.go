@@ -79,15 +79,12 @@ func (ctl *ProductCategoryController) Edit() {
 					parent["name"] = category.Parent.Name
 				}
 				categoryInfo["parent"] = parent
-
 			}
 		}
-
 	}
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
 	ctl.Data["Category"] = categoryInfo
-
 	ctl.TplName = "product/product_category_form.html"
 }
 
@@ -110,22 +107,19 @@ func (ctl *ProductCategoryController) PostCreate() {
 		if id, err := mp.CreateProductCategory(category, ctl.User); err == nil {
 			ctl.Redirect("/product/category/"+strconv.FormatInt(id, 10)+"?action=detail", 302)
 		} else {
-			ctl.PostList()
+			ctl.Get()
 		}
 	} else {
-		ctl.PostList()
+		ctl.Get()
 	}
 
 }
 func (ctl *ProductCategoryController) Create() {
-	method := strings.ToUpper(ctl.Ctx.Request.Method)
-	if method == "GET" {
-		ctl.Data["Action"] = "create"
-		ctl.Data["Readonly"] = false
-		ctl.Data["listName"] = "创建类别"
-		ctl.TplName = "product/product_category_form.html"
+	ctl.Data["Action"] = "create"
+	ctl.Data["Readonly"] = false
+	ctl.Data["listName"] = "创建类别"
+	ctl.TplName = "product/product_category_form.html"
 
-	}
 }
 func (ctl *ProductCategoryController) Validator() {
 	name := ctl.GetString("name")

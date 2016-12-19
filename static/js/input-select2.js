@@ -66,4 +66,5 @@ $(function() {
     select2AjaxData(".select-position", "/position/?action=search", "选择职位");
     select2AjaxData(".select-group", "/group/?action=search", "选择分组");
     select2AjaxData(".select-product-category", "/product/category/?action=search", "选择产品类别");
+    select2AjaxData(".select-product-attribute", '/product/attribute/?action=search', "选择属性");
 });

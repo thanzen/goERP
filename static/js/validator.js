@@ -219,4 +219,52 @@ $(function() {
             },
         },
     });
+    $("#productAttributeValueForm").bootstrapValidator({
+        message: '该值无效',
+        feedbackIcons: { /*input状态样式图片*/
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        live: 'enabled',
+        submitButtons: 'button[type="submit"]',
+        trigger: null,
+        fields: {
+            name: {
+                message: "该值无效",
+                validators: {
+                    notEmpty: {
+                        message: "属性值不能为空"
+                    },
+
+                    remote: {
+                        url: "/product/attributevalue/",
+                        message: "该属性值已经存在",
+                        dataType: "json",
+                        delay: 200,
+                        type: "POST",
+                        data: function() {
+                            var xsrf = $("input[name ='_xsrf']")[0].value;
+                            var recordId = $("input[name ='_recordId']");
+                            var attributeId = $("select[name='productAttributeID']");
+                            console.log(attributeId);
+                            res = {
+                                _xsrf: xsrf,
+                                action: "validator",
+                            }
+                            if (recordId != undefined && recordId[0]) {
+                                recordId = recordId[0].value;
+                                res.recordId = recordId;
+                            }
+                            if (attributeId != undefined && attributeId[0]) {
+                                attributeId = attributeId[0].value;
+                                res.attributeId = attributeId;
+                            }
+                            return res
+                        },
+                    },
+                },
+            },
+        },
+    });
 });
