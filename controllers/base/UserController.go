@@ -47,6 +47,7 @@ func (ctl *UserController) Get() {
 }
 func (ctl *UserController) Post() {
 	action := ctl.Input().Get("action")
+	ctl.URL = "/user/"
 	switch action {
 	case "validator":
 		ctl.Validator()

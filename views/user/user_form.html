@@ -1,13 +1,14 @@
 <div class="row">
     <p id="list-title">{{.listName}}</p>
 </div>
-
-<form id="userForm" action="/user/{{.RecordId}}?action=create" method="post" class="form-horizontal {{if .Readonly}}form-readonly{{end}}" role="form">
+<form id="userForm" action="{{.URL}}{{.RecordId}}?action={{.Action}}" method="post" class="form-horizontal {{if .Readonly}}form-readonly{{end}}" role="form">
     <div class="row">
-        {{if .Readonly }}
-        <a href="{{.Url}}/?action=edit" class="btn btn-success glyphicon glyphicon-pencil">编辑</a>{{else}}
-        <button type="submit" form="userForm" id="userFormBtn" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
+        {{if .RecordId}} {{if .Readonly}}
+        <button type="button" class="btn btn-success fa fa-pencil pull-left form-edit-btn">&nbsp编辑</button> {{end}}{{end}}
+        <button type="submit" form="userForm" id="userForm" class="btn btn-primary fa fa-save pull-left form-save-btn">&nbsp保存</button> {{if .Readonly}}
+        <button type="button" class="btn btn-danger fa fa-remove  pull-left form-cancel-btn">&nbsp取消</button> {{else}}
         <a href="{{.URL}}" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a> {{end}}
+
         <a href="{{.URL}}" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
     </div>
     {{ .xsrf }}
