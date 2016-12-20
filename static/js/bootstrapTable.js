@@ -164,6 +164,18 @@ $(document).ready(function() {
         },
         { title: "定位", field: 'location', sortable: true, order: "desc" },
         { title: "描述", field: 'description', sortable: true },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                var url = "/group/";
+                html += "<a href='" + url + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='" + url + row.Id + "?action=detail' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
 
     ]);
     //登录记录表
