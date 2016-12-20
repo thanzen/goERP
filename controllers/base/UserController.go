@@ -12,52 +12,37 @@ type UserController struct {
 }
 
 func (ctl *UserController) Put() {
-
-}
-func (ctl *UserController) Get() {
-	if id, err := ctl.GetInt64(":id"); err == nil {
-		if user, err := mb.GetUserByID(id); err == nil {
-			userMap := make(map[string]interface{})
-			userMap["Id"] = user.Id
-			userMap["Name"] = user.Name
-			userMap["NameZh"] = user.NameZh
-			userMap["Email"] = user.Email
-			userMap["Mobile"] = user.Mobile
-			userMap["Tel"] = user.Tel
-			department := make(map[string]string)
-			if user.Department != nil {
-				department["Id"] = strconv.FormatInt(user.Department.Id, 10)
-				department["Name"] = user.Department.Name
-				userMap["Department"] = department
+	id := ctl.Ctx.Input.Param(":id")
+	ctl.URL = "/user/"
+	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+		if user, err := mb.GetUserByID(idInt64); err == nil {
+			if err := ctl.ParseForm(&user); err == nil {
+				if _, err := mb.UpdateUser(&user, ctl.User); err == nil {
+					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
+				}
 			}
-
-			position := make(map[string]string)
-			if user.Position != nil {
-				position["Id"] = strconv.FormatInt(user.Position.Id, 10)
-				position["Name"] = user.Position.Name
-				userMap["Position"] = position
-
-			}
-
-			ctl.Data["User"] = userMap
-
-			ctl.Data["Readonly"] = true
-			ctl.TplName = "user/user_form.html"
-		}
-	} else {
-		action := ctl.Input().Get("action")
-		switch action {
-		case "create":
-			ctl.GetCreate()
-		default:
-			ctl.GetList()
 		}
 	}
+	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
+}
+func (ctl *UserController) Get() {
 
-	ctl.URL = "/user"
+	action := ctl.Input().Get("action")
+	switch action {
+	case "create":
+		ctl.Create()
+	case "edit":
+		ctl.Edit()
+	case "detail":
+		ctl.Detail()
+	case "changepasswd":
+		ctl.ChangePwd()
+	default:
+		ctl.GetList()
+	}
+	ctl.URL = "/user/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
-	ctl.Data["MenuUserActive"] = "active"
 
 }
 func (ctl *UserController) Post() {
@@ -65,7 +50,7 @@ func (ctl *UserController) Post() {
 	switch action {
 	case "validator":
 		ctl.Validator()
-	case "table":
+	case "table": //bootstrap table的post请求
 		ctl.PostList()
 	case "create":
 		ctl.PostCreate()
@@ -73,8 +58,22 @@ func (ctl *UserController) Post() {
 		ctl.PostList()
 	}
 }
+func (ctl *UserController) Create() {
+	ctl.Data["Action"] = "create"
+	ctl.Data["Readonly"] = false
+	ctl.Data["listName"] = "创建用户"
+	ctl.TplName = "user/user_form.html"
+}
+func (ctl *UserController) Detail() {
+	//获取信息一样，直接调用Edit
+	ctl.Edit()
+	ctl.Data["Readonly"] = true
+	ctl.Data["MenuSelfInfoActive"] = "active"
+	ctl.Data["Action"] = "detail"
+}
 func (ctl *UserController) GetList() {
 	ctl.Data["tableId"] = "table-user"
+	ctl.Data["MenuUserActive"] = "active"
 	ctl.TplName = "base/table_base.html"
 }
 func (ctl *UserController) Validator() {
@@ -196,8 +195,35 @@ func (ctl *UserController) PostCreate() {
 }
 func (ctl *UserController) Edit() {
 	id := ctl.Ctx.Input.Param(":id")
+	userInfo := make(map[string]interface{})
+	if id != "" {
+		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+			if user, err := mb.GetUserByID(idInt64); err == nil {
+				userInfo["Id"] = user.Id
+				userInfo["Name"] = user.Name
+				userInfo["NameZh"] = user.NameZh
+				userInfo["Email"] = user.Email
+				userInfo["Mobile"] = user.Mobile
+				userInfo["Tel"] = user.Tel
+				department := make(map[string]string)
+				if user.Department != nil {
+					department["Id"] = strconv.FormatInt(user.Department.Id, 10)
+					department["Name"] = user.Department.Name
+					userInfo["Department"] = department
+				}
+
+				position := make(map[string]string)
+				if user.Position != nil {
+					position["Id"] = strconv.FormatInt(user.Position.Id, 10)
+					position["Name"] = user.Position.Name
+					userInfo["Position"] = position
+				}
+			}
+		}
+	}
 	ctl.Data["RecordId"] = id
 	ctl.Data["Action"] = "edit"
+	ctl.Data["User"] = userInfo
 	ctl.TplName = "user/user_form.html"
 }
 func (ctl *UserController) Show() {

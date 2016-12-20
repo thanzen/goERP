@@ -26,7 +26,7 @@ func (ctl *ProductProductController) Post() {
 func (ctl *ProductProductController) Get() {
 	ctl.GetList()
 
-	ctl.URL = "/product/product"
+	ctl.URL = "/product/product/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductProductActive"] = "active"

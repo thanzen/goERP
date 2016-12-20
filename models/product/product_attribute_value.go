@@ -67,11 +67,7 @@ func UpdateProductAttributeValue(obj *ProductAttributeValue, user base.User) (in
 	updateObj.UpdateUser = &user
 	updateObj.Name = obj.Name
 	updateObj.Attribute = obj.Attribute
-	if num, err := o.Update(&updateObj, "Name", "Attribute", "UpdateUser", "UpdateDate"); err == nil {
-		return num, err
-	} else {
-		return 0, err
-	}
+	return o.Update(&updateObj, "Name", "Attribute", "UpdateUser", "UpdateDate")
 }
 
 //获得某一个属性信息

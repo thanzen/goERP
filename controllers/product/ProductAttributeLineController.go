@@ -21,7 +21,7 @@ func (ctl *ProductAttributeLineController) Get() {
 		ctl.List()
 	}
 	ctl.Data["searchKeyWords"] = "属性明细"
-	ctl.URL = "/product/attribute"
+	ctl.URL = "/product/attribute/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Data["productRootActive"] = "active"
 	ctl.Data["productAttributeLineActive"] = "active"

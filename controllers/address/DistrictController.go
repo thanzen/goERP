@@ -98,7 +98,7 @@ func (ctl *DistrictController) Validator() {
 func (ctl *DistrictController) Get() {
 	ctl.GetList()
 
-	ctl.URL = "/address/district"
+	ctl.URL = "/address/district/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuDistrictActive"] = "active"

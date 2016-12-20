@@ -17,7 +17,7 @@ func (ctl *RecordController) Get() {
 
 	ctl.GetList()
 
-	ctl.URL = "/user"
+	ctl.URL = "/user/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuRecordActive"] = "active"

@@ -27,7 +27,7 @@ func (ctl *ProductCategoryController) Post() {
 }
 func (ctl *ProductCategoryController) Put() {
 	id := ctl.Ctx.Input.Param(":id")
-	ctl.URL = "/product/category"
+	ctl.URL = "/product/category/"
 	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
 		if category, err := mp.GetProductCategoryByID(idInt64); err == nil {
 			if err := ctl.ParseForm(&category); err == nil {
@@ -37,12 +37,12 @@ func (ctl *ProductCategoryController) Put() {
 					}
 				}
 				if _, err := mp.UpdateProductCategory(&category, ctl.User); err == nil {
-					ctl.Redirect(ctl.URL+"/"+id+"?action=detail", 302)
+					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
 				}
 			}
 		}
 	}
-	ctl.Redirect(ctl.URL+"/"+id+"?action=edit", 302)
+	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 
 }
 func (ctl *ProductCategoryController) Get() {
@@ -58,7 +58,7 @@ func (ctl *ProductCategoryController) Get() {
 	default:
 		ctl.GetList()
 	}
-	ctl.URL = "/product/category"
+	ctl.URL = "/product/category/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductCategoryActive"] = "active"
@@ -117,7 +117,6 @@ func (ctl *ProductCategoryController) Create() {
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建类别"
 	ctl.TplName = "product/product_category_form.html"
-
 }
 func (ctl *ProductCategoryController) Validator() {
 	name := ctl.GetString("name")

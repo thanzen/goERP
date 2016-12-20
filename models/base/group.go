@@ -15,7 +15,7 @@ type Group struct {
 	GlobalLoation string  `orm:"unique" `           //全局定位
 }
 
-func CreateGroup(obj Group, user User) (int64, error) {
+func CreateGroup(obj *Group, user User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	group := new(Group)

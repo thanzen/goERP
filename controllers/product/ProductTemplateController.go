@@ -37,7 +37,7 @@ func (ctl *ProductTemplateController) Get() {
 	default:
 		ctl.GetList()
 	}
-	ctl.URL = "/product/template"
+	ctl.URL = "/product/template/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductTemplateActive"] = "active"

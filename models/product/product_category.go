@@ -68,11 +68,7 @@ func UpdateProductCategory(obj *ProductCategory, user base.User) (int64, error) 
 	updateObj.UpdateUser = &user
 	updateObj.Name = obj.Name
 	updateObj.Parent = obj.Parent
-	if num, err := o.Update(&updateObj, "Name", "Parent", "UpdateUser", "UpdateDate"); err == nil {
-		return num, err
-	} else {
-		return 0, err
-	}
+	return o.Update(&updateObj, "Name", "Parent", "UpdateUser", "UpdateDate")
 }
 
 //根据ID查询类别

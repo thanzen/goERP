@@ -28,18 +28,18 @@ func (ctl *ProductAttributeController) Post() {
 }
 func (ctl *ProductAttributeController) Put() {
 	id := ctl.Ctx.Input.Param(":id")
-	ctl.URL = "/product/attribute"
+	ctl.URL = "/product/attribute/"
 	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
 		if attribute, err := mp.GetProductAttributeByID(idInt64); err == nil {
 			if err := ctl.ParseForm(&attribute); err == nil {
 
 				if _, err := mp.UpdateProductAttribute(&attribute, ctl.User); err == nil {
-					ctl.Redirect(ctl.URL+"/"+id+"?action=detail", 302)
+					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
 				}
 			}
 		}
 	}
-	ctl.Redirect(ctl.URL+"/"+id+"?action=edit", 302)
+	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 
 }
 func (ctl *ProductAttributeController) Get() {
@@ -55,7 +55,7 @@ func (ctl *ProductAttributeController) Get() {
 		ctl.GetList()
 
 	}
-	ctl.URL = "/product/attribute"
+	ctl.URL = "/product/attribute/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductAttributeActive"] = "active"

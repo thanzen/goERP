@@ -7,8 +7,8 @@
         {{if .Readonly }}
         <a href="{{.Url}}/?action=edit" class="btn btn-success glyphicon glyphicon-pencil">编辑</a>{{else}}
         <button type="submit" form="userForm" id="userFormBtn" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
-        <a href="{{.URL}}/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a> {{end}}
-        <a href="{{.URL}}/" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
+        <a href="{{.URL}}" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a> {{end}}
+        <a href="{{.URL}}" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
     </div>
     {{ .xsrf }}
     <fieldset>
@@ -122,7 +122,7 @@
                 <div class="form-group">
                     <label for="isadmin" class="col-md-4 control-label ">超级用户</label>
                     <div class="col-md-8 ">
-                        <input name="isadmin" id="isadmin" class="form-control form-checkbox" type="checkbox" {{.Readonly}}>
+                        <input name="isadmin" id="isadmin" class="form-control form-checkbox" type="checkbox">
                     </div>
                 </div>
             </div>
@@ -130,7 +130,7 @@
                 <div class="form-group">
                     <label for="active" class="col-md-4 control-label ">有效</label>
                     <div class="col-md-8 ">
-                        <input name="active" id="active" class="form-control form-checkbox" checked="checked" type="checkbox" {{.Readonly}}>
+                        <input name="active" id="active" class="form-control form-checkbox" checked="checked" type="checkbox">
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@
                 <div class="form-group">
                     <label for="group" class="col-md-4 control-label label-start" multiple="multiple">权限组<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <select name="group" id="group" class="form-control select-group" {{.Readonly}}></select>
+                        <select name="group" id="group" class="form-control select-group"></select>
                     </div>
                 </div>
             </div>

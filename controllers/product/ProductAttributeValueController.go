@@ -27,7 +27,7 @@ func (ctl *ProductAttributeValueController) Post() {
 }
 func (ctl *ProductAttributeValueController) Put() {
 	id := ctl.Ctx.Input.Param(":id")
-	ctl.URL = "/product/attributevalue"
+	ctl.URL = "/product/attributevalue/"
 	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
 		if attrValue, err := mp.GetProductAttributeValueByID(idInt64); err == nil {
 			if err := ctl.ParseForm(&attrValue); err == nil {
@@ -37,12 +37,12 @@ func (ctl *ProductAttributeValueController) Put() {
 					}
 				}
 				if _, err := mp.UpdateProductAttributeValue(&attrValue, ctl.User); err == nil {
-					ctl.Redirect(ctl.URL+"/"+id+"?action=detail", 302)
+					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
 				}
 			}
 		}
 	}
-	ctl.Redirect(ctl.URL+"/"+id+"?action=edit", 302)
+	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 
 }
 func (ctl *ProductAttributeValueController) Get() {
@@ -57,7 +57,7 @@ func (ctl *ProductAttributeValueController) Get() {
 	default:
 		ctl.GetList()
 	}
-	ctl.URL = "/product/attributevalue"
+	ctl.URL = "/product/attributevalue/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductAttributeValueActive"] = "active"

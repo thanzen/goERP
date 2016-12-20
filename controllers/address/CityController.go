@@ -28,7 +28,7 @@ func (ctl *CityController) Post() {
 func (ctl *CityController) Get() {
 	ctl.GetList()
 
-	ctl.URL = "/address/city"
+	ctl.URL = "/address/city/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuCityActive"] = "active"

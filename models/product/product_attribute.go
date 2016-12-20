@@ -74,11 +74,8 @@ func UpdateProductAttribute(obj *ProductAttribute, user base.User) (int64, error
 	updateObj.Code = obj.Code
 	updateObj.Sequence = obj.Sequence
 
-	if num, err := o.Update(&updateObj, "Name", "Code", "Sequence", "UpdateUser", "UpdateDate"); err == nil {
-		return num, err
-	} else {
-		return 0, err
-	}
+	return o.Update(&updateObj, "Name", "Code", "Sequence", "UpdateUser", "UpdateDate")
+
 }
 
 //获得某一个属性信息

@@ -68,11 +68,7 @@ func UpdateProductUom(obj *ProductUom, user base.User) (int64, error) {
 	updateObj := ProductUom{Base: base.Base{Id: obj.Id}}
 	updateObj.UpdateUser = &user
 	updateObj.Name = obj.Name
-	if num, err := o.Update(&updateObj, "Name", "UpdateUser", "UpdateDate"); err == nil {
-		return num, err
-	} else {
-		return 0, err
-	}
+	return o.Update(&updateObj, "Name", "UpdateUser", "UpdateDate")
 }
 
 //根据ID查询类别

@@ -143,7 +143,11 @@ func CheckUserByName(name, password string) (User, error, bool) {
 
 }
 
-func UpdateUser(user User) (int64, error) {
+func UpdateUser(obj *User, user User) (int64, error) {
 	o := orm.NewOrm()
-	return o.Update(&user)
+	o.Using("default")
+	updateObj := User{Base: Base{Id: obj.Id}}
+	updateObj.UpdateUser = &user
+	return o.Update(&obj, "UpdateUser", "UpdateDate")
+
 }

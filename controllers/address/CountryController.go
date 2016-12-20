@@ -27,7 +27,7 @@ func (ctl *CountryController) Get() {
 
 	ctl.GetList()
 
-	ctl.URL = "/address/city"
+	ctl.URL = "/address/city/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuCountryActive"] = "active"

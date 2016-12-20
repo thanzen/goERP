@@ -37,25 +37,25 @@ func (ctl *ProductUomCategController) Get() {
 	default:
 		ctl.GetList()
 	}
-	ctl.URL = "/product/uomcateg"
+	ctl.URL = "/product/uomcateg/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductUomCategActive"] = "active"
 }
 func (ctl *ProductUomCategController) Put() {
 	id := ctl.Ctx.Input.Param(":id")
-	ctl.URL = "/product/uomcateg"
+	ctl.URL = "/product/uomcateg/"
 	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
 		if uomCateg, err := mp.GetProductUomCategByID(idInt64); err == nil {
 			if err := ctl.ParseForm(&uomCateg); err == nil {
 
 				if _, err := mp.UpdateProductUomCateg(&uomCateg, ctl.User); err == nil {
-					ctl.Redirect(ctl.URL+"/"+id+"?action=detail", 302)
+					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
 				}
 			}
 		}
 	}
-	ctl.Redirect(ctl.URL+"/"+id+"?action=edit", 302)
+	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 }
 func (ctl *ProductUomCategController) Validator() {
 	name := ctl.GetString("name")

@@ -29,7 +29,7 @@ func (ctl *PositionController) Post() {
 func (ctl *PositionController) Get() {
 	ctl.GetList()
 
-	ctl.URL = "/position"
+	ctl.URL = "/position/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
 	ctl.Data["MenuPositionActive"] = "active"

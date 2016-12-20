@@ -58,7 +58,7 @@ func initGroup(filename string, user base.User) {
 			var initGroups InitGroups
 			if xml.Unmarshal(data, &initGroups) == nil {
 				for _, k := range initGroups.Groups {
-					base.CreateGroup(k, user)
+					base.CreateGroup(&k, user)
 				}
 			}
 		}
