@@ -43,10 +43,10 @@ fieldset legend {
     margin-top: 20px;
 }
 
-.fa-check {
+td>.fa-check {
     color: green;
 }
 
-.fa-remove {
+td>.fa-remove {
     color: red;
 }

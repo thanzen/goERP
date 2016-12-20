@@ -64,6 +64,7 @@ $(document).ready(function() {
             field: 'isadmin',
             sortable: true,
             order: "desc",
+            align: "center",
             formatter: function cellStyle(value, row, index) {
                 var html = "";
                 if (row.isadmin) {
@@ -79,6 +80,7 @@ $(document).ready(function() {
             field: 'active',
             sortable: true,
             order: "desc",
+            align: "center",
             formatter: function cellStyle(value, row, index) {
                 var html = "";
                 if (row.active) {
@@ -95,7 +97,7 @@ $(document).ready(function() {
             field: 'action',
             formatter: function cellStyle(value, row, index) {
                 var html = "";
-                if (row.active == "有效") {
+                if (row.active) {
                     html += "<a href='/user/" + row.Id + "?action=invalid' class='table-action btn btn-xs btn-danger'>无效&nbsp<i class='fa fa-close'></i></a>";
                 } else {
                     html += "<a href='/user/" + row.Id + "?action=active' class='table-action btn btn-xs btn-success'>有效&nbsp<i class='fa fa-check'></i></a>";
