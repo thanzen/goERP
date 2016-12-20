@@ -59,8 +59,36 @@ $(document).ready(function() {
         { title: "座机", field: 'tel', sortable: true, order: "desc" },
         { title: "QQ", field: 'qq', sortable: true, order: "desc" },
         { title: "微信", field: 'wechat', sortable: true, order: "desc" },
-        { title: "管理员", field: 'isadmin', sortable: true, order: "desc" },
-        { title: "有效", field: 'active', sortable: true, order: "desc" },
+        {
+            title: "管理员",
+            field: 'isadmin',
+            sortable: true,
+            order: "desc",
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                if (row.isadmin) {
+                    html = '<i class="fa fa-check"></i>';
+                } else {
+                    html = '<i class="fa fa-remove"></i>';
+                }
+                return html;
+            }
+        },
+        {
+            title: "有效",
+            field: 'active',
+            sortable: true,
+            order: "desc",
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                if (row.active) {
+                    html = '<i class="fa fa-check"></i>';
+                } else {
+                    html = '<i class="fa fa-remove"></i>';
+                }
+                return html;
+            }
+        },
         {
             title: "操作",
             align: "center",
@@ -343,7 +371,22 @@ $(document).ready(function() {
         { title: "计量单位类别", field: 'category', sortable: true, order: "desc" },
         { title: "计量单位", field: 'name', align: "center", sortable: true, order: "desc" },
         { title: "类型", field: 'type', align: "center", sortable: true, order: "desc" },
-        { title: "有效", field: 'active', align: "center", sortable: true, order: "desc" },
+        {
+            title: "有效",
+            field: 'active',
+            align: "center",
+            sortable: true,
+            order: "desc",
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                if (row.active) {
+                    html = '<i class="fa fa-check"></i>';
+                } else {
+                    html = '<i class="fa fa-remove"></i>';
+                }
+                return html;
+            }
+        },
         { title: "比率", field: 'factor', align: "center", sortable: true, order: "desc" },
         { title: "更大比率", field: 'factorInv', align: "center", sortable: true, order: "desc" },
         { title: "舍入精度", field: 'rounding', align: "center", sortable: true, order: "desc" },

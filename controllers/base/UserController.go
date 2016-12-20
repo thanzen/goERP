@@ -142,16 +142,8 @@ func (ctl *UserController) userList(start, length int64, condArr map[string]inte
 			oneLine["email"] = user.Email
 			oneLine["mobile"] = user.Mobile
 			oneLine["tel"] = user.Tel
-			if user.IsAdmin {
-				oneLine["isadmin"] = "是"
-			} else {
-				oneLine["isadmin"] = "否"
-			}
-			if user.Active {
-				oneLine["active"] = "有效"
-			} else {
-				oneLine["active"] = "无效"
-			}
+			oneLine["isadmin"] = user.IsAdmin
+			oneLine["active"] = user.Active
 			oneLine["qq"] = user.Qq
 			oneLine["Id"] = user.Id
 			oneLine["id"] = user.Id

@@ -110,13 +110,7 @@ func (ctl *ProductUomController) productUomList(start, length int64, condArr map
 			oneLine["name"] = line.Name
 			oneLine["Id"] = line.Id
 			oneLine["id"] = line.Id
-
-			if line.Active {
-				oneLine["active"] = "有效"
-			} else {
-				oneLine["active"] = "无效"
-			}
-
+			oneLine["active"] = line.Active
 			oneLine["rounding"] = line.Rounding
 			switch line.Type {
 			case 1:
