@@ -18,5 +18,16 @@ $(document).ready(function() {
         $(".form-readonly input.form-control").attr("readonly", "readonly");
         $(".form-readonly select").prop("disabled", true);
     });
-
+    $(".select-product-uom-category-type").on("change", function(e) {
+        if (e.currentTarget.value == "1") {
+            $("#factorInvDisplay").addClass("hidden");
+            $("#factorDisplay").removeClass("hidden");
+        } else if (e.currentTarget.value == "3") {
+            $("#factorDisplay").addClass("hidden");
+            $("#factorInvDisplay").removeClass("hidden");
+        } else {
+            $("#factorDisplay").addClass("hidden");
+            $("#factorInvDisplay").addClass("hidden");
+        }
+    });
 });

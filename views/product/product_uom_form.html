@@ -5,9 +5,9 @@
 <form id="productUomForm" action="{{.URL}}/{{.RecordId}}?action={{.Action}}" method="post" class="form-horizontal {{if .Readonly}}form-readonly{{end}}" role="form">
     <div class="row">
         {{if .RecordId}} {{if .Readonly}}
-        <button class="btn btn-success fa fa-pencil pull-left form-edit-btn">&nbsp编辑</button> {{end}}{{end}}
+        <button type="button" class="btn btn-success fa fa-pencil pull-left form-edit-btn">&nbsp编辑</button> {{end}}{{end}}
         <button type="submit" form="productUomForm" id="productUomForm" class="btn btn-primary fa fa-save pull-left form-save-btn">&nbsp保存</button> {{if .Readonly}}
-        <button class="btn btn-danger fa fa-remove  pull-left form-cancel-btn">&nbsp取消</button> {{else}}
+        <button type="button" class="btn btn-danger fa fa-remove  pull-left form-cancel-btn">&nbsp取消</button> {{else}}
         <a href="{{.URL}}/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a> {{end}}
 
         <a href="{{.URL}}/" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
@@ -20,18 +20,61 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="name" class="col-md-4 control-label label-start">产品类别<span>&nbsp*</span></label>
+                    <label for="category" class="col-md-4 control-label label-start">计量单位类别<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="name" type="text" {{if .Category}} value="{{.Category.name}}" {{end}} />
+                        <select name="category" id="category" class="form-control select-product-uom-category" {{if .Uom}} {{if .Uom.category}} data-default-id="{{.Uom.category.id}}" data-default-name="{{.Uom.category.name}}" {{end}} {{end}}>
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="parent" class="col-md-4 control-label label-start">上级类别</label>
+                    <label for="name" class="col-md-4 control-label label-start">计量单位名称<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <select name="parent" id="parent" class="form-control select-product-category" {{if .Category}} {{if .Category.parent}} data-default-id="{{.Category.parent.id}}" data-default-name="{{.Category.parent.name}}" {{end}} {{end}}>
+                        <input class="form-control" name="name" type="text" {{if .Uom}} value="{{.Uom.name}}" {{end}} />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="active" class="col-md-4 control-label ">有效</label>
+                    <div class="col-md-8 ">
+                        <input name="active" id="active" class="form-control form-checkbox" checked="checked" type="checkbox">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="rounding" class="col-md-4 control-label label-start">舍入精度<span>&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <input class="form-control" name="rounding" type="text" {{if .Uom}} value="{{.Uom.rounding}}" {{else}}value="0.01" {{end}} />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="type" class="col-md-4 control-label">类型</label>
+                    <div class="col-md-8 ">
+                        <select name="type" id="type" class="form-control select-product-uom-category-type" {{if .Uom}} {{if .Uom.type}}data-default-id="{{.Uom.type.id}}" data-default-name="{{.Uom.type.name}}" {{end}} {{else}}data-default-id="2" data-default-name="参考计量单位" {{end}}>
                         </select>
+                    </div>
+                </div>
+            </div>
+            <div id="factorDisplay" class="col-md-3 hidden">
+                <div class="form-group">
+                    <label for="factor" class="col-md-4 control-label ">比率</label>
+                    <div class="col-md-8 ">
+                        <input name="factor" id="factor" type="number" step="0.01" {{if .Uom}}value="{{.Uom.factor}}" {{else}} value="10" {{end}} class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div id="factorInvDisplay" class="col-md-3 hidden">
+                <div class="form-group">
+                    <label for="factorInv" class="col-md-4 control-label ">更大比率</label>
+                    <div class="col-md-8 ">
+                        <input name="factorInv" id="factorInv" type="number" step="0.01" {{if .Uom}}value="{{.Uom.factorInv}}" {{else}} value="10" {{end}} class="form-control" />
                     </div>
                 </div>
             </div>

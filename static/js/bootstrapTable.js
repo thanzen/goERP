@@ -211,7 +211,7 @@ $(document).ready(function() {
                 var datas = row.values;
                 var html = "";
                 for (key in datas) {
-                    html += "<a  class='display-block label label-primary' href='/product/attributevalue/" + key + "?action=detail'>" + datas[key] + "</a>";
+                    html += "<a  class='display-block label label-success' href='/product/attributevalue/" + key + "?action=detail'>" + datas[key] + "</a>";
                 }
                 return html;
             }
@@ -306,11 +306,47 @@ $(document).ready(function() {
             }
         }
     ]);
+    //产品单位类别
+
+    displayTable("#table-product-uom-categ", "/product/uomcateg/", [
+        { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+        { title: "计量单位类别", field: 'name', sortable: true, order: "desc" },
+        {
+            title: "计量单位",
+            field: 'uoms',
+            align: "center",
+            formatter: function cellStyle(value, row, index) {
+                var datas = row.uoms;
+                var html = "";
+                for (key in datas) {
+                    html += "<a  class='display-block label label-success' href='/product/uom/" + key + "?action=detail'>" + datas[key] + "</a>";
+                }
+                return html;
+            }
+
+        },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                html += "<a href='/product/uomcateg/" + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
+                html += "<a href='/product/uomcateg/" + row.Id + "?action=detail' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                return html;
+            }
+        }
+    ]);
     //产品单位
     displayTable("#table-product-uom", "/product/uom/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "类别", field: 'attribute', sortable: true, order: "desc" },
-        { title: "属性值", field: 'value', align: "center", sortable: true, order: "desc" },
+        { title: "计量单位类别", field: 'category', sortable: true, order: "desc" },
+        { title: "计量单位", field: 'name', align: "center", sortable: true, order: "desc" },
+        { title: "类型", field: 'type', align: "center", sortable: true, order: "desc" },
+        { title: "有效", field: 'active', align: "center", sortable: true, order: "desc" },
+        { title: "比率", field: 'factor', align: "center", sortable: true, order: "desc" },
+        { title: "更大比率", field: 'factorInv', align: "center", sortable: true, order: "desc" },
+        { title: "舍入精度", field: 'rounding', align: "center", sortable: true, order: "desc" },
         {
             title: "操作",
             align: "center",
@@ -323,6 +359,7 @@ $(document).ready(function() {
             }
         }
     ]);
+
 
 
 

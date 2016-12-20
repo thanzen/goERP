@@ -105,6 +105,7 @@ func GetProductAttributeByName(name string) (ProductAttribute, error) {
 		qs = qs.SetCond(cond)
 		qs = qs.RelatedSel()
 		err = qs.One(&obj)
+		o.LoadRelated(&obj, "ValueIds")
 	} else {
 		err = fmt.Errorf("%s", "查询条件不成立")
 	}
