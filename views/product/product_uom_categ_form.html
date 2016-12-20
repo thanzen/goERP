@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-4 control-label label-start"><span>计量单位分类&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="name" type="text" {{if .UomCateg}} value="{{.UomCateg.name}}" {{end}} />
+                        <input class="form-control" name="name" {{if not .Readonly}}autofocus{{end}} type="text" {{if .UomCateg}} value="{{.UomCateg.name}}" {{end}} />
                     </div>
                 </div>
             </div>

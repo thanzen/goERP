@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-4 control-label label-start">产品类别<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="name" type="text" {{if .Category}} value="{{.Category.name}}" {{end}} />
+                        <input class="form-control" name="name" type="text" {{if not .Readonly}}autofocus{{end}} {{if .Category}} value="{{.Category.name}}" {{end}} />
                     </div>
                 </div>
             </div>

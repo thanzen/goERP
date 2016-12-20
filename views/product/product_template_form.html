@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-2 control-label label-start">款式名称<span>&nbsp*</span></label>
                     <div class="col-md-10">
-                        <input class="form-control" name="name" type="text" {{if .Template}} value="{{.Template.name}}" {{end}} />
+                        <input class="form-control" name="name" type="text" {{if not .Readonly}}autofocus{{end}} {{if .Template}} value="{{.Template.name}}" {{end}} />
                     </div>
                 </div>
             </div>

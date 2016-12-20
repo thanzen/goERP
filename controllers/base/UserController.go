@@ -41,7 +41,7 @@ func (ctl *UserController) Get() {
 
 			ctl.Data["User"] = userMap
 
-			ctl.Data["Readonly"] = "readonly"
+			ctl.Data["Readonly"] = true
 			ctl.TplName = "user/user_form.html"
 		}
 	} else {
@@ -167,7 +167,7 @@ func (ctl *UserController) ChangePwd() {
 }
 
 func (ctl *UserController) GetCreate() {
-	ctl.Data["Readonly"] = "writeable"
+	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建用户"
 	ctl.TplName = "user/user_form.html"
 }
@@ -195,8 +195,9 @@ func (ctl *UserController) PostCreate() {
 
 }
 func (ctl *UserController) Edit() {
-	// id, _ := ctl.GetInt64(":id")
-
+	id := ctl.Ctx.Input.Param(":id")
+	ctl.Data["RecordId"] = id
+	ctl.Data["Action"] = "edit"
 	ctl.TplName = "user/user_form.html"
 }
 func (ctl *UserController) Show() {

@@ -22,8 +22,8 @@
                 <div class="form-group">
                     <label for="productAttributeID" class="col-md-4 control-label label-start">属性</label>
                     <div class="col-md-8">
-                        <select name="productAttributeID" id="productAttributeID" class="form-control select-product-attribute" {{if .ProductAttValue}} {{if .ProductAttValue.attribute}} data-default-id="{{.ProductAttValue.attribute.id}}" data-default-name="{{.ProductAttValue.attribute.name}}"
-                            {{end}} {{end}}>
+                        <select name="productAttributeID" id="productAttributeID" {{if not .Readonly}}autofocus{{end}} class="form-control select-product-attribute" {{if .ProductAttValue}} {{if .ProductAttValue.attribute}} data-default-id="{{.ProductAttValue.attribute.id}}"
+                            data-default-name="{{.ProductAttValue.attribute.name}}" {{end}} {{end}}>
                         </select>
                     </div>
                 </div>

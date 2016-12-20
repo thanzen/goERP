@@ -2,9 +2,9 @@
     <p id="list-title">{{.listName}}</p>
 </div>
 
-<form id="userForm" action="/user/?action=create" method="post" class="form-horizontal" role="form">
+<form id="userForm" action="/user/{{.RecordId}}?action=create" method="post" class="form-horizontal {{if .Readonly}}form-readonly{{end}}" role="form">
     <div class="row">
-        {{if eq .Readonly "readonly"}}
+        {{if .Readonly }}
         <a href="{{.Url}}/?action=edit" class="btn btn-success glyphicon glyphicon-pencil">编辑</a>{{else}}
         <button type="submit" form="userForm" id="userFormBtn" class="btn btn-primary fa fa-save pull-left">&nbsp保存</button>
         <a href="{{.URL}}/" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a> {{end}}
@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label for="username" class="col-md-4 control-label label-start">用户名<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="username" type="text" value="{{.User.Name}}" {{.Readonly}}/>
+                        <input class="form-control" name="username" {{if not .Readonly}}autofocus{{end}} type="text" value="{{.User.Name}}" />
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label for="namezh" class="col-md-4 control-label">用户名(中文)<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="namezh" type="text" value="{{.User.NameZh}}" {{.Readonly}}/>
+                        <input class="form-control" name="namezh" type="text" value="{{.User.NameZh}}" />
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label for="mobile" class="col-md-4 control-label label-start">手机号码<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="mobile" id="mobile" type="text" value="{{.User.Mobile}}" {{.Readonly}}/>
+                        <input class="form-control" name="mobile" id="mobile" type="text" value="{{.User.Mobile}}" />
                         </select>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label for="tel" class="col-md-4 control-label">座机</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="tel" id="tel" type="text" value="{{.User.Tel}}" {{.Readonly}}/>
+                        <input class="form-control" name="tel" id="tel" type="text" value="{{.User.Tel}}" />
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <label for="password" class="col-md-4 control-label label-start">密码<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="password" id="password" type="password" {{.Readonly}}/>
+                        <input class="form-control" name="password" id="password" type="password" />
                     </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                 <div class="form-group">
                     <label for="email" class="col-md-4 control-label label-start">邮箱<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="email" id="email" type="email" value="{{.User.Email}}" {{.Readonly}} />
+                        <input class="form-control" name="email" id="email" type="email" value="{{.User.Email}}" />
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                 <div class="form-group">
                     <label for="qq" class="col-md-4 control-label ">QQ</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="qq" id="qq" type="text" {{.Readonly}}/>
+                        <input class="form-control" name="qq" id="qq" type="text" />
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                 <div class="form-group">
                     <label for="wechat" class="col-md-4 control-label">微信</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="wechat" id="wechat" type="text" {{.Readonly}}/>
+                        <input class="form-control" name="wechat" id="wechat" type="text" />
                     </div>
                 </div>
 

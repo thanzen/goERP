@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="category" class="col-md-4 control-label label-start">计量单位类别<span>&nbsp*</span></label>
                     <div class="col-md-8">
-                        <select name="category" id="category" class="form-control select-product-uom-category" {{if .Uom}} {{if .Uom.category}} data-default-id="{{.Uom.category.id}}" data-default-name="{{.Uom.category.name}}" {{end}} {{end}}>
+                        <select name="category" id="category" {{if not .Readonly}}autofocus{{end}} class="form-control select-product-uom-category" {{if .Uom}} {{if .Uom.category}} data-default-id="{{.Uom.category.id}}" data-default-name="{{.Uom.category.name}}" {{end}} {{end}}>
                         </select>
                     </div>
                 </div>
