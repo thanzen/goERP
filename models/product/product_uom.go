@@ -81,6 +81,9 @@ func GetProductUomByID(id int64) (ProductUom, error) {
 	o.Using("default")
 	obj := ProductUom{Base: base.Base{Id: id}}
 	err := o.Read(&obj)
+	if obj.Category != nil {
+		o.Read(obj.Category)
+	}
 	return obj, err
 }
 
