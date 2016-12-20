@@ -110,8 +110,6 @@ $(document).ready(function() {
         }
 
     ], function(index, row, $detail) {
-        console.log(row);
-        var html = "1231231";
         var params = (function() {
             var params = {};
             var xsrf = $("input[name ='_xsrf']");
@@ -144,6 +142,30 @@ $(document).ready(function() {
 
 
     });
+    //权限
+    displayTable("#table-group", "/group/", [
+        { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+        { title: "权限组名", field: 'name', sortable: true, order: "desc" },
+        {
+            title: "有效",
+            field: 'active',
+            sortable: true,
+            order: "desc",
+            align: "center",
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                if (row.active) {
+                    html = '<i class="fa fa-check"></i>';
+                } else {
+                    html = '<i class="fa fa-remove"></i>';
+                }
+                return html;
+            }
+        },
+        { title: "定位", field: 'location', sortable: true, order: "desc" },
+        { title: "描述", field: 'description', sortable: true },
+
+    ]);
     //登录记录表
     displayTable("#table-record", "/record/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },

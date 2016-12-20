@@ -77,11 +77,11 @@ func (ctl *GroupController) Edit() {
 	groupInfo := make(map[string]interface{})
 	if id != "" {
 		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
-
 			if group, err := mb.GetGroupByID(idInt64); err == nil {
-
 				groupInfo["name"] = group.Name
-
+				groupInfo["active"] = group.Active
+				groupInfo["location"] = group.GlobalLoation
+				groupInfo["descriptioin"] = group.Description
 			}
 		}
 	}
@@ -140,7 +140,9 @@ func (ctl *GroupController) groupList(start, length int64, condArr map[string]in
 		for _, group := range groups {
 			oneLine := make(map[string]interface{})
 			oneLine["name"] = group.Name
-
+			oneLine["active"] = group.Active
+			oneLine["location"] = group.GlobalLoation
+			oneLine["descriptioin"] = group.Description
 			oneLine["Id"] = group.Id
 			oneLine["id"] = group.Id
 			tableLines = append(tableLines, oneLine)

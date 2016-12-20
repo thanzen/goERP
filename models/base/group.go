@@ -13,6 +13,8 @@ type Group struct {
 	Name          string  `orm:"unique" xml:"name"` //组名称
 	Members       []*User `orm:"reverse(many)"`     //组员
 	GlobalLoation string  `orm:"unique" `           //全局定位
+	Active        bool    `orm:"default(true)"`     //是否有效
+	Description   string  `orm:"default(\"\")"`     //描述
 }
 
 func CreateGroup(obj *Group, user User) (int64, error) {
