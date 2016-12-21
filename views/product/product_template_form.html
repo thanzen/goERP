@@ -2,7 +2,7 @@
     <p id="list-title">{{.listName}}</p>
 </div>
 
-<form id="productTemplateForm" action="{{.URL}}{{.RecordId}}?action={{.Action}}" method="post" class="form-horizontal {{if .Readonly}}form-readonly{{end}}" role="form">
+<form id="productTemplateForm" action="{{.URL}}{{.RecordId}}?action={{.Action}}" method="post" class="form-horizontal {{if .Readonly}}form-disabled{{end}}" role="form">
     <div class="row">
         {{if .RecordId}} {{if .Readonly}}
         <button type="button" class="btn btn-success fa fa-pencil pull-left form-edit-btn">&nbsp编辑</button> {{end}}{{end}}
@@ -77,16 +77,18 @@
                         <label for="type" class="col-md-4 control-label label-start">产品类型<span>&nbsp*</span></label>
                         <div class="col-md-8">
 
-                            <input class="input-radio" type="radio" id="minimal-radio-1" value="stock" name="type">
+                            <input class="input-radio {{if not .Tp}}checked{{else}}{{if eq .Tp.type " stock "}}checked{{end}}{{end}}" type="radio" id="minimal-radio-1" value="stock" name="type">
                             <label class="input-radio-label" for="minimal-radio-1">库存商品</label>
 
-                            <input class="input-radio" type="radio" id="minimal-radio-2" value="consume" name="type">
+                            <input class="input-radio {{if .Tp}}{{if ne  .Tp.type " consume "}}checked{{end}}{{end}}" type="radio" id="minimal-radio-2" value="consume" name="type">
                             <label class="input-radio-label" for="minimal-radio-2">消耗品</label>
 
-                            <input class="input-radio" type="radio" id="minimal-radio-disabled" value="service" name="type">
+                            <input class="input-radio {{if .Tp}}{{if eq .Tp.type " service "}}checked{{end}}{{end}}" type="radio" id="minimal-radio-disabled" value="service" name="type">
                             <label class="input-radio-label" for="minimal-radio-disabled">服务</label>
+
                         </div>
                     </div>
+
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">

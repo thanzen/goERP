@@ -50,3 +50,7 @@ td>.fa-check {
 td>.fa-remove {
     color: red;
 }
+
+.input-radio-label {
+    font-weight: normal;
+}

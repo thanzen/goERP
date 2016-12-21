@@ -1,22 +1,33 @@
 $(document).ready(function() {
-    //form-readonly下所有的输入下所有的输入框readonly
-    $(".form-readonly input.form-control").attr("readonly", "readonly");
-    $(".form-readonly select").prop("disabled", true);
-    $(".form-readonly .form-save-btn,.form-readonly .form-cancel-btn").hide();
+    $('.input-radio').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green'
+    });
+    //有checked的radio默认选中
+    $(".input-radio.checked").iCheck("check");
+
+    //form-disabled下所有的输入下所有的输入框disabled
+    $(".form-disabled input.form-control").attr("disabled", "disabled");
+    $(".form-disabled select").prop("disabled", true);
+    $(".form-disabled .form-save-btn,.form-disabled .form-cancel-btn").hide();
+    $(".form-disabled .input-radio").iCheck("disable");
     //编辑删除readonly属性，输入框变成可编辑状态
     $(".form-edit-btn").on("click", function(e) {
         e.preventDefault();
-        $(".form-readonly .form-edit-btn").hide();
-        $(".form-readonly .form-save-btn,.form-readonly .form-cancel-btn").show();
-        $(".form-readonly input.form-control").removeAttr("readonly");
-        $(".form-readonly select").prop("disabled", false);
+        $(".form-disabled .form-edit-btn").hide();
+        $(".form-disabled .form-save-btn,.form-disabled .form-cancel-btn").show();
+        $(".form-disabled input.form-control").removeAttr("disabled");
+        $(".form-disabled select").prop("disabled", false);
+        $(".input-radio").iCheck("enable");
     });
     $(".form-cancel-btn").on("click", function(e) {
         e.preventDefault();
-        $(".form-readonly .form-edit-btn").show();
-        $(".form-readonly .form-save-btn,.form-readonly .form-cancel-btn").hide();
-        $(".form-readonly input.form-control").attr("readonly", "readonly");
-        $(".form-readonly select").prop("disabled", true);
+        $(".form-disabled .form-edit-btn").show();
+        $(".form-disabled .form-save-btn,.form-disabled .form-cancel-btn").hide();
+        $(".form-disabled input.form-control").attr("disabled", "disabled");
+        $(".form-disabled select").prop("disabled", true);
+        $(".input-radio").iCheck("disable");
+
     });
     $(".select-product-uom-category-type").on("change", function(e) {
         if (e.currentTarget.value == "1") {
@@ -30,4 +41,6 @@ $(document).ready(function() {
             $("#factorInvDisplay").addClass("hidden");
         }
     });
+
+
 });
