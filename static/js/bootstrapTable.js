@@ -458,6 +458,24 @@ $(document).ready(function() {
     ]);
 
 
-
+    //产品属性
+    displayTable("#one-product-template-attributes", "/product/template/?action=attributes", [
+        { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
+        { title: "属性名", field: 'name', sortable: true, order: "desc" },
+        {
+            title: "属性值",
+            field: 'childs',
+            align: "center",
+            formatter: function cellStyle(value, row, index) {
+                var datas = row.values;
+                var html = "";
+                var url = "/product/attributevalue/";
+                for (key in datas) {
+                    html += "<a  class='display-block label label-success' href='" + url + key + "?action=detail'>" + datas[key] + "</a>";
+                }
+                return html;
+            }
+        },
+    ]);
 
 });

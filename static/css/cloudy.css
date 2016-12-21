@@ -54,3 +54,12 @@ td>.fa-remove {
 .input-radio-label {
     font-weight: normal;
 }
+
+.tab-content legend {
+    font-size: 1em;
+    text-align: center;
+}
+
+.tab-content .tab-pane>.row {
+    margin: 0px;
+}
