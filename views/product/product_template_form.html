@@ -76,8 +76,15 @@
                     <div class="form-group">
                         <label for="type" class="col-md-4 control-label label-start">产品类型<span>&nbsp*</span></label>
                         <div class="col-md-8">
-                            <select name="type" id="type" class="form-control select-product-type" {{if .Tp}} {{if .Tp.type}}data-default-id="{{.Tp.type.id}}" data-default-name="{{.Tp.type.name}}" {{end}}{{else}}data-default-id="1" data-default-name="库存商品" {{end}}>
-                            </select>
+
+                            <input class="input-radio" type="radio" id="minimal-radio-1" value="stock" name="type">
+                            <label class="input-radio-label" for="minimal-radio-1">库存商品</label>
+
+                            <input class="input-radio" type="radio" id="minimal-radio-2" value="consume" name="type">
+                            <label class="input-radio-label" for="minimal-radio-2">消耗品</label>
+
+                            <input class="input-radio" type="radio" id="minimal-radio-disabled" value="service" name="type">
+                            <label class="input-radio-label" for="minimal-radio-disabled">服务</label>
                         </div>
                     </div>
                 </div>
