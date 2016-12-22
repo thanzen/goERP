@@ -58,6 +58,7 @@ td>.fa-remove {
 .tab-content legend {
     font-size: 1em;
     text-align: center;
+    border-bottom-color: #ccccff;
 }
 
 .form-table-add-line {
@@ -66,4 +67,8 @@ td>.fa-remove {
 
 .required-input {
     color: red;
+}
+
+.form-disabled .form-table-add-line {
+    display: none;
 }

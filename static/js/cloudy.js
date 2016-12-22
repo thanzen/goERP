@@ -5,7 +5,7 @@ $(document).ready(function() {
         increaseArea: '20%'
     });
     //有checked的radio默认选中
-    console.log($("input.checked").iCheck("check"));
+    $("input.checked").iCheck("check");
 
     //form-disabled下所有的输入下所有的输入框disabled
     $(".form-disabled input.form-control").attr("disabled", "disabled");

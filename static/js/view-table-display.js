@@ -28,26 +28,26 @@ $(document).ready(function() {
         // },//单击row事件
     });
     var displayTable = function(selectId, ajaxUrl, columns, onExpandRow) {
-            var $tableNode = $(selectId);
-            var options = {
-                url: ajaxUrl,
-                queryParams: function(params) {
-                    var xsrf = $("input[name ='_xsrf']");
-                    if (xsrf != undefined) {
-                        params._xsrf = xsrf[0].value;
-                    }
-                    params.action = 'table';
-                    return params;
-                },
-                columns: columns,
-            }
-            if (onExpandRow != undefined) {
-                options.detailView = true;
-                options.onExpandRow = onExpandRow;
-            }
-            $tableNode.bootstrapTable(options);
+        var $tableNode = $(selectId);
+        var options = {
+            url: ajaxUrl,
+            queryParams: function(params) {
+                var xsrf = $("input[name ='_xsrf']");
+                if (xsrf != undefined) {
+                    params._xsrf = xsrf[0].value;
+                }
+                params.action = 'table';
+                return params;
+            },
+            columns: columns,
         }
-        //用户表
+        if (onExpandRow != undefined) {
+            options.detailView = true;
+            options.onExpandRow = onExpandRow;
+        }
+        $tableNode.bootstrapTable(options);
+    };
+    //用户表
     displayTable("#table-user", "/user/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "用户名", field: 'username', sortable: true, order: "desc" },
@@ -456,9 +456,9 @@ $(document).ready(function() {
             }
         }
     ]);
-
+    //---------------------------------------款式中的属性列表----------------------------------
     //产品款式中产品属性信息
-    displayTable("#one-product-template-attributes", "/product/template/?action=attributes", [
+    displayTable("#one-product-template-attribute", "/product/template/?action=attributes", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "属性名", field: 'name', sortable: true, order: "desc" },
         {
@@ -487,6 +487,19 @@ $(document).ready(function() {
             }
         }
     ]);
-
+    $(function() {
+        $("#add-one-product-template-attribute").click(function(e) {
+            function newData() {
+                var newRow = [{
+                    id: 0,
+                    name: "",
+                    childs: "",
+                    action: ""
+                }];
+                return newRow;
+            }
+            $("#one-product-template-attribute").bootstrapTable('append', newData());
+        });
+    });
 
 });
