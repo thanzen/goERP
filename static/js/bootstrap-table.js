@@ -4,6 +4,7 @@ $(document).ready(function() {
         method: "post",
         dataType: "json",
         locale: "zh-CN",
+
         contentType: "application/x-www-form-urlencoded",
         sidePagination: "server",
         stickyHeader: true, //表头固定
@@ -40,6 +41,7 @@ $(document).ready(function() {
                 return params;
             },
             columns: columns,
+            filter: true,
         }
         if (onExpandRow != undefined) {
             options.detailView = true;
@@ -50,15 +52,15 @@ $(document).ready(function() {
     //用户表
     displayTable("#table-user", "/user/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "用户名", field: 'username', sortable: true, order: "desc" },
-        { title: "中文名称", field: 'namezh', sortable: true, order: "desc" },
-        { title: "部门", field: 'department', sortable: true, order: "desc" },
-        { title: "职位", field: 'position', sortable: true, order: "desc" },
-        { title: "邮箱", field: 'email', sortable: true, order: "desc" },
-        { title: "手机号码", field: 'mobile', sortable: true, order: "desc" },
-        { title: "座机", field: 'tel', sortable: true, order: "desc" },
-        { title: "QQ", field: 'qq', sortable: true, order: "desc" },
-        { title: "微信", field: 'wechat', sortable: true, order: "desc" },
+        { title: "用户名", field: 'username', sortable: true, order: "desc", filter: { type: "input" } },
+        { title: "中文名称", field: 'namezh', sortable: true, order: "desc", filter: { type: "input" } },
+        { title: "部门", field: 'department', sortable: true, order: "desc", filter: { type: "select" } },
+        { title: "职位", field: 'position', sortable: true, order: "desc", filter: { type: "select" } },
+        { title: "邮箱", field: 'email', sortable: true, order: "desc", filter: { type: "input" } },
+        { title: "手机号码", field: 'mobile', sortable: true, order: "desc", filter: { type: "input" } },
+        { title: "座机", field: 'tel', sortable: true, order: "desc", filter: { type: "input" } },
+        { title: "QQ", field: 'qq', sortable: true, order: "desc", filter: { type: "input" } },
+        { title: "微信", field: 'wechat', sortable: true, order: "desc", filter: { type: "input" } },
         {
             title: "管理员",
             field: 'isadmin',
@@ -443,6 +445,7 @@ $(document).ready(function() {
             align: "center",
             field: 'action',
             formatter: function cellStyle(value, row, index) {
+
                 var html = "";
                 var url = "/product/uom/";
                 if (row.active) {
@@ -460,7 +463,15 @@ $(document).ready(function() {
     //产品款式中产品属性信息
     displayTable("#one-product-template-attribute", "/product/template/?action=attributes", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "属性名", field: 'name', sortable: true, order: "desc" },
+        {
+            title: "属性名",
+            field: 'name',
+            formatter: function cellStyle(value, row, index) {
+                console.log(row);
+                var html = ' <select name="productAttributeID1" id="productAttributeID1"  class="form-control select-product-attribute"></select>';
+                return html;
+            }
+        },
         {
             title: "属性值",
             field: 'childs',
