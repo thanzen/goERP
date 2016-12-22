@@ -457,8 +457,7 @@ $(document).ready(function() {
         }
     ]);
 
-
-    //产品属性
+    //产品款式中产品属性信息
     displayTable("#one-product-template-attributes", "/product/template/?action=attributes", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
         { title: "属性名", field: 'name', sortable: true, order: "desc" },
@@ -476,6 +475,18 @@ $(document).ready(function() {
                 return html;
             }
         },
+        {
+            title: "操作",
+            align: "center",
+            field: 'action',
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                var url = "/product/template/";
+                html += "<a href='" + url + row.Id + "?action=invalid' class='table-action btn btn-xs btn-danger'><i class='fa fa-trash-o'></i></a>";
+                return html;
+            }
+        }
     ]);
+
 
 });

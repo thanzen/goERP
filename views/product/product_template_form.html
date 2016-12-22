@@ -138,9 +138,9 @@
                 <div class="col-md-3">
                     <label for="type" class="col-md-4 control-label label-start">款式创建方式<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="input-radio {{if not .Tp}}checked{{else}}{{if eq .Tp.createProduct " auto "}}checked{{end}}{{end}}" type="radio" id="createProduct-radio-1" value="auto" name="createProduct">
+                        <input class="input-radio {{if .Tp}}{{if ne  .Tp.createProduct " consume "}}checked{{end}}{{end}}" type="radio" id="createProduct-radio-1" value="auto" name="createProduct">
                         <label class="input-radio-label" for="createProduct-radio-1">自动创建</label>
-                        <input class="input-radio {{if .Tp}}{{if ne  .Tp.createProduct " consume "}}checked{{end}}{{end}}" type="radio" id="createProduct-radio-2" value="hand" name="createProduct">
+                        <input class="input-radio {{if not .Tp}}checked{{else}}{{if eq .Tp.createProduct " auto "}}checked{{end}}{{end}}" type="radio" id="createProduct-radio-2" value="hand" name="createProduct">
                         <label class="input-radio-label" for="createProduct-radio-2">手动触发</label>
                     </div>
                 </div>
