@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="category" class="col-md-4 control-label label-start">计量单位类别<span>&nbsp*</span></label>
+                    <label for="category" class="col-md-4 control-label label-start">计量单位类别<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <select name="category" id="category" {{if not .Readonly}}autofocus{{end}} class="form-control select-product-uom-category" {{if .Uom}} {{if .Uom.category}} data-default-id="{{.Uom.category.id}}" data-default-name="{{.Uom.category.name}}" {{end}} {{end}}>
                         </select>
@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="name" class="col-md-4 control-label label-start">计量单位名称<span>&nbsp*</span></label>
+                    <label for="name" class="col-md-4 control-label label-start">计量单位名称<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <input class="form-control" name="name" type="text" {{if .Uom}} value="{{.Uom.name}}" {{end}} />
                     </div>
@@ -45,7 +45,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="rounding" class="col-md-4 control-label label-start">舍入精度<span>&nbsp*</span></label>
+                    <label for="rounding" class="col-md-4 control-label label-start">舍入精度<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <input class="form-control" name="rounding" type="text" {{if .Uom}} value="{{.Uom.rounding}}" {{else}}value="0.01" {{end}} />
                     </div>
@@ -55,7 +55,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="type" class="col-md-4 control-label">类型</label>
+                    <label for="type" class="col-md-4 control-label">类型<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8 ">
                         <select name="type" id="type" class="form-control select-product-uom-category-type" {{if .Uom}} {{if .Uom.type}}data-default-id="{{.Uom.type.id}}" data-default-name="{{.Uom.type.name}}" {{end}} {{else}}data-default-id="2" data-default-name="参考计量单位" {{end}}>
                         </select>

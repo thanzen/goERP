@@ -60,6 +60,10 @@ td>.fa-remove {
     text-align: center;
 }
 
-.tab-content .tab-pane>.row {
-    margin: 0px;
+.form-table-add-line {
+    margin-top: 5px;
+}
+
+.required-input {
+    color: red;
 }

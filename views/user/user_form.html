@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="username" class="col-md-4 control-label label-start">用户名<span>&nbsp*</span></label>
+                    <label for="username" class="col-md-4 control-label label-start">用户名<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <input class="form-control" name="username" {{if not .Readonly}}autofocus{{end}} type="text" value="{{.User.Name}}" />
                     </div>
@@ -25,7 +25,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="namezh" class="col-md-4 control-label">用户名(中文)<span>&nbsp*</span></label>
+                    <label for="namezh" class="col-md-4 control-label">用户名(中文)<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <input class="form-control" name="namezh" type="text" value="{{.User.NameZh}}" />
                     </div>
@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="mobile" class="col-md-4 control-label label-start">手机号码<span>&nbsp*</span></label>
+                    <label for="mobile" class="col-md-4 control-label label-start">手机号码<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <input class="form-control" name="mobile" id="mobile" type="text" value="{{.User.Mobile}}" />
                         </select>
@@ -52,7 +52,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="password" class="col-md-4 control-label label-start">密码<span>&nbsp*</span></label>
+                    <label for="password" class="col-md-4 control-label label-start">密码<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <input class="form-control" name="password" id="password" type="password" />
                     </div>
@@ -60,7 +60,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="email" class="col-md-4 control-label label-start">邮箱<span>&nbsp*</span></label>
+                    <label for="email" class="col-md-4 control-label label-start">邮箱<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <input class="form-control" name="email" id="email" type="email" value="{{.User.Email}}" />
                     </div>
@@ -90,7 +90,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="department" class="col-md-4 control-label label-start">部门<span>&nbsp*</span></label>
+                    <label for="department" class="col-md-4 control-label label-start">部门<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <select aria-hidden="true" name="department" id="department" class="form-control  select-department">
                             {{if .User.Department}}
@@ -104,7 +104,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="position" class="col-md-4 control-label label-start">职位<span>&nbsp*</span></label>
+                    <label for="position" class="col-md-4 control-label label-start">职位<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <select name="position" id="position" class="form-control select-position">
                             {{if .User.Position}}
@@ -137,7 +137,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="group" class="col-md-4 control-label label-start" multiple="multiple">权限组<span>&nbsp*</span></label>
+                    <label for="group" class="col-md-4 control-label label-start" multiple="multiple">权限组<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <select name="group" id="group" class="form-control select-group"></select>
                     </div>

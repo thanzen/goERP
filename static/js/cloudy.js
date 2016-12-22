@@ -1,10 +1,11 @@
 $(document).ready(function() {
     $('.input-radio').iCheck({
         checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green'
+        radioClass: 'iradio_square-green',
+        increaseArea: '20%'
     });
     //有checked的radio默认选中
-    $(".input-radio.checked").iCheck("check");
+    console.log($("input.checked").iCheck("check"));
 
     //form-disabled下所有的输入下所有的输入框disabled
     $(".form-disabled input.form-control").attr("disabled", "disabled");
