@@ -41,7 +41,7 @@ $(document).ready(function() {
                 return params;
             },
             columns: columns,
-
+            filter: true,
         }
         if (onExpandRow != undefined) {
             options.detailView = true;
@@ -53,21 +53,22 @@ $(document).ready(function() {
     //用户表
     displayTable("#table-user", "/user/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "用户名", field: 'username', filter: { type: "input" }, sortable: true, order: "desc" },
-        { title: "中文名称", field: 'namezh', sortable: true, order: "desc", filter: { type: "input" } },
-        { title: "部门", field: 'department', sortable: true, order: "desc", filter: { type: "select" } },
-        { title: "职位", field: 'position', sortable: true, order: "desc", filter: { type: "select" } },
-        { title: "邮箱", field: 'email', sortable: true, order: "desc", filter: { type: "input" } },
-        { title: "手机号码", field: 'mobile', sortable: true, order: "desc", filter: { type: "input" } },
-        { title: "座机", field: 'tel', sortable: true, order: "desc", filter: { type: "input" } },
-        { title: "QQ", field: 'qq', sortable: true, order: "desc", filter: { type: "input" } },
-        { title: "微信", field: 'wechat', sortable: true, order: "desc", filter: { type: "input" } },
+        { title: "用户名", field: 'username', sortable: true, order: "desc", filter: { type: "input", data: [] } },
+        { title: "中文名称", field: 'namezh', sortable: true, order: "desc", filter: { type: "input", data: [] } },
+        { title: "部门", field: 'department', sortable: true, order: "desc", filter: { type: "select", data: [] } },
+        { title: "职位", field: 'position', sortable: true, order: "desc", filter: { type: "select", data: [] } },
+        { title: "邮箱", field: 'email', sortable: true, order: "desc", filter: { type: "input", data: [] } },
+        { title: "手机号码", field: 'mobile', sortable: true, order: "desc", filter: { type: "input", data: [] } },
+        { title: "座机", field: 'tel', sortable: true, order: "desc", filter: { type: "input", data: [] } },
+        { title: "QQ", field: 'qq', sortable: true, order: "desc", filter: { type: "input", data: [] } },
+        { title: "微信", field: 'wechat', sortable: true, order: "desc", filter: { type: "input", data: [] } },
         {
             title: "管理员",
             field: 'isadmin',
             sortable: true,
             order: "desc",
             align: "center",
+            filter: { type: "input", data: [] },
             formatter: function cellStyle(value, row, index) {
                 var html = "";
                 if (row.isadmin) {
@@ -84,6 +85,7 @@ $(document).ready(function() {
             sortable: true,
             order: "desc",
             align: "center",
+            filter: { type: "input", data: [] },
             formatter: function cellStyle(value, row, index) {
                 var html = "";
                 if (row.active) {
