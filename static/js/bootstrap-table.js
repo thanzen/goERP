@@ -41,18 +41,19 @@ $(document).ready(function() {
                 return params;
             },
             columns: columns,
-            filter: true,
+
         }
         if (onExpandRow != undefined) {
             options.detailView = true;
             options.onExpandRow = onExpandRow;
         }
+        console.log(options);
         $tableNode.bootstrapTable(options);
     };
     //用户表
     displayTable("#table-user", "/user/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "用户名", field: 'username', sortable: true, order: "desc", filter: { type: "input" } },
+        { title: "用户名", field: 'username', filter: { type: "input" }, sortable: true, order: "desc" },
         { title: "中文名称", field: 'namezh', sortable: true, order: "desc", filter: { type: "input" } },
         { title: "部门", field: 'department', sortable: true, order: "desc", filter: { type: "select" } },
         { title: "职位", field: 'position', sortable: true, order: "desc", filter: { type: "select" } },
