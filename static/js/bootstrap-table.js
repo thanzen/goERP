@@ -190,7 +190,23 @@ $(document).ready(function() {
         { title: "邮箱", field: 'email', sortable: true, order: "desc" },
         { title: "手机号码", field: 'mobile', sortable: true, order: "desc" },
         { title: "开始时间", field: 'start_time', sortable: true, order: "desc" },
-        { title: "结束时间", field: 'end_time', sortable: true, order: "desc" },
+        {
+            title: "结束时间",
+            field: 'end_time',
+            sortable: true,
+            order: "desc",
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                console.log(row.end_time);
+                if (row.end_time == "0001-01-01 00:00:00") {
+                    html = "<small>非正常退出</small>";
+                } else {
+                    html = row.end_time;
+                }
+
+                return html;
+            }
+        },
         { title: "IP地址", field: 'ip', sortable: true, order: "desc" },
         { title: "用户代理", field: "UserAgent" }
 
