@@ -187,6 +187,7 @@ func (ctl *ProductAttributeValueController) PostList() {
 }
 
 func (ctl *ProductAttributeValueController) GetList() {
+	ctl.Data["listName"] = "产品属性值管理"
 	ctl.Data["tableId"] = "table-product-attributevalue"
 	ctl.TplName = "base/table_base.html"
 }

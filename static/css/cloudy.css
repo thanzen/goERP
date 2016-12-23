@@ -6,6 +6,17 @@
     margin-top: 5px;
 }
 
+#list-title {
+    font-size: 1.2em;
+}
+
+
+/*导入模态框*/
+
+.modal-content {
+    border-radius: 5px;
+}
+
 
 /*删选条件*/
 

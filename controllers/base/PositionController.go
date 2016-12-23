@@ -28,7 +28,7 @@ func (ctl *PositionController) Post() {
 
 func (ctl *PositionController) Get() {
 	ctl.GetList()
-
+	ctl.Data["listName"] = "职位管理"
 	ctl.URL = "/position/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"

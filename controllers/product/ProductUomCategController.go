@@ -168,6 +168,7 @@ func (ctl *ProductUomCategController) Detail() {
 	ctl.Data["Action"] = "detail"
 }
 func (ctl *ProductUomCategController) GetList() {
+	ctl.Data["listName"] = "产品单位类别管理"
 	ctl.Data["tableId"] = "table-product-uom-categ"
 	ctl.TplName = "base/table_base.html"
 }

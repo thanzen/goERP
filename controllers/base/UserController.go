@@ -73,6 +73,7 @@ func (ctl *UserController) Detail() {
 	ctl.Data["Action"] = "detail"
 }
 func (ctl *UserController) GetList() {
+	ctl.Data["listName"] = "用户管理"
 	ctl.Data["tableId"] = "table-user"
 	ctl.Data["MenuUserActive"] = "active"
 	ctl.TplName = "base/table_base.html"

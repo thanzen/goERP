@@ -97,7 +97,7 @@ func (ctl *DistrictController) Validator() {
 
 func (ctl *DistrictController) Get() {
 	ctl.GetList()
-
+	ctl.Data["listName"] = "区县管理"
 	ctl.URL = "/address/district/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"

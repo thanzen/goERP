@@ -56,6 +56,7 @@ func (ctl *GroupController) PostCreate() {
 	}
 }
 func (ctl *GroupController) GetList() {
+	ctl.Data["listName"] = "权限管理"
 	ctl.Data["tableId"] = "table-group"
 	ctl.TplName = "base/table_base.html"
 }

@@ -112,6 +112,7 @@ func (ctl *ProductTemplateController) PostList() {
 }
 
 func (ctl *ProductTemplateController) GetList() {
+	ctl.Data["listName"] = "产品款式管理"
 	ctl.Data["tableId"] = "table-product-template"
 	ctl.TplName = "base/table_base.html"
 }

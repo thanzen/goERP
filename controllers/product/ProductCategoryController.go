@@ -201,6 +201,7 @@ func (ctl *ProductCategoryController) PostList() {
 }
 
 func (ctl *ProductCategoryController) GetList() {
+	ctl.Data["listName"] = "产品分类管理"
 	ctl.Data["tableId"] = "table-product-category"
 	ctl.TplName = "base/table_base.html"
 }

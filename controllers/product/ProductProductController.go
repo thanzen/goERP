@@ -25,7 +25,7 @@ func (ctl *ProductProductController) Post() {
 }
 func (ctl *ProductProductController) Get() {
 	ctl.GetList()
-
+	ctl.Data["listName"] = "产品规格管理"
 	ctl.URL = "/product/product/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"

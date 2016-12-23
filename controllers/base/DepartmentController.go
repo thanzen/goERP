@@ -28,7 +28,7 @@ func (ctl *DepartmentController) Post() {
 
 func (ctl *DepartmentController) Get() {
 	ctl.GetList()
-
+	ctl.Data["listName"] = "部门管理"
 	ctl.URL = "/department/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"

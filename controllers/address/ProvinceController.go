@@ -26,7 +26,7 @@ func (ctl *ProvinceController) Post() {
 func (ctl *ProvinceController) Get() {
 
 	ctl.GetList()
-
+	ctl.Data["listName"] = "省份管理"
 	ctl.URL = "/address/city/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"

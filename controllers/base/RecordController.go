@@ -16,7 +16,7 @@ type RecordController struct {
 func (ctl *RecordController) Get() {
 
 	ctl.GetList()
-
+	ctl.Data["listName"] = "记录管理"
 	ctl.URL = "/user/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Layout = "base/base.html"
