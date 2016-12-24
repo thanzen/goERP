@@ -21,7 +21,7 @@ $(document).ready(function() {
         dataField: "data",
         pagination: true,
         pageNumber: 1,
-        pageSize: 20,
+        pageSize: 2,
         pageList: [10, 25, 50, 100, 500, 1000],
         // onClickRow: function(row, $element) {
         //     //$element是当前tr的jquery对象
@@ -38,8 +38,15 @@ $(document).ready(function() {
                     params._xsrf = xsrf[0].value;
                 }
                 params.action = 'table';
+                //搜索关闭，删除params中的filter属性
+                if ($("#search-disable").hasClass("search-hidden")) {
+                    if (params.hasOwnProperty("filter")) {
+                        delete params.filter;
+                    }
+                }
                 return params;
             },
+
             columns: columns,
             filter: true,
         }
@@ -545,10 +552,10 @@ $(document).ready(function() {
         $("#search-disable").removeClass("search-hidden");
     });
     //鼠标进入展示详情，离开隐藏详情
-    $('#table-user').on('mouseenter mouseleave', 'tbody>tr',
-        function(e) {
-            $(this).find(".detail-icon").trigger("click");
-        }
-    );
+    // $('#table-user').on('mouseenter mouseleave', 'tbody>tr',
+    //     function(e) {
+    //         $(this).find(".detail-icon").trigger("click");
+    //     }
+    // );
 
 });
