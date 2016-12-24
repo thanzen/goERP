@@ -532,12 +532,13 @@ $(document).ready(function() {
     });
     //bootstrap filter的input样式改为bootstrap,该行代码必须在所有的bootstrapTable后面，否则不能修改样式
     $(".fht-cell input").addClass("form-control");
-    //电脑隐藏+-按钮，平板显示
+    // 搜索功能关闭
     $("#search-disable").on('click', function(e) {
         $("#search-enable").removeClass("search-hidden");
         $("#search-disable").addClass("search-hidden");
         $(".fht-cell").addClass("search-hidden");
     });
+    // 搜索功能开启
     $("#search-enable").on('click', function(e) {
         $(".fht-cell").removeClass("search-hidden");
         $("#search-enable").addClass("search-hidden");
@@ -547,6 +548,7 @@ $(document).ready(function() {
     $('#table-user').on('mouseenter mouseleave', 'tbody>tr',
         function(e) {
             $(this).find(".detail-icon").trigger("click");
-        });
+        }
+    );
 
 });
