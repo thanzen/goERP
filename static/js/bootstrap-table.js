@@ -47,7 +47,6 @@ $(document).ready(function() {
             options.detailView = true;
             options.onExpandRow = onExpandRow;
         }
-        console.log(options);
         $tableNode.bootstrapTable(options);
     };
     //用户表
@@ -98,7 +97,7 @@ $(document).ready(function() {
         },
         {
             title: "操作",
-            align: "center",
+            align: "left",
             field: 'action',
             formatter: function cellStyle(value, row, index) {
                 var html = "";
@@ -531,5 +530,23 @@ $(document).ready(function() {
             $("#one-product-template-attribute").bootstrapTable('append', newData());
         });
     });
+    //bootstrap filter的input样式改为bootstrap,该行代码必须在所有的bootstrapTable后面，否则不能修改样式
+    $(".fht-cell input").addClass("form-control");
+    //电脑隐藏+-按钮，平板显示
+    $("#search-disable").on('click', function(e) {
+        $("#search-enable").removeClass("search-hidden");
+        $("#search-disable").addClass("search-hidden");
+        $(".fht-cell").addClass("search-hidden");
+    });
+    $("#search-enable").on('click', function(e) {
+        $(".fht-cell").removeClass("search-hidden");
+        $("#search-enable").addClass("search-hidden");
+        $("#search-disable").removeClass("search-hidden");
+    });
+    //鼠标进入展示详情，离开隐藏详情
+    $('#table-user').on('mouseenter mouseleave', 'tbody>tr',
+        function(e) {
+            $(this).find(".detail-icon").trigger("click");
+        });
 
 });

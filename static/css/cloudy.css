@@ -83,3 +83,10 @@ td>.fa-remove {
 .form-disabled .form-table-add-line {
     display: none;
 }
+
+
+/*默认开启搜索，隐藏关闭搜索*/
+
+.search-hidden {
+    display: none;
+}
