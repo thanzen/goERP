@@ -43,5 +43,28 @@ $(document).ready(function() {
         }
     });
 
-
+    //如果搜索添加不为空，增加提示样式
+    $("#listViewSearch input").change(function(e) {
+        e.currentTarget.value = e.currentTarget.value.trim();
+        $("#listViewSearch input").each(function() {
+            if (this.value != "") {
+                $("button[id^='clearListSearchCond']").removeClass("hide");
+                //退出循环
+                return false;
+            }
+        });
+    });
+    $("#listViewSearch input").each(function() {
+        if (this.value != "") {
+            $("button[id^='clearListSearchCond']").removeClass("hide");
+            //退出循环
+            return false;
+        }
+    });
+    $("button[id^='clearListSearchCond']").click(function(e) {
+        $("#listViewSearch input").each(function() {
+            this.value = "";
+        });
+        $(this).addClass("hide");
+    });
 });

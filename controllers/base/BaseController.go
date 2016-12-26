@@ -35,6 +35,7 @@ func (ctl *BaseController) Prepare() {
 	ctl.Data["IsPro"] = IsPro
 	ctl.Data["xsrf"] = template.HTML(ctl.XSRFFormHTML())
 	ctl.Data["PageStartTime"] = time.Now()
+
 	// Redirect to make URL clean.
 	if ctl.setLangVer() {
 		i := strings.Index(ctl.Ctx.Request.RequestURI, "?")

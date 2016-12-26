@@ -26,6 +26,8 @@ func (ctl *UserController) Put() {
 	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 }
 func (ctl *UserController) Get() {
+	ctl.URL = "/user/"
+	ctl.Data["URL"] = ctl.URL
 
 	action := ctl.Input().Get("action")
 	switch action {
@@ -40,9 +42,6 @@ func (ctl *UserController) Get() {
 	default:
 		ctl.GetList()
 	}
-	ctl.URL = "/user/"
-	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 
 }
 func (ctl *UserController) Post() {
@@ -63,6 +62,7 @@ func (ctl *UserController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建用户"
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "user/user_form.html"
 }
 func (ctl *UserController) Detail() {
@@ -73,10 +73,15 @@ func (ctl *UserController) Detail() {
 	ctl.Data["Action"] = "detail"
 }
 func (ctl *UserController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["listName"] = "用户管理"
 	ctl.Data["tableId"] = "table-user"
 	ctl.Data["MenuUserActive"] = "active"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "user/user_list_search.html"
 }
 func (ctl *UserController) Validator() {
 	username := ctl.GetString("username")
@@ -164,12 +169,14 @@ func (ctl *UserController) userList(start, length int64, condArr map[string]inte
 
 func (ctl *UserController) ChangePwd() {
 	ctl.Data["MenuChangePwdActive"] = "active"
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "user/user_change_password_form.html"
 }
 
 func (ctl *UserController) GetCreate() {
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建用户"
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "user/user_form.html"
 }
 func (ctl *UserController) PostCreate() {
@@ -226,10 +233,11 @@ func (ctl *UserController) Edit() {
 	ctl.Data["RecordId"] = id
 	ctl.Data["Action"] = "edit"
 	ctl.Data["User"] = userInfo
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "user/user_form.html"
 }
 func (ctl *UserController) Show() {
 	ctl.Data["MenuSelfInfoActive"] = "active"
-
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "user/user_form.html"
 }

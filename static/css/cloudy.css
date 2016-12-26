@@ -2,9 +2,10 @@
     padding: 10px 30px;
 }
 
-#display-table {
+
+/*#display-table {
     margin-top: 5px;
-}
+}*/
 
 #list-title {
     font-size: 1.2em;
@@ -90,3 +91,18 @@ td>.fa-remove {
 .search-hidden {
     display: none;
 }
+
+.panel-list-info {
+    margin-bottom: 1px;
+}
+
+a[aria-expanded="true"]>.icon-plus {
+    display: none;
+}
+
+a[aria-expanded="false"]>.icon-minus {
+    display: none;
+}
+
+
+/*默认情况下没有搜索条件，有条件提示隐藏*/

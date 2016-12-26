@@ -96,5 +96,6 @@ func (ctl *CityController) PostList() {
 
 func (ctl *CityController) GetList() {
 	ctl.Data["tableId"] = "table-city"
+	ctl.Layout = "base/base_list_view.html"
 	ctl.TplName = "base/table_base.html"
 }

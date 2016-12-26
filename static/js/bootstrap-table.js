@@ -38,17 +38,23 @@ $(document).ready(function() {
                     params._xsrf = xsrf[0].value;
                 }
                 params.action = 'table';
-                //搜索关闭，删除params中的filter属性
-                if ($("#search-disable").hasClass("search-hidden")) {
-                    if (params.hasOwnProperty("filter")) {
-                        delete params.filter;
-                    }
+                var filterCond = $(".list-info-table .form-control");
+                var filter = {};
+                //获得过滤条件
+                if (filterCond.length > 0) {
+                    filterCond.each(function() {
+                        if (this.type == 'text') {
+                            if (this.value != "") {
+                                filter[this.name] = this.value;
+                            }
+                        }
+                    });
                 }
+                params.filter = JSON.stringify(filter);
                 return params;
             },
 
             columns: columns,
-            filter: true,
         }
         if (onExpandRow != undefined) {
             options.detailView = true;
@@ -59,22 +65,22 @@ $(document).ready(function() {
     //用户表
     displayTable("#table-user", "/user/", [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "用户名", field: 'username', sortable: true, order: "desc", filter: { type: "input", data: [] } },
-        { title: "中文名称", field: 'namezh', sortable: true, order: "desc", filter: { type: "input", data: [] } },
+        { title: "用户名", field: 'username', sortable: true, order: "desc" },
+        { title: "中文名称", field: 'namezh', sortable: true, order: "desc" },
         { title: "部门", field: 'department', sortable: true, order: "desc", filter: { type: "select", data: [] } },
         { title: "职位", field: 'position', sortable: true, order: "desc", filter: { type: "select", data: [] } },
-        { title: "邮箱", field: 'email', sortable: true, order: "desc", filter: { type: "input", data: [] } },
-        { title: "手机号码", field: 'mobile', sortable: true, order: "desc", filter: { type: "input", data: [] } },
-        { title: "座机", field: 'tel', sortable: true, order: "desc", filter: { type: "input", data: [] } },
-        { title: "QQ", field: 'qq', sortable: true, order: "desc", filter: { type: "input", data: [] } },
-        { title: "微信", field: 'wechat', sortable: true, order: "desc", filter: { type: "input", data: [] } },
+        { title: "邮箱", field: 'email', sortable: true, order: "desc" },
+        { title: "手机号码", field: 'mobile', sortable: true, order: "desc" },
+        { title: "座机", field: 'tel', sortable: true, order: "desc" },
+        { title: "QQ", field: 'qq', sortable: true, order: "desc" },
+        { title: "微信", field: 'wechat', sortable: true, order: "desc" },
         {
             title: "管理员",
             field: 'isadmin',
             sortable: true,
             order: "desc",
             align: "center",
-            filter: { type: "input", data: [] },
+
             formatter: function cellStyle(value, row, index) {
                 var html = "";
                 if (row.isadmin) {
@@ -91,7 +97,6 @@ $(document).ready(function() {
             sortable: true,
             order: "desc",
             align: "center",
-            filter: { type: "input", data: [] },
             formatter: function cellStyle(value, row, index) {
                 var html = "";
                 if (row.active) {
@@ -107,15 +112,15 @@ $(document).ready(function() {
             align: "left",
             field: 'action',
             formatter: function cellStyle(value, row, index) {
-                var html = "";
+                var html = '';
                 var url = "/user/";
                 if (row.active) {
-                    html += "<a href='" + url + row.Id + "?action=invalid' class='table-action btn btn-xs btn-danger'>无效&nbsp<i class='fa fa-close'></i></a>";
+                    html += "<a href='" + url + row.Id + "?action=invalid' class='btn btn-xs btn-default table-action danger'><i class='fa fa-close'>&nbsp无效</i></a>";
                 } else {
-                    html += "<a href='" + url + row.Id + "?action=active' class='table-action btn btn-xs btn-success'>有效&nbsp<i class='fa fa-check'></i></a>";
+                    html += "<a href='" + url + row.Id + "?action=active' class='btn btn-xs btn-default table-action success'><i class='fa fa-check'>&nbsp有效</i></a>";
                 }
-                html += "<a href='" + url + row.Id + "?action=edit' class='table-action btn btn-xs btn-info'>编辑&nbsp<i class='fa fa-pencil'></i></a>";
-                html += "<a href='" + url + row.Id + "?action=detail' class='table-action btn btn-xs btn-primary'>详情&nbsp<i class='fa fa-external-link'></i></a>";
+                html += "<a href='" + url + row.Id + "?action=edit' class='btn btn-xs btn-default table-action info'><i class='fa fa-pencil'>&nbsp编辑</i></a>";
+                html += "<a href='" + url + row.Id + "?action=detail' class='btn btn-xs btn-default table-action primary'><i class='fa fa-external-link'>&nbsp详情</i></a>";
                 return html;
             }
         }
@@ -538,24 +543,30 @@ $(document).ready(function() {
         });
     });
     //bootstrap filter的input样式改为bootstrap,该行代码必须在所有的bootstrapTable后面，否则不能修改样式
-    $(".fht-cell input").addClass("form-control");
-    // 搜索功能关闭
-    $("#search-disable").on('click', function(e) {
-        $("#search-enable").removeClass("search-hidden");
-        $("#search-disable").addClass("search-hidden");
-        $(".fht-cell").addClass("search-hidden");
-    });
-    // 搜索功能开启
-    $("#search-enable").on('click', function(e) {
-        $(".fht-cell").removeClass("search-hidden");
-        $("#search-enable").addClass("search-hidden");
-        $("#search-disable").removeClass("search-hidden");
-    });
+    // $(".fht-cell input").addClass("form-control");
+    // // 搜索功能关闭
+    // $("#search-disable").on('click', function(e) {
+    //     $("#search-enable").removeClass("search-hidden");
+    //     $("#search-disable").addClass("search-hidden");
+    //     $(".fht-cell").addClass("search-hidden");
+    // });
+    // // 搜索功能开启
+    // $("#search-enable").on('click', function(e) {
+    //     $(".fht-cell").removeClass("search-hidden");
+    //     $("#search-enable").addClass("search-hidden");
+    //     $("#search-disable").removeClass("search-hidden");
+    // });
     //鼠标进入展示详情，离开隐藏详情
     // $('#table-user').on('mouseenter mouseleave', 'tbody>tr',
     //     function(e) {
     //         $(this).find(".detail-icon").trigger("click");
     //     }
     // );
+    $(".list-info-table .form-control").change(function(e) {
+        $(".table-diplay-info").bootstrapTable('refresh');
+    });
+    $("#clearListSearchCond-table ").click(function() {
+        $(".table-diplay-info").bootstrapTable('refresh');
+    });
 
 });
