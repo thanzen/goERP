@@ -21,7 +21,7 @@ $(document).ready(function() {
         dataField: "data",
         pagination: true,
         pageNumber: 1,
-        pageSize: 2,
+        pageSize: 20,
         pageList: [10, 25, 50, 100, 500, 1000],
         // onClickRow: function(row, $element) {
         //     //$element是当前tr的jquery对象

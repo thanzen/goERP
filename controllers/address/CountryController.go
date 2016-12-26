@@ -25,12 +25,11 @@ func (ctl *CountryController) Post() {
 }
 func (ctl *CountryController) Get() {
 
-	ctl.GetList()
-	ctl.Data["listName"] = "国家管理"
 	ctl.URL = "/address/city/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuCountryActive"] = "active"
+	ctl.GetList()
+
 }
 
 func (ctl *CountryController) PostList() {
@@ -94,6 +93,11 @@ func (ctl *CountryController) Validator() {
 }
 
 func (ctl *CountryController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["tableId"] = "table-country"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "address/country_list_search.html"
 }

@@ -39,7 +39,6 @@ func (ctl *ProductUomController) Get() {
 	}
 	ctl.URL = "/product/uom/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductUomActive"] = "active"
 }
 func (ctl *ProductUomController) Put() {
@@ -199,6 +198,8 @@ func (ctl *ProductUomController) Edit() {
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
 	ctl.Data["Uom"] = uomInfo
+	ctl.Layout = "base/base.html"
+
 	ctl.TplName = "product/product_uom_form.html"
 }
 func (ctl *ProductUomController) Detail() {
@@ -208,13 +209,20 @@ func (ctl *ProductUomController) Detail() {
 	ctl.Data["Action"] = "detail"
 }
 func (ctl *ProductUomController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["listName"] = "产品单位"
 	ctl.Data["tableId"] = "table-product-uom"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "product/product_uom_list_search.html"
 }
 func (ctl *ProductUomController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建产品单位"
+	ctl.Layout = "base/base.html"
+
 	ctl.TplName = "product/product_uom_form.html"
 }

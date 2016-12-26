@@ -96,15 +96,20 @@ func (ctl *DistrictController) Validator() {
 }
 
 func (ctl *DistrictController) Get() {
-	ctl.GetList()
+
 	ctl.Data["listName"] = "区县管理"
 	ctl.URL = "/address/district/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuDistrictActive"] = "active"
+	ctl.GetList()
 
 }
 func (ctl *DistrictController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["tableId"] = "table-district"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "address/district_list_search.html"
 }

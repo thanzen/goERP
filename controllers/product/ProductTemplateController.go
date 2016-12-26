@@ -39,7 +39,6 @@ func (ctl *ProductTemplateController) Get() {
 	}
 	ctl.URL = "/product/template/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductTemplateActive"] = "active"
 }
 func (ctl *ProductTemplateController) PostCreate() {}
@@ -49,6 +48,8 @@ func (ctl *ProductTemplateController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建款式"
+	ctl.Layout = "base/base.html"
+
 	ctl.TplName = "product/product_template_form.html"
 }
 
@@ -112,7 +113,12 @@ func (ctl *ProductTemplateController) PostList() {
 }
 
 func (ctl *ProductTemplateController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["listName"] = "产品款式管理"
 	ctl.Data["tableId"] = "table-product-template"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "product/product_template_list_search.html"
 }

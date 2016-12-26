@@ -25,12 +25,10 @@ func (ctl *ProvinceController) Post() {
 }
 func (ctl *ProvinceController) Get() {
 
-	ctl.GetList()
-	ctl.Data["listName"] = "省份管理"
 	ctl.URL = "/address/city/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProvinceActive"] = "active"
+	ctl.GetList()
 }
 func (ctl *ProvinceController) PostList() {
 	condArr := make(map[string]interface{})
@@ -94,6 +92,11 @@ func (ctl *ProvinceController) provinceList(start, length int64, condArr map[str
 }
 
 func (ctl *ProvinceController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["tableId"] = "table-province"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "address/province_list_search.html"
 }

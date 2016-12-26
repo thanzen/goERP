@@ -57,7 +57,7 @@ func (ctl *ProductAttributeController) Get() {
 	}
 	ctl.URL = "/product/attribute/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
+
 	ctl.Data["MenuProductAttributeActive"] = "active"
 }
 func (ctl *ProductAttributeController) Edit() {
@@ -76,12 +76,14 @@ func (ctl *ProductAttributeController) Edit() {
 	ctl.Data["RecordId"] = id
 	ctl.Data["Attribute"] = attributeInfo
 	fmt.Println(attributeInfo)
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "product/product_attribute_form.html"
 }
 func (ctl *ProductAttributeController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建属性"
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "product/product_attribute_form.html"
 }
 func (ctl *ProductAttributeController) Detail() {
@@ -183,7 +185,12 @@ func (ctl *ProductAttributeController) PostList() {
 }
 
 func (ctl *ProductAttributeController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["listName"] = "属性管理"
 	ctl.Data["tableId"] = "table-product-attribute"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "product/product_attribute_list_search.html"
 }

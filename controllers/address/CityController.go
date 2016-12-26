@@ -26,12 +26,13 @@ func (ctl *CityController) Post() {
 	}
 }
 func (ctl *CityController) Get() {
-	ctl.GetList()
-	ctl.Data["listName"] = "城市管理"
+
 	ctl.URL = "/address/city/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuCityActive"] = "active"
+
+	ctl.GetList()
+
 }
 func (ctl *CityController) Validator() {
 	name := ctl.GetString("name")
@@ -95,7 +96,11 @@ func (ctl *CityController) PostList() {
 }
 
 func (ctl *CityController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["tableId"] = "table-city"
 	ctl.Layout = "base/base_list_view.html"
-	ctl.TplName = "base/table_base.html"
+	ctl.TplName = "address/city_list_search.html"
 }

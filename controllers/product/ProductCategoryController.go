@@ -60,7 +60,6 @@ func (ctl *ProductCategoryController) Get() {
 	}
 	ctl.URL = "/product/category/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductCategoryActive"] = "active"
 }
 func (ctl *ProductCategoryController) Edit() {
@@ -84,6 +83,8 @@ func (ctl *ProductCategoryController) Edit() {
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
 	ctl.Data["Category"] = categoryInfo
+	ctl.Layout = "base/base.html"
+
 	ctl.TplName = "product/product_category_form.html"
 }
 
@@ -116,6 +117,7 @@ func (ctl *ProductCategoryController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建类别"
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "product/product_category_form.html"
 }
 func (ctl *ProductCategoryController) Validator() {
@@ -201,7 +203,12 @@ func (ctl *ProductCategoryController) PostList() {
 }
 
 func (ctl *ProductCategoryController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["listName"] = "产品分类管理"
 	ctl.Data["tableId"] = "table-product-category"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "product/product_category_list_search.html"
 }

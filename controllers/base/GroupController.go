@@ -56,9 +56,14 @@ func (ctl *GroupController) PostCreate() {
 	}
 }
 func (ctl *GroupController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["listName"] = "权限管理"
 	ctl.Data["tableId"] = "table-group"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "user/group_list_search.html"
 }
 
 func (ctl *GroupController) Detail() {
@@ -71,6 +76,7 @@ func (ctl *GroupController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建权限"
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "user/group_form.html"
 }
 func (ctl *GroupController) Edit() {
@@ -89,6 +95,8 @@ func (ctl *GroupController) Edit() {
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
 	ctl.Data["Group"] = groupInfo
+	ctl.Layout = "base/base.html"
+
 	ctl.TplName = "user/group_form.html"
 }
 func (ctl *GroupController) Validator() {

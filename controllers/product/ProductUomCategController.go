@@ -39,7 +39,6 @@ func (ctl *ProductUomCategController) Get() {
 	}
 	ctl.URL = "/product/uomcateg/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductUomCategActive"] = "active"
 }
 func (ctl *ProductUomCategController) Put() {
@@ -159,6 +158,8 @@ func (ctl *ProductUomCategController) Edit() {
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
 	ctl.Data["UomCateg"] = categInfo
+	ctl.Layout = "base/base.html"
+
 	ctl.TplName = "product/product_uom_categ_form.html"
 }
 func (ctl *ProductUomCategController) Detail() {
@@ -168,13 +169,20 @@ func (ctl *ProductUomCategController) Detail() {
 	ctl.Data["Action"] = "detail"
 }
 func (ctl *ProductUomCategController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["listName"] = "产品单位类别管理"
 	ctl.Data["tableId"] = "table-product-uom-categ"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "product/product_uom_categ_list_search.html"
 }
 func (ctl *ProductUomCategController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建单位类别"
+	ctl.Layout = "base/base.html"
+
 	ctl.TplName = "product/product_uom_categ_form.html"
 }

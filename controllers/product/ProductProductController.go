@@ -24,12 +24,12 @@ func (ctl *ProductProductController) Post() {
 	}
 }
 func (ctl *ProductProductController) Get() {
-	ctl.GetList()
+
 	ctl.Data["listName"] = "产品规格管理"
 	ctl.URL = "/product/product/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuProductProductActive"] = "active"
+	ctl.GetList()
 }
 func (ctl *ProductProductController) Validator() {
 	name := ctl.GetString("name")
@@ -90,6 +90,12 @@ func (ctl *ProductProductController) PostList() {
 }
 
 func (ctl *ProductProductController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
+	ctl.Data["listName"] = "产品规格管理"
 	ctl.Data["tableId"] = "table-product-product"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "product/product_product_list_search.html"
 }

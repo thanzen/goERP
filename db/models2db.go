@@ -4,6 +4,7 @@ import (
 	"pms/models/base"
 	"pms/models/partner"
 	"pms/models/product"
+	"pms/models/sale"
 
 	"github.com/astaxie/beego/orm"
 )
@@ -40,5 +41,13 @@ func init() {
 	orm.RegisterModel(new(product.ProductUom))
 	//产品计量单位类别
 	orm.RegisterModel(new(product.ProductUomCateg))
-
+	//================================销售订单================================
+	//销售订单配置
+	orm.RegisterModel(new(sale.SaleConfig))
+	// 销售订单状态
+	orm.RegisterModel(new(sale.SaleState))
+	// 销售订单
+	orm.RegisterModel(new(sale.SaleOrder))
+	// 销售订单明细
+	orm.RegisterModel(new(sale.SaleOrderLine))
 }

@@ -15,12 +15,10 @@ type RecordController struct {
 
 func (ctl *RecordController) Get() {
 
-	ctl.GetList()
-	ctl.Data["listName"] = "记录管理"
-	ctl.URL = "/user/"
+	ctl.URL = "/record/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
 	ctl.Data["MenuRecordActive"] = "active"
+	ctl.GetList()
 
 }
 func (ctl *RecordController) Post() {
@@ -89,6 +87,11 @@ func (ctl *RecordController) recordList(start, length int64, condArr map[string]
 	return result, err
 }
 func (ctl *RecordController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["tableId"] = "table-record"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "user/record_list_search.html"
 }

@@ -59,13 +59,14 @@ func (ctl *ProductAttributeValueController) Get() {
 	}
 	ctl.URL = "/product/attributevalue/"
 	ctl.Data["URL"] = ctl.URL
-	ctl.Layout = "base/base.html"
+
 	ctl.Data["MenuProductAttributeValueActive"] = "active"
 }
 func (ctl *ProductAttributeValueController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false
 	ctl.Data["listName"] = "创建属性值"
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "product/product_attribute_value_form.html"
 }
 func (ctl *ProductAttributeValueController) Edit() {
@@ -89,6 +90,7 @@ func (ctl *ProductAttributeValueController) Edit() {
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
 	ctl.Data["ProductAttValue"] = mapInfo
+	ctl.Layout = "base/base.html"
 	ctl.TplName = "product/product_attribute_value_form.html"
 }
 func (ctl *ProductAttributeValueController) Detail() {
@@ -187,7 +189,12 @@ func (ctl *ProductAttributeValueController) PostList() {
 }
 
 func (ctl *ProductAttributeValueController) GetList() {
+	viewType := ctl.Input().Get("view")
+	if viewType == "" || viewType == "table" {
+		ctl.Data["ViewType"] = "table"
+	}
 	ctl.Data["listName"] = "产品属性值管理"
 	ctl.Data["tableId"] = "table-product-attributevalue"
-	ctl.TplName = "base/table_base.html"
+	ctl.Layout = "base/base_list_view.html"
+	ctl.TplName = "product/product_attribute_value_list_search.html"
 }
