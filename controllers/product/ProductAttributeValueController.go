@@ -141,7 +141,7 @@ func (ctl *ProductAttributeValueController) Validator() {
 	ctl.ServeJSON()
 }
 
-// 获得符合要求的城市数据
+// 获得符合要求的数据
 func (ctl *ProductAttributeValueController) productAttributeList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var arrs []mp.ProductAttributeValue
@@ -153,10 +153,10 @@ func (ctl *ProductAttributeValueController) productAttributeList(start, length i
 		tableLines := make([]interface{}, 0, 4)
 		for _, line := range arrs {
 			oneLine := make(map[string]interface{})
-			oneLine["value"] = line.Name
+			oneLine["name"] = line.Name
 			oneLine["attribute"] = line.Attribute.Name
 			oneLine["Id"] = line.Id
-
+			oneLine["id"] = line.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines
