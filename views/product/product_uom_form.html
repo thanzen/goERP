@@ -22,6 +22,7 @@
                 <div class="form-group">
                     <label for="category" class="col-md-4 control-label label-start">计量单位类别<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Uom}} {{.Uom.category.name}} {{end}}</p>
                         <select name="category" id="category" {{if not .Readonly}}autofocus{{end}} class="form-control select-product-uom-category" {{if .Uom}} {{if .Uom.category}} data-default-id="{{.Uom.category.id}}" data-default-name="{{.Uom.category.name}}" {{end}} {{end}}>
                         </select>
                     </div>
@@ -31,6 +32,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-4 control-label label-start">计量单位名称<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Uom}} {{.Uom.name}} {{end}}</p>
                         <input class="form-control" name="name" type="text" {{if .Uom}} value="{{.Uom.name}}" {{end}} />
                     </div>
                 </div>
@@ -47,6 +49,7 @@
                 <div class="form-group">
                     <label for="rounding" class="col-md-4 control-label label-start">舍入精度<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Uom}} {{.Uom.rounding}} {{end}}</p>
                         <input class="form-control" name="rounding" type="text" {{if .Uom}} value="{{.Uom.rounding}}" {{else}}value="0.01" {{end}} />
                     </div>
                 </div>

@@ -22,6 +22,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-4 control-label label-start">属性名称<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Attribute}} {{.Attribute.name}} {{end}}</p>
                         <input class="form-control" name="name" type="text" {{if not .Readonly}}autofocus{{end}}{{if .Attribute}} value="{{.Attribute.name}}" {{end}} />
                     </div>
                 </div>
@@ -30,6 +31,7 @@
                 <div class="form-group">
                     <label for="code" class="col-md-4 control-label label-start">属性编码<span>&nbsp </span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Attribute}} {{.Attribute.code}} {{end}}</p>
                         <input class="form-control" name="code" type="text" {{if .Attribute}} value="{{.Attribute.code}}" {{end}} />
                     </div>
                 </div>
@@ -38,6 +40,7 @@
                 <div class="form-group">
                     <label for="sequence" class="col-md-4 control-label label-start">属性序号<span>&nbsp </span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Attribute}} {{.Attribute.sequence}} {{end}}</p>
                         <input class="form-control" name="sequence" type="text" {{if .Attribute}} value="{{.Attribute.sequence}}" {{end}} />
                     </div>
                 </div>

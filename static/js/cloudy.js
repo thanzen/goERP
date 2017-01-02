@@ -13,6 +13,8 @@ $(document).ready(function() {
     $(".form-disabled .form-save-btn,.form-disabled .form-cancel-btn").hide();
     $(".form-disabled .input-radio").iCheck("disable");
     $(".form-disabled textarea.form-control").attr("disabled", "disabled");
+    $(".form-disabled .form-control").hide();
+    $(".form-disabled span.select2").hide();
 
 
     //编辑删除readonly属性，输入框变成可编辑状态
@@ -24,6 +26,9 @@ $(document).ready(function() {
         $(".form-disabled select").prop("disabled", false);
         $(".input-radio").iCheck("enable");
         $(".form-disabled textarea.form-control").removeAttr("disabled");
+        $(".form-disabled .p-form-control").hide();
+        $(".form-disabled .form-control").show();
+        $(".form-disabled span.select2").show();
 
 
     });
@@ -35,6 +40,10 @@ $(document).ready(function() {
         $(".form-disabled select").prop("disabled", true);
         $(".input-radio").iCheck("disable");
         $(".form-disabled textarea.form-control").attr("disabled", "disabled");
+        $(".form-disabled .p-form-control").show();
+        $(".form-disabled .form-control").hide();
+        $(".form-disabled span.select2").hide();
+
 
 
     });

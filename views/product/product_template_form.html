@@ -22,6 +22,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-2 control-label label-start">款式名称<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-10">
+                        <p class="p-form-control">{{if .Tp}} {{.Tp.name}} {{end}}</p>
                         <input class="form-control" name="name" type="text" {{if not .Readonly}}autofocus{{end}} {{if .Tp}} value="{{.Tp.name}}" {{end}} />
                     </div>
                 </div>
@@ -48,6 +49,7 @@
                 <div class="form-group">
                     <label for="defaultCode" class="col-md-4 control-label label-start">款式编码<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Tp}} {{.Tp.defaultCode}} {{end}}</p>
                         <input class="form-control" name="defaultCode" type="text" {{if .Tp}} value="{{.Tp.defaultCode}}" {{end}} />
                     </div>
                 </div>
@@ -56,6 +58,7 @@
                 <div class="form-group">
                     <label for="parent" class="col-md-4 control-label label-start">款式类别<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Tp}} {{.Tp.category.name}} {{end}}</p>
                         <select name="parent" id="parent" class="form-control select-product-category" {{if .Tp}} {{if .Tp.category}} data-default-id="{{.Tp.category.id}}" data-default-name="{{.Tp.category.name}}" {{end}} {{end}}>
                         </select>
                     </div>

@@ -19,6 +19,7 @@
                 <div class="form-group">
                     <label for="username" class="col-md-4 control-label label-start">用户名<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control"> {{.User.Name}} </p>
                         <input class="form-control" name="username" {{if not .Readonly}}autofocus{{end}} type="text" value="{{.User.Name}}" />
                     </div>
                 </div>
@@ -27,6 +28,7 @@
                 <div class="form-group">
                     <label for="namezh" class="col-md-4 control-label">用户名(中文)<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control"> {{.User.NameZh}} </p>
                         <input class="form-control" name="namezh" type="text" value="{{.User.NameZh}}" />
                     </div>
                 </div>
@@ -35,6 +37,7 @@
                 <div class="form-group">
                     <label for="mobile" class="col-md-4 control-label label-start">手机号码<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control"> {{.User.Mobile}} </p>
                         <input class="form-control" name="mobile" id="mobile" type="text" value="{{.User.Mobile}}" />
                         </select>
                     </div>
@@ -44,6 +47,7 @@
                 <div class="form-group">
                     <label for="tel" class="col-md-4 control-label">座机</label>
                     <div class="col-md-8">
+                        <p class="p-form-control"> {{.User.Tel}} </p>
                         <input class="form-control" name="tel" id="tel" type="text" value="{{.User.Tel}}" />
                     </div>
                 </div>
@@ -62,6 +66,7 @@
                 <div class="form-group">
                     <label for="email" class="col-md-4 control-label label-start">邮箱<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control"> {{.User.Email}} </p>
                         <input class="form-control" name="email" id="email" type="email" value="{{.User.Email}}" />
                     </div>
                 </div>
@@ -70,7 +75,8 @@
                 <div class="form-group">
                     <label for="qq" class="col-md-4 control-label ">QQ</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="qq" id="qq" type="text" />
+                        <p class="p-form-control"> {{.User.qq}} </p>
+                        <input class="form-control" name="qq" id="qq" type="text" value="{{.User.qq}}" />
                     </div>
                 </div>
             </div>
@@ -78,6 +84,7 @@
                 <div class="form-group">
                     <label for="wechat" class="col-md-4 control-label">微信</label>
                     <div class="col-md-8">
+                        <p class="p-form-control"> {{.User.wechat}} </p>
                         <input class="form-control" name="wechat" id="wechat" type="text" />
                     </div>
                 </div>
@@ -92,6 +99,7 @@
                 <div class="form-group">
                     <label for="department" class="col-md-4 control-label label-start">部门<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control"> {{if .User}} {{if .User.Department}} {{.User.Department.Name}}{{end}} {{end}}</p>
                         <select aria-hidden="true" name="department" id="department" class="form-control  select-department">
                             {{if .User.Department}}
                                 <option value="{{.User.Department.Id}}" selected="selected" >{{.User.Department.Name}}</option>
@@ -106,6 +114,8 @@
                 <div class="form-group">
                     <label for="position" class="col-md-4 control-label label-start">职位<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control"> {{if .User}} {{if .User.Position}} {{.User.Position.Name}}{{end}} {{end}}</p>
+
                         <select name="position" id="position" class="form-control select-position">
                             {{if .User.Position}}
                                 <option value="{{.User.Position.Id}}" selected="selected" >{{.User.Position.Name}}</option>

@@ -22,6 +22,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-4 control-label label-start">产品类别<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Category}} {{.Category.name}} {{end}}</p>
                         <input class="form-control" name="name" type="text" {{if not .Readonly}}autofocus{{end}} {{if .Category}} value="{{.Category.name}}" {{end}} />
                     </div>
                 </div>
@@ -30,6 +31,7 @@
                 <div class="form-group">
                     <label for="parent" class="col-md-4 control-label label-start">上级类别</label>
                     <div class="col-md-8">
+                        <p class="p-form-control">{{if .Category}} {{.Category.parent.name}}{{else}} - {{end}}</p>
                         <select name="parent" id="parent" class="form-control select-product-category" {{if .Category}} {{if .Category.parent}} data-default-id="{{.Category.parent.id}}" data-default-name="{{.Category.parent.name}}" {{end}} {{end}}>
                         </select>
                     </div>

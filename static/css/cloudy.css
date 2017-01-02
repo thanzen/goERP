@@ -108,5 +108,15 @@ a[aria-expanded="false"]>.icon-minus {
     color: green;
 }
 
+.p-form-control {
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
 
 /*默认情况下没有搜索条件，有条件提示隐藏*/
