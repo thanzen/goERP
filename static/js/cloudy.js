@@ -8,10 +8,12 @@ $(document).ready(function() {
     $("input.checked").iCheck("check");
 
     //form-disabled下所有的输入下所有的输入框disabled
-    $(".form-disabled input.form-control").attr("disabled", "disabled");
+    $(".form-disabled input.form-control[type='text']").attr("disabled", "disabled");
     $(".form-disabled select").prop("disabled", true);
     $(".form-disabled .form-save-btn,.form-disabled .form-cancel-btn").hide();
     $(".form-disabled .input-radio").iCheck("disable");
+    $(".form-disabled input.form-control[type='checkbox']").prop("disabled", true);
+
     //编辑删除readonly属性，输入框变成可编辑状态
     $(".form-edit-btn").on("click", function(e) {
         e.preventDefault();
@@ -20,6 +22,8 @@ $(document).ready(function() {
         $(".form-disabled input.form-control").removeAttr("disabled");
         $(".form-disabled select").prop("disabled", false);
         $(".input-radio").iCheck("enable");
+        $(".form-disabled  input.form-control[type='checkbox']").prop("disabled", false);
+
     });
     $(".form-cancel-btn").on("click", function(e) {
         e.preventDefault();
@@ -28,6 +32,7 @@ $(document).ready(function() {
         $(".form-disabled input.form-control").attr("disabled", "disabled");
         $(".form-disabled select").prop("disabled", true);
         $(".input-radio").iCheck("disable");
+        $(".form-disabled input.form-control[type='checkbox']").prop("disabled", true);
 
     });
     $(".select-product-uom-category-type").on("change", function(e) {

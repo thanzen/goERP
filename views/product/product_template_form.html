@@ -2,7 +2,7 @@
     <p id="list-title">{{.listName}}</p>
 </div>
 
-<form enctype="multipart/form-data" id="productTemplateForm" action="{{.URL}}{{.RecordId}}?action={{.Action}}" method="post" class="form-horizontal {{if .Readonly}}form-disabled{{end}}" role="form">
+<form enctype="multipart/form-data" id="productTemplateForm" action="{{.URL}}{{.RecordId}}?action={{.Action}}" method="post" class="post-from form-horizontal {{if .Readonly}}form-disabled{{end}}" role="form">
     <div class="row">
         {{if .RecordId}} {{if .Readonly}}
         <button type="button" class="btn btn-success fa fa-pencil pull-left form-edit-btn">&nbsp编辑</button> {{end}}{{end}}
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label for="active" class="col-md-4 control-label ">有效</label>
                     <div class="col-md-8 ">
-                        <input name="active" id="active" class="form-control form-checkbox" checked="checked" type="checkbox" {{.Readonly}}>
+                        <input name="active" id="active" class="form-control form-checkbox" checked="checked" type="checkbox">
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <label for="saleok" class="col-md-4 control-label ">可销售</label>
                     <div class="col-md-8 ">
-                        <input name="saleok" id="saleok" class="form-control form-checkbox" checked="checked" type="checkbox" {{.Readonly}}>
+                        <input name="saleok" id="saleok" class="form-control form-checkbox" checked="checked" type="checkbox">
                     </div>
                 </div>
             </div>
