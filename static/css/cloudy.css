@@ -118,5 +118,9 @@ a[aria-expanded="false"]>.icon-minus {
     margin-bottom: 0px;
 }
 
+.form-edit .p-form-control {
+    display: none;
+}
+
 
 /*默认情况下没有搜索条件，有条件提示隐藏*/
