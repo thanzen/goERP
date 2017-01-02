@@ -12,7 +12,8 @@ $(document).ready(function() {
     $(".form-disabled select").prop("disabled", true);
     $(".form-disabled .form-save-btn,.form-disabled .form-cancel-btn").hide();
     $(".form-disabled .input-radio").iCheck("disable");
-    $(".form-disabled input.form-control[type='checkbox']").prop("disabled", true);
+    $(".form-disabled textarea.form-control").attr("disabled", "disabled");
+
 
     //编辑删除readonly属性，输入框变成可编辑状态
     $(".form-edit-btn").on("click", function(e) {
@@ -22,7 +23,8 @@ $(document).ready(function() {
         $(".form-disabled input.form-control").removeAttr("disabled");
         $(".form-disabled select").prop("disabled", false);
         $(".input-radio").iCheck("enable");
-        $(".form-disabled  input.form-control[type='checkbox']").prop("disabled", false);
+        $(".form-disabled textarea.form-control").removeAttr("disabled");
+
 
     });
     $(".form-cancel-btn").on("click", function(e) {
@@ -32,7 +34,8 @@ $(document).ready(function() {
         $(".form-disabled input.form-control").attr("disabled", "disabled");
         $(".form-disabled select").prop("disabled", true);
         $(".input-radio").iCheck("disable");
-        $(".form-disabled input.form-control[type='checkbox']").prop("disabled", true);
+        $(".form-disabled textarea.form-control").attr("disabled", "disabled");
+
 
     });
     $(".select-product-uom-category-type").on("change", function(e) {
