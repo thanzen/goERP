@@ -104,7 +104,7 @@ a[aria-expanded="false"]>.icon-minus {
     display: none;
 }
 
-.input-radio.checked {
+.iradio_square-green.checked+label {
     color: green;
 }
 
