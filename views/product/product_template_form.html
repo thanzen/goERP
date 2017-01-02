@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-2 control-label label-start">款式名称<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-10">
-                        <input class="form-control" name="name" type="text" {{if not .Readonly}}autofocus{{end}} {{if .Template}} value="{{.Template.name}}" {{end}} />
+                        <input class="form-control" name="name" type="text" {{if not .Readonly}}autofocus{{end}} {{if .Tp}} value="{{.Tp.name}}" {{end}} />
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <label for="defaultCode" class="col-md-4 control-label label-start">款式编码<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" name="defaultCode" type="text" {{if .Template}} value="{{.Template.defaultCode}}" {{end}} />
+                        <input class="form-control" name="defaultCode" type="text" {{if .Tp}} value="{{.Tp.defaultCode}}" {{end}} />
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                         <legend>价格信息</legend>
                         <label for="standardPrice" class="col-md-4 control-label label-start">成本价格<span>&nbsp</span></label>
                         <div class="col-md-8">
-                            <input class="form-control" name="standardPrice" type="text" {{if .Template}} value="{{.Template.defaultCode}}" {{end}} />
+                            <input class="form-control" name="standardPrice" type="text" {{if .Tp}} value="{{.Tp.defaultCode}}" {{end}} />
                         </div>
                     </fieldset>
                 </div>
@@ -138,10 +138,10 @@
                 <div class="col-md-3">
                     <label for="type" class="col-md-4 control-label label-start">款式创建方式<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
-                        <input class="input-radio {{if .Tp}}{{if ne  .Tp.createProduct " consume "}}checked{{end}}{{end}}" type="radio" id="createProduct-radio-1" value="auto" name="createProduct">
-                        <label class="input-radio-label" for="createProduct-radio-1">自动创建</label>
-                        <input class="input-radio {{if not .Tp}}checked{{else}}{{if eq .Tp.createProduct " auto "}}checked{{end}}{{end}}" type="radio" id="createProduct-radio-2" value="hand" name="createProduct">
-                        <label class="input-radio-label" for="createProduct-radio-2">手动触发</label>
+                        <input class="input-radio {{if .Tp}}{{if ne  .Tp.productMethod " auto "}}checked{{end}}{{end}}" type="radio" id="productMethod-radio-1" value="auto" name="productMethod">
+                        <label class="input-radio-label" for="productMethod-radio-1">自动创建</label>
+                        <input class="input-radio {{if not .Tp}}checked{{else}}{{if eq .Tp.productMethod " hand "}}checked{{end}}{{end}}" type="radio" id="productMethod-radio-2" value="hand" name="productMethod">
+                        <label class="input-radio-label" for="productMethod-radio-2">手动触发</label>
                     </div>
                 </div>
             </div>

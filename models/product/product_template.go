@@ -12,11 +12,11 @@ type ProductTemplate struct {
 	base.Base
 	Name               string           `orm:"unique"` //产品属性名称
 	Sequence           int32            //序列号
-	Description        string           `orm:"type(text)"`     //描述
-	DescriptioSale     string           `orm:"type(text)"`     //销售描述
-	DescriptioPurchase string           `orm:"type(text)"`     //采购描述
-	Rental             bool             `orm:"default(false)"` //代售品
-	Categ              *ProductCategory `orm:"rel(fk)"`        //产品类别
+	Description        string           `orm:"type(text);null"` //描述
+	DescriptioSale     string           `orm:"type(text);null"` //销售描述
+	DescriptioPurchase string           `orm:"type(text);null"` //采购描述
+	Rental             bool             `orm:"default(false)"`  //代售品
+	Categ              *ProductCategory `orm:"rel(fk)"`         //产品类别
 	Price              float64          //模版产品价格
 	StandardPrice      float64          //成本价格
 	SaleOk             bool             `orm:"default(true)"` //可销售
@@ -32,6 +32,8 @@ type ProductTemplate struct {
 	VariantCount       int32                   //产品规格数量
 	Barcode            string                  //条码,如ean13
 	DefaultCode        string                  //产品编码
+	ProductType        string                  `orm:"default(\"stock\")"` //产品类型
+	ProductMethod      string                  `orm:"default(\"hand\")"`  //产品规格创建方式
 	// ProductPricelistItems []*ProductPricelistItem `orm:"reverse(many)"`
 	PackagingDependTemp bool `orm:"default(true)"` //根据款式打包
 	PurchaseDependTemp  bool `orm:"default(true)"` //根据款式采购，ture一个供应商可以供应所有的款式
@@ -69,7 +71,7 @@ func ListProductTemplate(condArr map[string]interface{}, start, length int64) (u
 }
 
 //添加产品模版
-func CreateProductTemplate(obj ProductTemplate, user base.User) (int64, error) {
+func CreateProductTemplate(obj *ProductTemplate, user base.User) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	productTemplate := new(ProductTemplate)
@@ -80,13 +82,25 @@ func CreateProductTemplate(obj ProductTemplate, user base.User) (int64, error) {
 	return id, err
 }
 
+func UpdateProductTemplate(obj *ProductTemplate, user base.User) (int64, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	updateObj := ProductTemplate{Base: base.Base{Id: obj.Id}}
+	updateObj.UpdateUser = &user
+	updateObj.Name = obj.Name
+	return o.Update(&updateObj, "Name", "UpdateUser", "UpdateDate")
+}
+
 //获得某一个产品模版信息
 func GetProductTemplateByID(id int64) (ProductTemplate, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	productTemplate := ProductTemplate{Base: base.Base{Id: id}}
-	err := o.Read(&productTemplate)
-	return productTemplate, err
+	obj := ProductTemplate{Base: base.Base{Id: id}}
+	err := o.Read(&obj)
+	if obj.Categ != nil {
+		o.Read(obj.Categ)
+	}
+	return obj, err
 }
 
 func GetProductTemplateByName(name string) (ProductTemplate, error) {

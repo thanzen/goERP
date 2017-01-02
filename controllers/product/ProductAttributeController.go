@@ -2,7 +2,6 @@ package product
 
 import (
 	"encoding/json"
-	"fmt"
 	"pms/controllers/base"
 	mp "pms/models/product"
 	"strconv"
@@ -75,7 +74,6 @@ func (ctl *ProductAttributeController) Edit() {
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
 	ctl.Data["Attribute"] = attributeInfo
-	fmt.Println(attributeInfo)
 	ctl.Layout = "base/base.html"
 	ctl.TplName = "product/product_attribute_form.html"
 }
@@ -130,7 +128,7 @@ func (ctl *ProductAttributeController) Validator() {
 	ctl.ServeJSON()
 }
 
-// 获得符合要求的城市数据
+// 获得符合要求的数据
 func (ctl *ProductAttributeController) productAttributeList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var arrs []mp.ProductAttribute

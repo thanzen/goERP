@@ -2,6 +2,7 @@ package product
 
 import (
 	"encoding/json"
+	"fmt"
 	"pms/controllers/base"
 	mp "pms/models/product"
 	"strconv"
@@ -41,9 +42,74 @@ func (ctl *ProductTemplateController) Get() {
 	ctl.Data["URL"] = ctl.URL
 	ctl.Data["MenuProductTemplateActive"] = "active"
 }
-func (ctl *ProductTemplateController) PostCreate() {}
-func (ctl *ProductTemplateController) Edit()       {}
-func (ctl *ProductTemplateController) Detail()     {}
+func (ctl *ProductTemplateController) Put() {
+	id := ctl.Ctx.Input.Param(":id")
+	ctl.URL = "/product/template/"
+	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+		if template, err := mp.GetProductTemplateByID(idInt64); err == nil {
+			if err := ctl.ParseForm(&template); err == nil {
+
+				if _, err := mp.UpdateProductTemplate(&template, ctl.User); err == nil {
+					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
+				}
+			}
+		}
+	}
+	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
+
+}
+func (ctl *ProductTemplateController) PostCreate() {
+	template := new(mp.ProductTemplate)
+	if err := ctl.ParseForm(template); err == nil {
+
+		if id, err := mp.CreateProductTemplate(template, ctl.User); err == nil {
+			ctl.Redirect("/product/tempalte/"+strconv.FormatInt(id, 10)+"?action=detail", 302)
+		} else {
+			ctl.Get()
+		}
+	} else {
+		ctl.Get()
+	}
+}
+func (ctl *ProductTemplateController) Edit() {
+	id := ctl.Ctx.Input.Param(":id")
+	templateInfo := make(map[string]interface{})
+	if id != "" {
+		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+			if template, err := mp.GetProductTemplateByID(idInt64); err == nil {
+				fmt.Println(template)
+				templateInfo["name"] = template.Name
+				templateInfo["defaultCode"] = template.DefaultCode
+				templateInfo["sequence"] = template.Sequence
+				templateInfo["description"] = template.Description
+				templateInfo["descriptioPurchase"] = template.DescriptioPurchase
+				templateInfo["descriptioSale"] = template.DescriptioSale
+				templateInfo["productType"] = template.ProductType
+				templateInfo["productMethod"] = template.ProductMethod
+				categ := template.Categ
+				fmt.Println(categ)
+				categValues := make(map[string]string)
+				if categ != nil {
+					categValues["id"] = strconv.FormatInt(categ.Id, 10)
+					categValues["name"] = categ.Name
+				}
+				fmt.Println(categValues)
+				templateInfo["category"] = categValues
+			}
+		}
+	}
+	ctl.Data["Action"] = "edit"
+	ctl.Data["RecordId"] = id
+	ctl.Data["Tp"] = templateInfo
+	fmt.Println(templateInfo)
+	ctl.Layout = "base/base.html"
+	ctl.TplName = "product/product_template_form.html"
+}
+func (ctl *ProductTemplateController) Detail() {
+	ctl.Edit()
+	ctl.Data["Readonly"] = true
+	ctl.Data["Action"] = "detail"
+}
 func (ctl *ProductTemplateController) Create() {
 	ctl.Data["Action"] = "create"
 	ctl.Data["Readonly"] = false

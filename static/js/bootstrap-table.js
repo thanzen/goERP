@@ -490,57 +490,6 @@ displayTable("#table-product-uom", "/product/uom/", [
         }
     }
 ]);
-//---------------------------------------款式中的属性列表----------------------------------
-//产品款式中产品属性信息
-displayTable("#one-product-template-attribute", "/product/template/?action=attributes", [
-    { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-    {
-        title: "属性名",
-        field: 'name',
-        align: "center",
-        formatter: function cellStyle(value, row, index) {
-
-            var html = '<select name="productAttributeID1" id="productAttributeID1"  class="form-control select-product-attribute"></select>';
-            return html;
-        }
-    },
-    {
-        title: "属性值",
-        field: 'childs',
-        align: "center",
-        formatter: function cellStyle(value, row, index) {
-            var html = ' <select name="productAttributeValue" id="productAttributeValue"  multiple="multiple" class="form-control select-product-attribute-value"></select>';
-            return html;
-        }
-    },
-    {
-        title: "操作",
-        align: "center",
-        field: 'action',
-        formatter: function cellStyle(value, row, index) {
-            var html = "";
-            var url = "/product/template/";
-            html += "<a href='" + url + row.Id + "?action=invalid' class='table-action btn btn-xs btn-default'><i class='fa fa-trash-o'></i></a>";
-            return html;
-        }
-    }
-]);
-$(function() {
-    $("#add-one-product-template-attribute").click(function(e) {
-        function newData() {
-            var newRow = [{
-                id: 0,
-                name: "",
-                childs: "",
-                action: ""
-            }];
-            return newRow;
-        }
-        $("#one-product-template-attribute").bootstrapTable('append', newData());
-        Nodeselect2("productAttributeID1", '/product/attribute/?action=search');
-        Nodeselect2("productAttributeValue", '/product/attributevalue/?action=search', true);
-    });
-});
 
 
 //鼠标进入展示详情，离开隐藏详情

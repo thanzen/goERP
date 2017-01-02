@@ -104,5 +104,9 @@ a[aria-expanded="false"]>.icon-minus {
     display: none;
 }
 
+.input-radio.checked {
+    color: green;
+}
+
 
 /*默认情况下没有搜索条件，有条件提示隐藏*/
