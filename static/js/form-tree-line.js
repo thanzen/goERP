@@ -33,7 +33,7 @@ $("#one-product-template-attribute").bootstrapTable({
             sortable: true,
             order: "desc",
             formatter: function cellStyle(value, row, index) {
-                console.log(row);
+
                 var attribute = row.Attribute;
                 var html = "";
                 return attribute.name;
@@ -46,7 +46,7 @@ $("#one-product-template-attribute").bootstrapTable({
             order: "desc",
             formatter: function cellStyle(value, row, index) {
                 var html = "";
-                console.log(row);
+
                 var attributeValues = row.AttributeValues;
                 for (line in attributeValues) {
 

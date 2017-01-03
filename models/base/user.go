@@ -3,8 +3,6 @@ package base
 import (
 	"pms/utils"
 
-	"fmt"
-
 	"github.com/astaxie/beego/orm"
 )
 
@@ -24,7 +22,6 @@ type User struct {
 	Qq              string      `orm:"default(\"\")" xml:"qq" form:"qq" json:"qq"`                            //QQ
 	WeChat          string      `orm:"default(\"\")" xml:"wechat" form:"wechat" json:"wechat"`                //微信
 	Position        *Position   `orm:"rel(fk);null;" form:"position" json:"position"`                         //职位
-
 }
 
 //多字段唯一
@@ -97,7 +94,6 @@ func ListUser(condArr map[string]interface{}, orderBy map[string]string, start, 
 	if num, err = qs.Limit(length, start).OrderBy(orderByArrs...).All(&users); err == nil {
 		paginator.CurrentPageSize = num
 	}
-	fmt.Println(users)
 	return paginator, users, err
 }
 
@@ -162,14 +158,12 @@ func CheckUserByName(name, password string) (User, error, bool) {
 		}
 	}
 	return user, err, ok
-
 }
 
-func UpdateUser(obj *User, user User) (int64, error) {
+func UpdateUser(obj *User, user User, updateField []string) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	updateObj := User{Base: Base{Id: obj.Id}}
-	updateObj.UpdateUser = &user
-	return o.Update(&obj, "UpdateUser", "UpdateDate")
-
+	obj.UpdateUser = &user
+	updateField = append(updateField, "UpdateUser", "UpdateDate")
+	return o.Update(obj, updateField...)
 }

@@ -29,12 +29,23 @@ $(function() {
                         delay: 200,
                         type: "POST",
                         data: function() {
-                            var xsrf = $("input[name ='_xsrf']")[0].value;
-                            return {
-                                _xsrf: xsrf,
-                                action: "validator",
 
+                            var params = {
+                                action: "validator",
                             }
+                            var xsrf = $("input[name ='_xsrf']");
+                            if (xsrf.length > 0) {
+                                params._xsrf = xsrf[0].value;
+                            }
+                            var name = $('input[name="name"]');
+                            if (name.length > 0) {
+                                params.name = name[0].value;
+                            }
+                            var recordId = $("input[name ='_recordId']");
+                            if (recordId.length > 0) {
+                                params.recordId = recordId[0].value;
+                            }
+                            return params
                         },
                     },
                     regexp: {
@@ -64,12 +75,24 @@ $(function() {
                         delay: 200,
                         type: "POST",
                         data: function() {
-                            var xsrf = $("input[name ='_xsrf']")[0].value;
-                            return {
-                                _xsrf: xsrf,
+
+                            var params = {
                                 action: "validator",
-                                name: $('input[name="mobile"]').val()
                             }
+                            var xsrf = $("input[name ='_xsrf']");
+                            if (xsrf.length > 0) {
+                                params._xsrf = xsrf[0].value;
+                            }
+                            var mobile = $('input[name="mobile"]');
+                            if (mobile.length > 0) {
+                                //用户名，手机号码，邮箱都必须唯一
+                                params.name = mobile[0].value;
+                            }
+                            var recordId = $("input[name ='_recordId']");
+                            if (recordId.length > 0) {
+                                params.recordId = recordId[0].value;
+                            }
+                            return params
                         },
                     },
                 }
@@ -87,12 +110,23 @@ $(function() {
                         delay: 200,
                         type: "POST",
                         data: function() {
-                            var xsrf = $("input[name ='_xsrf']")[0].value;
-                            return {
-                                _xsrf: xsrf,
+                            var params = {
                                 action: "validator",
-                                name: $('input[name="email"]').val()
                             }
+                            var xsrf = $("input[name ='_xsrf']");
+                            if (xsrf.length > 0) {
+                                params._xsrf = xsrf[0].value;
+                            }
+                            var email = $('input[name="email"]');
+                            if (email.length > 0) {
+                                //用户名，手机号码，邮箱都必须唯一
+                                params.name = email[0].value;
+                            }
+                            var recordId = $("input[name ='_recordId']");
+                            if (recordId.length > 0) {
+                                params.recordId = recordId[0].value;
+                            }
+                            return params
                         },
                     },
                     regexp: {
@@ -101,7 +135,7 @@ $(function() {
                     }
                 }
             },
-            postion: {
+            position: {
                 message: "该值无效",
                 validators: {
                     notEmpty: {
@@ -160,17 +194,18 @@ $(function() {
                         delay: 200,
                         type: "POST",
                         data: function() {
-                            var xsrf = $("input[name ='_xsrf']")[0].value;
-                            var recordId = $("input[name ='_recordId']");
-                            res = {
-                                _xsrf: xsrf,
+                            var params = {
                                 action: "validator",
                             }
-                            if (recordId != undefined && recordId[0]) {
-                                recordId = recordId[0].value;
-                                res.recordId = recordId;
+                            var xsrf = $("input[name ='_xsrf']");
+                            if (xsrf.length > 0) {
+                                params._xsrf = xsrf[0].value;
                             }
-                            return res
+                            var recordId = $("input[name ='_recordId']");
+                            if (recordId.length > 0) {
+                                params.recordId = recordId[0].value;
+                            }
+                            return params
                         },
                     },
                 },
@@ -202,17 +237,18 @@ $(function() {
                         delay: 200,
                         type: "POST",
                         data: function() {
-                            var xsrf = $("input[name ='_xsrf']")[0].value;
-                            var recordId = $("input[name ='_recordId']");
-                            res = {
-                                _xsrf: xsrf,
+                            var params = {
                                 action: "validator",
                             }
-                            if (recordId != undefined && recordId[0]) {
-                                recordId = recordId[0].value;
-                                res.recordId = recordId;
+                            var xsrf = $("input[name ='_xsrf']");
+                            if (xsrf.length > 0) {
+                                params._xsrf = xsrf[0].value;
                             }
-                            return res
+                            var recordId = $("input[name ='_recordId']");
+                            if (recordId.length > 0) {
+                                params.recordId = recordId[0].value;
+                            }
+                            return params
                         },
                     },
                 },
@@ -244,22 +280,24 @@ $(function() {
                         delay: 200,
                         type: "POST",
                         data: function() {
-                            var xsrf = $("input[name ='_xsrf']")[0].value;
-                            var recordId = $("input[name ='_recordId']");
-                            var attributeId = $("select[name='productAttributeID']");
-                            res = {
-                                _xsrf: xsrf,
+                            var params = {
                                 action: "validator",
                             }
-                            if (recordId != undefined && recordId[0]) {
-                                recordId = recordId[0].value;
-                                res.recordId = recordId;
+                            var recordId = $("input[name ='_recordId']");
+                            if (recordId.length > 0) {
+                                params.recordId = recordId[0].value;
                             }
-                            if (attributeId != undefined && attributeId[0]) {
+                            var xsrf = $("input[name ='_xsrf']");
+                            if (xsrf.length > 0) {
+                                params._xsrf = xsrf[0].value;
+                            }
+                            var attributeId = $("select[name='productAttributeID']");
+
+                            if (attributeId.length > 0) {
                                 attributeId = attributeId[0].value;
-                                res.attributeId = attributeId;
+                                params.attributeId = attributeId;
                             }
-                            return res
+                            return params
                         },
                     },
                 },
@@ -291,17 +329,18 @@ $(function() {
                         delay: 200,
                         type: "POST",
                         data: function() {
-                            var xsrf = $("input[name ='_xsrf']")[0].value;
-                            var recordId = $("input[name ='_recordId']");
-                            res = {
-                                _xsrf: xsrf,
+                            var params = {
                                 action: "validator",
                             }
-                            if (recordId != undefined && recordId[0]) {
-                                recordId = recordId[0].value;
-                                res.recordId = recordId;
+                            var xsrf = $("input[name ='_xsrf']");
+                            if (xsrf.length > 0) {
+                                params._xsrf = xsrf[0].value;
                             }
-                            return res
+                            var recordId = $("input[name ='_recordId']");
+                            if (recordId.length > 0) {
+                                params.recordId = recordId[0].value;
+                            }
+                            return params
                         },
                     },
                 },
@@ -341,17 +380,18 @@ $(function() {
                         delay: 200,
                         type: "POST",
                         data: function() {
-                            var xsrf = $("input[name ='_xsrf']")[0].value;
-                            var recordId = $("input[name ='_recordId']");
-                            res = {
-                                _xsrf: xsrf,
+                            var params = {
                                 action: "validator",
                             }
-                            if (recordId != undefined && recordId[0]) {
-                                recordId = recordId[0].value;
-                                res.recordId = recordId;
+                            var xsrf = $("input[name ='_xsrf']")
+                            if (xsrf.length > 0) {
+                                params._xsrf = xsrf[0].value;
                             }
-                            return res
+                            var recordId = $("input[name ='_recordId']");
+                            if (recordId.length > 0) {
+                                params.recordId = recordId[0].value;
+                            }
+                            return params
                         },
                     },
                 },

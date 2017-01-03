@@ -4,8 +4,6 @@ import (
 	"pms/models/base"
 	"pms/utils"
 
-	"fmt"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
@@ -58,7 +56,6 @@ func ListProductAttributeLine(condArr map[string]interface{}, page, offset int64
 	}
 	for i, _ := range productAttributeLines {
 		o.QueryM2M(&productAttributeLines[i], "AttributeValues")
-		fmt.Println(productAttributeLines[i].AttributeValues)
 	}
 	return paginator, productAttributeLines, err
 }

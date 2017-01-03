@@ -17,7 +17,21 @@ func (ctl *UserController) Put() {
 	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
 		if user, err := mb.GetUserByID(idInt64); err == nil {
 			if err := ctl.ParseForm(&user); err == nil {
-				if _, err := mb.UpdateUser(&user, ctl.User); err == nil {
+				var upateField []string
+				if departmentId, err := ctl.GetInt64("department"); err == nil {
+					if department, err := mb.GetDepartmentByID(departmentId); err == nil {
+						user.Department = &department
+						upateField = append(upateField, "Department")
+					}
+				}
+				if positionId, err := ctl.GetInt64("position"); err == nil {
+					if position, err := mb.GetPositionByID(positionId); err == nil {
+						user.Position = &position
+						upateField = append(upateField, "Position")
+					}
+				}
+
+				if _, err := mb.UpdateUser(&user, ctl.User, upateField); err == nil {
 					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
 				}
 			}
@@ -85,13 +99,24 @@ func (ctl *UserController) GetList() {
 }
 func (ctl *UserController) Validator() {
 	name := ctl.GetString("name")
+	recordId := ctl.GetString("recordId")
 	name = strings.TrimSpace(name)
-
 	result := make(map[string]bool)
-	if _, err := mb.GetUserByName(name); err != nil {
+	obj, err := mb.GetUserByName(name)
+	if err != nil {
 		result["valid"] = true
 	} else {
-		result["valid"] = false
+		if obj.Name == name {
+			if recordId != "" {
+				result["valid"] = true
+			} else {
+				result["valid"] = false
+			}
+
+		} else {
+			result["valid"] = true
+		}
+
 	}
 	ctl.Data["json"] = result
 	ctl.ServeJSON()
@@ -207,13 +232,11 @@ func (ctl *UserController) PostCreate() {
 				user.Department = &department
 			}
 		}
-
 		if positionId, err := ctl.GetInt64("position"); err == nil {
 			if position, err := mb.GetPositionByID(positionId); err == nil {
 				user.Position = &position
 			}
 		}
-
 		if id, err := mb.CreateUser(user, ctl.User); err == nil {
 			ctl.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
 		}

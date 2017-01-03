@@ -11,7 +11,9 @@
 
         <a href="{{.URL}}" class="btn btn-info fa fa-list pull-right">&nbsp列表</a>
     </div>
-    {{ .xsrf }}
+    {{ .xsrf }} {{if .RecordId}}
+    <input type="hidden" name="_recordId" id="record-id" value="{{.RecordId}}">
+    <input type="hidden" name="_method" value="PUT"> {{end}}
     <fieldset>
         <legend>基本信息</legend>
         <div class="row">
@@ -20,7 +22,7 @@
                     <label for="name" class="col-md-4 control-label label-start">用户名<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{.User.Name}} </p>
-                        <input class="form-control" name="name" {{if not .Readonly}}autofocus{{end}} type="text" value="{{.User.Name}}" />
+                        <input class="form-control" name="name" {{if not .Readonly}}autofocus{{end}} type="text" data-oldValue="{{.User.Name}}" value="{{.User.Name}}" />
                     </div>
                 </div>
             </div>
@@ -29,7 +31,7 @@
                     <label for="namezh" class="col-md-4 control-label">用户名(中文)<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{.User.NameZh}} </p>
-                        <input class="form-control" name="namezh" type="text" value="{{.User.NameZh}}" />
+                        <input class="form-control" name="namezh" type="text" data-oldValue="{{.User.NameZh}}" value="{{.User.NameZh}}" />
                     </div>
                 </div>
             </div>
@@ -38,7 +40,7 @@
                     <label for="mobile" class="col-md-4 control-label label-start">手机号码<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{.User.Mobile}} </p>
-                        <input class="form-control" name="mobile" id="mobile" type="text" value="{{.User.Mobile}}" />
+                        <input class="form-control" name="mobile" id="mobile" type="text" data-oldValue="{{.User.Mobile}}" value="{{.User.Mobile}}" />
                         </select>
                     </div>
                 </div>
@@ -48,26 +50,26 @@
                     <label for="tel" class="col-md-4 control-label">座机</label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{.User.Tel}} </p>
-                        <input class="form-control" name="tel" id="tel" type="text" value="{{.User.Tel}}" />
+                        <input class="form-control" name="tel" id="tel" type="text" data-oldValue="{{.User.Tel}}" value="{{.User.Tel}}" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <!--<div class="col-md-3">
                 <div class="form-group">
                     <label for="password" class="col-md-4 control-label label-start">密码<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <input class="form-control" name="password" id="password" type="password" />
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="email" class="col-md-4 control-label label-start">邮箱<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{.User.Email}} </p>
-                        <input class="form-control" name="email" id="email" type="email" value="{{.User.Email}}" />
+                        <input class="form-control" name="email" id="email" type="email" data-oldValue="{{.User.Email}}" value="{{.User.Email}}" />
                     </div>
                 </div>
             </div>
@@ -76,7 +78,7 @@
                     <label for="qq" class="col-md-4 control-label ">QQ</label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{.User.qq}} </p>
-                        <input class="form-control" name="qq" id="qq" type="text" value="{{.User.qq}}" />
+                        <input class="form-control" name="qq" id="qq" type="text" data-oldValue="{{.User.qq}}" value="{{.User.qq}}" />
                     </div>
                 </div>
             </div>
@@ -85,7 +87,7 @@
                     <label for="wechat" class="col-md-4 control-label">微信</label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{.User.wechat}} </p>
-                        <input class="form-control" name="wechat" id="wechat" type="text" />
+                        <input class="form-control" name="wechat" id="wechat" data-oldValue="{{.User.wechat}}" type="text" />
                     </div>
                 </div>
 
@@ -101,7 +103,9 @@
                     <div class="col-md-8">
                         <p class="p-form-control"> {{if .User}} {{if .User.Department}} {{.User.Department.Name}}{{end}} {{end}}</p>
                         <select aria-hidden="true" name="department" id="department" class="form-control  select-department" {{if .User}} {{if .User.Department}} data-default-id="{{.User.Department.Id}}" data-default-name="{{.User.Department.Name}}" {{end}} {{end}}>
-                    </select>
+                            <!--option不能删除用于bootstrapValidator验证-->
+                            <option value="{{.User.Department.Id}}" selected></option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -113,6 +117,8 @@
                     <div class="col-md-8">
                         <p class="p-form-control"> {{if .User}} {{if .User.Position}} {{.User.Position.Name}}{{end}} {{end}}</p>
                         <select name="position" id="position" class="form-control select-position" {{if .User}} {{if .User.Position}} data-default-id="{{.User.Position.Id}}" data-default-name="{{.User.Position.Name}}" {{end}} {{end}}>
+                            <!--option不能删除用于bootstrapValidator验证-->
+                            <option value="{{.User.Position.Id}}" selected></option>
                         </select>
                     </div>
                 </div>
@@ -142,7 +148,7 @@
                 <div class="form-group">
                     <label for="group" class="col-md-4 control-label label-start" multiple="multiple">权限组<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
-                        <select name="group" id="group" class="form-control select-group"></select>
+                        <select name="group" id="group" multiple="multiple" class="form-control select-group"></select>
                     </div>
                 </div>
             </div>

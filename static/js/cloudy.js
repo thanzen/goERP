@@ -91,5 +91,6 @@ $(document).ready(function() {
             this.value = "";
         });
         $(this).addClass("hide");
+        $(".table-diplay-info").bootstrapTable('refresh');
     });
 });
