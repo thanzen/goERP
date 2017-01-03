@@ -3,6 +3,8 @@ package base
 import (
 	"pms/utils"
 
+	"fmt"
+
 	"github.com/astaxie/beego/orm"
 )
 
@@ -41,12 +43,11 @@ func (u *User) TableIndex() [][]string {
 func (u *User) TableName() string {
 	return "auth_user"
 }
-func ListUser(condArr map[string]interface{}, start, length int64) (utils.Paginator, []User, error) {
-
+func ListUser(condArr map[string]interface{}, orderBy map[string]string, start, length int64) (utils.Paginator, []User, error) {
 	o := orm.NewOrm()
 	o.Using("default")
+
 	qs := o.QueryTable(new(User))
-	// qs = qs.RelatedSel()
 	cond := orm.NewCondition()
 	if active, ok := condArr["active"]; ok {
 		cond = cond.And("active", active)
@@ -75,23 +76,28 @@ func ListUser(condArr map[string]interface{}, start, length int64) (utils.Pagina
 	if departmentId, ok := condArr["departmentId"]; ok {
 		cond = cond.And("department__id", departmentId)
 	}
+	// 排序
+	var orderByArrs []string
+	for orderName, orderSymbol := range orderBy {
+		orderByArrs = append(orderByArrs, orderSymbol+orderName)
+	}
 	var (
 		users []User
 		num   int64
 		err   error
 	)
 	var paginator utils.Paginator
-
 	//后面再考虑查看权限的问题
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
 	if cnt, err := qs.Count(); err == nil {
 		paginator = utils.GenPaginator(start, length, cnt)
 	}
-	if num, err = qs.Limit(length, start).All(&users); err == nil {
+
+	if num, err = qs.Limit(length, start).OrderBy(orderByArrs...).All(&users); err == nil {
 		paginator.CurrentPageSize = num
 	}
-
+	fmt.Println(users)
 	return paginator, users, err
 }
 

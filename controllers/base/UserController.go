@@ -2,7 +2,6 @@ package base
 
 import (
 	"encoding/json"
-	"fmt"
 	mb "pms/models/base"
 	"strconv"
 	"strings"
@@ -104,8 +103,19 @@ func (ctl *UserController) PostList() {
 	name := ctl.Input().Get("name")
 	name = strings.TrimSpace(name)
 	filter := ctl.GetString("filter")
-
-	fmt.Println(filter)
+	sortName := ctl.GetString("sort")
+	orderSymbol := ctl.GetString("order")
+	if orderSymbol == "desc" {
+		orderSymbol = "-"
+	} else {
+		orderSymbol = ""
+	}
+	orderBy := make(map[string]string)
+	if sortName != "" {
+		orderBy[sortName] = orderSymbol
+	} else {
+		orderBy["id"] = "-"
+	}
 	if filter != "" {
 		json.Unmarshal([]byte(filter), &condArr)
 	}
@@ -122,16 +132,16 @@ func (ctl *UserController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := ctl.userList(startInt64, lengthInt64, condArr); err == nil {
+	if result, err := ctl.userList(startInt64, lengthInt64, condArr, orderBy); err == nil {
 		ctl.Data["json"] = result
 	}
 	ctl.ServeJSON()
 
 }
-func (ctl *UserController) userList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *UserController) userList(start, length int64, condArr map[string]interface{}, orderBy map[string]string) (map[string]interface{}, error) {
 
 	var users []mb.User
-	paginator, users, err := mb.ListUser(condArr, start, length)
+	paginator, users, err := mb.ListUser(condArr, orderBy, start, length)
 	result := make(map[string]interface{})
 	if err == nil {
 

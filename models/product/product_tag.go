@@ -10,8 +10,8 @@ import (
 
 type ProductTag struct {
 	base.Base
-	Name string `orm:"unique"` //产品标记名称
-
+	Name     string            `orm:"unique"`   //产品标签名称
+	Products []*ProductProduct `orm:"rel(m2m)"` //产品规格
 }
 
 //列出记录
