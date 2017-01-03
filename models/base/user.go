@@ -1,6 +1,7 @@
 package base
 
 import (
+	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego/orm"
@@ -16,7 +17,7 @@ type User struct {
 	Tel             string      `orm:"size(20);default(\"\")" form:"tel" json:"tel"`                          //固定号码
 	Password        string      `xml:"password" form:"password" json:"password"`                              //密码
 	ConfirmPassword string      `orm:"-" xml:"confirmpassword" form:"confirmpassword" json:"confirmpassword"` //确认密码,数据库中不保存
-	Group           []*Group    `orm:"rel(m2m);rel_table(user_groups)"`                                       //权限组
+	Groups          []*Group    `orm:"rel(m2m);rel_table(user_groups)"`                                       //权限组
 	IsAdmin         bool        `orm:"default(false)" xml:"isAdmin" form:"isadmin" json:"isadmin"`            //是否为超级用户
 	Active          bool        `orm:"default(true)" xml:"active" form:"active" json:"active"`                //有效
 	Qq              string      `orm:"default(\"\")" xml:"qq" form:"qq" json:"qq"`                            //QQ
@@ -120,9 +121,15 @@ func GetUserByID(id int64) (User, error) {
 	if user.Department != nil {
 		o.Read(user.Department)
 	}
-
+	if user.Groups != nil {
+		o.LoadRelated(&user, "Groups")
+	}
 	if user.Position != nil {
 		o.Read(user.Position)
+	}
+
+	for _, post := range user.Groups {
+		fmt.Println(post)
 	}
 	return user, err
 }
@@ -136,6 +143,15 @@ func GetUserByName(name string) (User, error) {
 	qs := o.QueryTable(&user)
 	qs = qs.SetCond(cond)
 	err := qs.One(&user)
+	if user.Department != nil {
+		o.Read(user.Department)
+	}
+	if user.Groups != nil {
+		o.LoadRelated(user, "Groups")
+	}
+	if user.Position != nil {
+		o.Read(user.Position)
+	}
 	return user, err
 }
 func CheckUserByName(name, password string) (User, error, bool) {
@@ -164,6 +180,31 @@ func UpdateUser(obj *User, user User, updateField []string) (int64, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	obj.UpdateUser = &user
+	for _, field := range updateField {
+		if "Groups" == field {
+			m2m := o.QueryM2M(obj, "Groups")
+			fmt.Println("**************")
+			fmt.Println(obj.Groups)
+			fmt.Println(obj.Groups[0])
+			fmt.Println(obj.Groups[1])
+			lenGroup := len(obj.Groups)
+			for i := 0; i < lenGroup; i++ {
+				group := new(Group)
+				group = obj.Groups[i]
+				fmt.Println(group)
+			}
+			for _, group := range obj.Groups {
+				fmt.Println("------------")
+				fmt.Println(group)
+				if !m2m.Exist(group) {
+					fmt.Println("+++++++++++++++++++++++")
+					fmt.Println(group)
+					fmt.Println(group.Id)
+					m2m.Add(&group)
+				}
+			}
+		}
+	}
 	updateField = append(updateField, "UpdateUser", "UpdateDate")
 	return o.Update(obj, updateField...)
 }

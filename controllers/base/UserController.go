@@ -2,6 +2,7 @@ package base
 
 import (
 	"encoding/json"
+	"fmt"
 	mb "pms/models/base"
 	"strconv"
 	"strings"
@@ -23,6 +24,22 @@ func (ctl *UserController) Put() {
 						user.Department = &department
 						upateField = append(upateField, "Department")
 					}
+				}
+				groupIds := ctl.GetStrings("group")
+				if len(groupIds) > 0 {
+					var groups []*mb.Group
+					var err error
+					for groupId := range groupIds {
+						var group mb.Group
+						if group, err = mb.GetGroupByID(int64(groupId)); err == nil {
+							groups = append(groups, &group)
+						}
+					}
+					fmt.Println(groups[0])
+					fmt.Println(groups[1])
+
+					user.Groups = groups
+					upateField = append(upateField, "Groups")
 				}
 				if positionId, err := ctl.GetInt64("position"); err == nil {
 					if position, err := mb.GetPositionByID(positionId); err == nil {
