@@ -113,10 +113,15 @@ func (ctl *GroupController) Validator() {
 }
 func (ctl *GroupController) PostList() {
 	condArr := make(map[string]interface{})
+	excludeArr := make(map[string]interface{})
 	start := ctl.Input().Get("offset")
 	length := ctl.Input().Get("limit")
 	name := ctl.Input().Get("name")
 	name = strings.TrimSpace(name)
+	excludeId := ctl.GetString("exclude")
+	if excludeId != "" {
+		excludeArr["id__in"] = strings.Split(excludeId, ",")
+	}
 	if name != "" {
 		condArr["name"] = name
 	}
@@ -130,16 +135,16 @@ func (ctl *GroupController) PostList() {
 	if lengthInt, ok := strconv.Atoi(length); ok == nil {
 		lengthInt64 = int64(lengthInt)
 	}
-	if result, err := ctl.groupList(startInt64, lengthInt64, condArr); err == nil {
+	if result, err := ctl.groupList(startInt64, lengthInt64, condArr, excludeArr); err == nil {
 		ctl.Data["json"] = result
 	}
 	ctl.ServeJSON()
 
 }
-func (ctl *GroupController) groupList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
+func (ctl *GroupController) groupList(start, length int64, condArr map[string]interface{}, exclude map[string]interface{}) (map[string]interface{}, error) {
 
 	var groups []mb.Group
-	paginator, groups, err := mb.ListGroup(condArr, start, length)
+	paginator, groups, err := mb.ListGroup(condArr, exclude, start, length)
 
 	result := make(map[string]interface{})
 	if err == nil {

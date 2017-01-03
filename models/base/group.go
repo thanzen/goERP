@@ -66,7 +66,7 @@ func GetGroupByName(name string) (Group, error) {
 
 	return group, err
 }
-func ListGroup(condArr map[string]interface{}, start, length int64) (utils.Paginator, []Group, error) {
+func ListGroup(condArr map[string]interface{}, excludeArr map[string]interface{}, start, length int64) (utils.Paginator, []Group, error) {
 
 	o := orm.NewOrm()
 	o.Using("default")
@@ -86,6 +86,9 @@ func ListGroup(condArr map[string]interface{}, start, length int64) (utils.Pagin
 	//后面再考虑查看权限的问题
 	qs = qs.SetCond(cond)
 	qs = qs.RelatedSel()
+	for excludeName, excludeContent := range excludeArr {
+		qs = qs.Exclude(excludeName, excludeContent)
+	}
 	if cnt, err := qs.Count(); err == nil {
 		paginator = utils.GenPaginator(start, length, cnt)
 	}

@@ -28,11 +28,12 @@ var selectStaticData = function(selectClass, data) {
     });
 };
 //selct2 Ajax 请求，现根据class选择，再根据ID绑定时间，用于后期一个页面多个相同select的情况
-var select2AjaxData = function(selectClass, ajaxUrl) {
+var select2AjaxData = function(selectClass, ajaxUrl, tags) {
     $(selectClass).each(function(index, el) {
+
         if (el.id != undefined && el.id != "") {
             var $selectNode = $("#" + el.id);
-            Nodeselect2(el.id, ajaxUrl);
+            Nodeselect2(el.id, ajaxUrl, tags);
         }
     });
 };
@@ -53,14 +54,26 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
             delay: 250,
             type: "POST",
             data: function(params, page) {
-
-                var xsrf = $("input[name ='_xsrf']")[0].value;
-                return {
+                var selectParams = {
                     name: params.term, // search term
                     offset: params.page || 0,
-                    _xsrf: xsrf,
                     limit: LIMIT,
                 };
+                var xsrf = $("input[name ='_xsrf']");
+                if (xsrf.length > 0) {
+                    selectParams._xsrf = xsrf[0].value;
+                }
+                if ($(this).length > 0 && $(this)[0].nodeName == "SELECT") {
+                    var options = $(this)[0].options;
+                    var exclude = [];
+                    var opLen = options.length;
+                    for (var i = 0; i < opLen; i++) {
+                        exclude[i] = options[i].value;
+                    }
+                    selectParams.exclude = exclude.join(",");
+                }
+                console.log(selectParams);
+                return selectParams
             },
             processResults: function(data, params) {
                 params.page = params.page || 0;
@@ -87,7 +100,7 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
 };
 select2AjaxData(".select-department", "/department/?action=search"); // 选择部门
 select2AjaxData(".select-position", "/position/?action=search"); // 选择职位
-select2AjaxData(".select-group", "/group/?action=search"); // 选择分组
+select2AjaxData(".select-group", "/group/?action=search", true); // 选择分组
 select2AjaxData(".select-product-category", "/product/category/?action=search"); // 选择产品类别;
 select2AjaxData(".select-product-attribute", '/product/attribute/?action=search'); // 选择属性
 // selectStaticData(".select-product-type", [{ id: 1, name: '库存商品' }, { id: 2, name: '消耗品' }, { id: 3, name: '服务' }]); // 产品类型
