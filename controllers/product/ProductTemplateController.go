@@ -2,7 +2,6 @@ package product
 
 import (
 	"encoding/json"
-	"fmt"
 	"pms/controllers/base"
 	mp "pms/models/product"
 	"strconv"
@@ -20,6 +19,8 @@ func (ctl *ProductTemplateController) Post() {
 		ctl.Validator()
 	case "table": //bootstrap table的post请求
 		ctl.PostList()
+	case "attribute":
+		ctl.ProductTemplateAttributes()
 	case "create":
 		ctl.PostCreate()
 	default:
@@ -58,6 +59,68 @@ func (ctl *ProductTemplateController) Put() {
 	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 
 }
+func (ctl *ProductTemplateController) ProductTemplateAttributes() {
+	var recordId = ctl.Input().Get("recordId")
+
+	condArr := make(map[string]interface{})
+	start := ctl.Input().Get("offset")
+	length := ctl.Input().Get("limit")
+	var (
+		startInt64  int64
+		lengthInt64 int64
+	)
+	if startInt, ok := strconv.Atoi(start); ok == nil {
+		startInt64 = int64(startInt)
+	}
+	if lengthInt, ok := strconv.Atoi(length); ok == nil {
+		lengthInt64 = int64(lengthInt)
+	}
+	condArr["Tmp_id"] = recordId
+	result := make(map[string]interface{})
+	if paginator, arrs, err := mp.ListProductAttributeLine(condArr, startInt64, lengthInt64); err == nil {
+		if jsonResult, er := json.Marshal(&paginator); er == nil {
+			result["paginator"] = string(jsonResult)
+			result["total"] = paginator.TotalCount
+		}
+		tableLines := make([]interface{}, 0, 4)
+		for _, line := range arrs {
+			oneLine := make(map[string]interface{})
+			oneLine["name"] = line.Name
+			attributes := make(map[string]string)
+			if line.Attribute != nil {
+				attributes["id"] = strconv.FormatInt(line.Attribute.Id, 10)
+				attributes["name"] = line.Attribute.Name
+			}
+			tmpValues := make(map[string]string)
+			if line.ProductTemplate != nil {
+				tmpValues["id"] = strconv.FormatInt(line.ProductTemplate.Id, 10)
+				tmpValues["name"] = line.ProductTemplate.Name
+			}
+			attributeValuesLines := make([]interface{}, 0, 4)
+			attributeValues := line.AttributeValues
+			if attributeValues != nil {
+				for _, line := range attributeValues {
+					mapAttributeValues := make(map[string]string)
+					mapAttributeValues["id"] = strconv.FormatInt(line.Id, 10)
+					mapAttributeValues["name"] = line.Name
+					attributeValuesLines = append(attributeValuesLines, oneLine)
+				}
+
+			}
+			oneLine["Attribute"] = attributes
+			oneLine["ProductTemplate"] = tmpValues
+			oneLine["AttributeValues"] = attributeValuesLines
+
+			oneLine["Id"] = line.Id
+			oneLine["id"] = line.Id
+			tableLines = append(tableLines, oneLine)
+		}
+		result["data"] = tableLines
+	}
+	ctl.Data["json"] = result
+	ctl.ServeJSON()
+
+}
 func (ctl *ProductTemplateController) PostCreate() {
 	template := new(mp.ProductTemplate)
 	if err := ctl.ParseForm(template); err == nil {
@@ -77,7 +140,6 @@ func (ctl *ProductTemplateController) Edit() {
 	if id != "" {
 		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
 			if template, err := mp.GetProductTemplateByID(idInt64); err == nil {
-				fmt.Println(template)
 				templateInfo["name"] = template.Name
 				templateInfo["defaultCode"] = template.DefaultCode
 				templateInfo["sequence"] = template.Sequence
@@ -87,13 +149,11 @@ func (ctl *ProductTemplateController) Edit() {
 				templateInfo["productType"] = template.ProductType
 				templateInfo["productMethod"] = template.ProductMethod
 				categ := template.Categ
-				fmt.Println(categ)
 				categValues := make(map[string]string)
 				if categ != nil {
 					categValues["id"] = strconv.FormatInt(categ.Id, 10)
 					categValues["name"] = categ.Name
 				}
-				fmt.Println(categValues)
 				templateInfo["category"] = categValues
 			}
 		}
@@ -101,7 +161,6 @@ func (ctl *ProductTemplateController) Edit() {
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
 	ctl.Data["Tp"] = templateInfo
-	fmt.Println(templateInfo)
 	ctl.Layout = "base/base.html"
 	ctl.TplName = "product/product_template_form.html"
 }
@@ -132,7 +191,7 @@ func (ctl *ProductTemplateController) Validator() {
 	ctl.ServeJSON()
 }
 
-// 获得符合要求的城市数据
+// 获得符合要求的款式数据
 func (ctl *ProductTemplateController) productTemplateList(start, length int64, condArr map[string]interface{}) (map[string]interface{}, error) {
 
 	var arrs []mp.ProductTemplate
@@ -147,6 +206,7 @@ func (ctl *ProductTemplateController) productTemplateList(start, length int64, c
 			oneLine["name"] = line.Name
 			oneLine["sequence"] = line.Sequence
 			oneLine["Id"] = line.Id
+			oneLine["id"] = line.Id
 			tableLines = append(tableLines, oneLine)
 		}
 		result["data"] = tableLines

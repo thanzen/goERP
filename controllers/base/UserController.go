@@ -2,6 +2,7 @@ package base
 
 import (
 	"encoding/json"
+	"fmt"
 	mb "pms/models/base"
 	"strconv"
 	"strings"
@@ -84,10 +85,11 @@ func (ctl *UserController) GetList() {
 	ctl.TplName = "user/user_list_search.html"
 }
 func (ctl *UserController) Validator() {
-	username := ctl.GetString("username")
-	username = strings.TrimSpace(username)
+	name := ctl.GetString("name")
+	name = strings.TrimSpace(name)
+
 	result := make(map[string]bool)
-	if _, err := mb.GetUserByName(username); err != nil {
+	if _, err := mb.GetUserByName(name); err != nil {
 		result["valid"] = true
 	} else {
 		result["valid"] = false
@@ -101,6 +103,12 @@ func (ctl *UserController) PostList() {
 	length := ctl.Input().Get("limit")
 	name := ctl.Input().Get("name")
 	name = strings.TrimSpace(name)
+	filter := ctl.GetString("filter")
+
+	fmt.Println(filter)
+	if filter != "" {
+		json.Unmarshal([]byte(filter), &condArr)
+	}
 	if name != "" {
 		condArr["name"] = name
 	}
@@ -132,7 +140,7 @@ func (ctl *UserController) userList(start, length int64, condArr map[string]inte
 		for _, user := range users {
 
 			oneLine := make(map[string]interface{})
-			oneLine["username"] = user.Name
+			oneLine["name"] = user.Name
 			oneLine["namezh"] = user.NameZh
 			if user.Department != nil {
 				oneLine["department"] = user.Department.Name

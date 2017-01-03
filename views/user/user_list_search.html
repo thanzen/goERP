@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">
-                <label for="username" class="col-md-4 control-label label-start">用户名<span class="required-input"></span></label>
+                <label for="name" class="col-md-4 control-label label-start">用户名<span class="required-input"></span></label>
                 <div class="col-md-8">
-                    <input class="form-control" name="username" {{if not .Readonly}}autofocus{{end}} type="text" value="{{.User.Name}}" />
+                    <input class="form-control" name="name" />
                 </div>
             </div>
         </div>
@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label for="namezh" class="col-md-4 control-label">用户名(中文)<span class="required-input"></span></label>
                 <div class="col-md-8">
-                    <input class="form-control" name="namezh" type="text" value="{{.User.NameZh}}" />
+                    <input class="form-control" name="namezh" type="text" />
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label for="mobile" class="col-md-4 control-label label-start">手机号码<span class="required-input"></span></label>
                 <div class="col-md-8">
-                    <input class="form-control" name="mobile" id="mobile" type="text" value="{{.User.Mobile}}" />
+                    <input class="form-control" name="mobile" id="mobile" type="text" />
                     </select>
                 </div>
             </div>
@@ -29,7 +29,7 @@
             <div class="form-group">
                 <label for="email" class="col-md-4 control-label label-start">邮箱<span class="required-input"></span></label>
                 <div class="col-md-8">
-                    <input class="form-control" name="email" id="email" type="email" value="{{.User.Email}}" />
+                    <input class="form-control" name="email" id="email" type="text" />
                 </div>
             </div>
         </div>

@@ -1,10 +1,8 @@
 //tabel视图中使用bootstrap-table来显示数据
-
 $.extend($.fn.bootstrapTable.defaults, {
     method: "post",
     dataType: "json",
     locale: "zh-CN",
-
     contentType: "application/x-www-form-urlencoded",
     sidePagination: "server",
     stickyHeader: true, //表头固定
@@ -53,7 +51,6 @@ var displayTable = function(selectId, ajaxUrl, columns, onExpandRow) {
             params.filter = JSON.stringify(filter);
             return params;
         },
-
         columns: columns,
     }
     if (onExpandRow != undefined) {
@@ -65,7 +62,7 @@ var displayTable = function(selectId, ajaxUrl, columns, onExpandRow) {
 //用户表
 displayTable("#table-user", "/user/", [
     { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-    { title: "用户名", field: 'username', sortable: true, order: "desc" },
+    { title: "用户名", field: 'name', sortable: true, order: "desc" },
     { title: "中文名称", field: 'namezh', sortable: true, order: "desc" },
     { title: "部门", field: 'department', sortable: true, order: "desc", filter: { type: "select", data: [] } },
     { title: "职位", field: 'position', sortable: true, order: "desc", filter: { type: "select", data: [] } },
@@ -125,7 +122,6 @@ displayTable("#table-user", "/user/", [
             return html;
         }
     }
-
 ], function(index, row, $detail) {
     var params = (function() {
         var params = {};
@@ -154,10 +150,7 @@ displayTable("#table-user", "/user/", [
             html = error;
             $detail.html(html);
         },
-
     });
-
-
 });
 //权限
 displayTable("#table-group", "/group/", [
@@ -193,12 +186,11 @@ displayTable("#table-group", "/group/", [
             return html;
         }
     }
-
 ]);
 //登录记录表
 displayTable("#table-record", "/record/", [
     { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-    { title: "用户名", field: 'username', sortable: true, order: "desc" },
+    { title: "用户名", field: 'name', sortable: true, order: "desc" },
     { title: "邮箱", field: 'email', sortable: true, order: "desc" },
     { title: "手机号码", field: 'mobile', sortable: true, order: "desc" },
     { title: "开始时间", field: 'start_time', sortable: true, order: "desc" },
@@ -215,7 +207,6 @@ displayTable("#table-record", "/record/", [
             } else {
                 html = row.end_time;
             }
-
             return html;
         }
     },
@@ -400,7 +391,7 @@ displayTable("#table-product-product", "/product/product/", [
 displayTable("#table-product-attributevalue", "/product/attributevalue/", [
     { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
     { title: "属性", field: 'attribute', sortable: true, order: "desc" },
-    { title: "属性值", field: 'value', align: "center", sortable: true, order: "desc" },
+    { title: "属性值", field: 'name', align: "center", sortable: true, order: "desc" },
     {
         title: "操作",
         align: "center",
@@ -415,7 +406,6 @@ displayTable("#table-product-attributevalue", "/product/attributevalue/", [
     }
 ]);
 //产品单位类别
-
 displayTable("#table-product-uom-categ", "/product/uomcateg/", [
     { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
     { title: "计量单位类别", field: 'name', sortable: true, order: "desc" },
@@ -490,7 +480,6 @@ displayTable("#table-product-uom", "/product/uom/", [
         }
     }
 ]);
-
 
 //鼠标进入展示详情，离开隐藏详情
 // $('#table-user').on('mouseenter mouseleave', 'tbody>tr',

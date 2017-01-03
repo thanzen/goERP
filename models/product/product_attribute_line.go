@@ -4,6 +4,8 @@ import (
 	"pms/models/base"
 	"pms/utils"
 
+	"fmt"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
@@ -18,7 +20,7 @@ type ProductAttributeLine struct {
 }
 
 //列出记录
-func ListProductAttributeLine(condArr map[string]interface{}, page, offset int64) (utils.Paginator, error, []ProductAttributeLine) {
+func ListProductAttributeLine(condArr map[string]interface{}, page, offset int64) (utils.Paginator, []ProductAttributeLine, error) {
 
 	if page < 1 {
 		page = 1
@@ -31,9 +33,11 @@ func ListProductAttributeLine(condArr map[string]interface{}, page, offset int64
 	o := orm.NewOrm()
 	o.Using("default")
 	qs := o.QueryTable(new(ProductAttributeLine))
-	// qs = qs.RelatedSel()
+	qs = qs.RelatedSel()
 	cond := orm.NewCondition()
-
+	if tmp_id, ok := condArr["Tmp_id"]; ok {
+		cond = cond.And("ProductTemplate__id", tmp_id)
+	}
 	var (
 		productAttributeLines []ProductAttributeLine
 		num                   int64
@@ -52,8 +56,11 @@ func ListProductAttributeLine(condArr map[string]interface{}, page, offset int64
 	if num, err = qs.OrderBy("-id").Limit(offset, start).All(&productAttributeLines); err == nil {
 		paginator.CurrentPageSize = num
 	}
-
-	return paginator, err, productAttributeLines
+	for i, _ := range productAttributeLines {
+		o.QueryM2M(&productAttributeLines[i], "AttributeValues")
+		fmt.Println(productAttributeLines[i].AttributeValues)
+	}
+	return paginator, productAttributeLines, err
 }
 
 //添加属性

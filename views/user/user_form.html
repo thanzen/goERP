@@ -17,10 +17,10 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="username" class="col-md-4 control-label label-start">用户名<span class="required-input">&nbsp*</span></label>
+                    <label for="name" class="col-md-4 control-label label-start">用户名<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{.User.Name}} </p>
-                        <input class="form-control" name="username" {{if not .Readonly}}autofocus{{end}} type="text" value="{{.User.Name}}" />
+                        <input class="form-control" name="name" {{if not .Readonly}}autofocus{{end}} type="text" value="{{.User.Name}}" />
                     </div>
                 </div>
             </div>
@@ -100,10 +100,7 @@
                     <label for="department" class="col-md-4 control-label label-start">部门<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{if .User}} {{if .User.Department}} {{.User.Department.Name}}{{end}} {{end}}</p>
-                        <select aria-hidden="true" name="department" id="department" class="form-control  select-department">
-                            {{if .User.Department}}
-                                <option value="{{.User.Department.Id}}" selected="selected" >{{.User.Department.Name}}</option>
-                            {{end}}
+                        <select aria-hidden="true" name="department" id="department" class="form-control  select-department" {{if .User}} {{if .User.Department}} data-default-id="{{.User.Department.Id}}" data-default-name="{{.User.Department.Name}}" {{end}} {{end}}>
                     </select>
                     </div>
                 </div>
@@ -115,11 +112,7 @@
                     <label for="position" class="col-md-4 control-label label-start">职位<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{if .User}} {{if .User.Position}} {{.User.Position.Name}}{{end}} {{end}}</p>
-
-                        <select name="position" id="position" class="form-control select-position">
-                            {{if .User.Position}}
-                                <option value="{{.User.Position.Id}}" selected="selected" >{{.User.Position.Name}}</option>
-                            {{end}}
+                        <select name="position" id="position" class="form-control select-position" {{if .User}} {{if .User.Position}} data-default-id="{{.User.Position.Id}}" data-default-name="{{.User.Position.Name}}" {{end}} {{end}}>
                         </select>
                     </div>
                 </div>

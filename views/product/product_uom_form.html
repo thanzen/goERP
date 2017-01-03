@@ -60,6 +60,7 @@
                 <div class="form-group">
                     <label for="type" class="col-md-4 control-label">类型<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8 ">
+                        <p class="p-form-control">{{if .Uom}} {{.Uom.type.name}} {{end}}</p>
                         <select name="type" id="type" class="form-control select-product-uom-category-type" {{if .Uom}} {{if .Uom.type}}data-default-id="{{.Uom.type.id}}" data-default-name="{{.Uom.type.name}}" {{end}} {{else}}data-default-id="2" data-default-name="参考计量单位" {{end}}>
                         </select>
                     </div>

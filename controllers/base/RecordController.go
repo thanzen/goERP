@@ -68,7 +68,7 @@ func (ctl *RecordController) recordList(start, length int64, condArr map[string]
 			oneLine := make(map[string]interface{})
 			oneLine["email"] = record.User.Email
 			oneLine["mobile"] = record.User.Mobile
-			oneLine["username"] = record.User.Name
+			oneLine["name"] = record.User.Name
 			oneLine["namezh"] = record.User.NameZh
 			oneLine["UserAgent"] = record.UserAgent
 			oneLine["start_time"] = record.CreateDate.Format("2006-01-02 15:04:05")

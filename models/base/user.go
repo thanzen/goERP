@@ -8,19 +8,20 @@ import (
 
 type User struct {
 	Base
-	Name       string      `orm:"size(20)" xml:"name" form:"username"`               //用户名
-	NameZh     string      `orm:"size(20)"  form:"namezh"`                           //中文用户名
-	Department *Department `orm:"rel(fk);null;" form:"department"`                   //部门
-	Email      string      `orm:"size(20)" xml:"email" form:"email"`                 //邮箱
-	Mobile     string      `orm:"size(20);default(\"\")" xml:"mobile" form:"mobile"` //手机号码
-	Tel        string      `orm:"size(20);default(\"\")" form:"tel"`                 //固定号码
-	Password   string      `xml:"password" form:"password"`                          //密码
-	Group      []*Group    `orm:"rel(m2m);rel_table(user_groups)"`                   //权限组
-	IsAdmin    bool        `orm:"default(false)" xml:"isAdmin" form:"isadmin"`       //是否为超级用户
-	Active     bool        `orm:"default(true)" xml:"active" form:"active"`          //有效
-	Qq         string      `orm:"default(\"\")" xml:"qq" form:"qq"`                  //QQ
-	WeChat     string      `orm:"default(\"\")" xml:"wechat" form:"wechat"`          //微信
-	Position   *Position   `orm:"rel(fk);null;" form:"position"`                     //职位
+	Name            string      `orm:"size(20)" xml:"name" form:"name" json:"name"`                           //用户名
+	NameZh          string      `orm:"size(20)"  form:"namezh" json:"namezh"`                                 //中文用户名
+	Department      *Department `orm:"rel(fk);null;" form:"department" json:"department"`                     //部门
+	Email           string      `orm:"size(20)" xml:"email" form:"email" json:"email"`                        //邮箱
+	Mobile          string      `orm:"size(20);default(\"\")" xml:"mobile" form:"mobile" json:"mobile"`       //手机号码
+	Tel             string      `orm:"size(20);default(\"\")" form:"tel" json:"tel"`                          //固定号码
+	Password        string      `xml:"password" form:"password" json:"password"`                              //密码
+	ConfirmPassword string      `orm:"-" xml:"confirmpassword" form:"confirmpassword" json:"confirmpassword"` //确认密码,数据库中不保存
+	Group           []*Group    `orm:"rel(m2m);rel_table(user_groups)"`                                       //权限组
+	IsAdmin         bool        `orm:"default(false)" xml:"isAdmin" form:"isadmin" json:"isadmin"`            //是否为超级用户
+	Active          bool        `orm:"default(true)" xml:"active" form:"active" json:"active"`                //有效
+	Qq              string      `orm:"default(\"\")" xml:"qq" form:"qq" json:"qq"`                            //QQ
+	WeChat          string      `orm:"default(\"\")" xml:"wechat" form:"wechat" json:"wechat"`                //微信
+	Position        *Position   `orm:"rel(fk);null;" form:"position" json:"position"`                         //职位
 
 }
 
@@ -55,6 +56,21 @@ func ListUser(condArr map[string]interface{}, start, length int64) (utils.Pagina
 	}
 	if name, ok := condArr["name"]; ok {
 		cond = cond.And("name__icontains", name)
+	}
+	if namezh, ok := condArr["namezh"]; ok {
+		cond = cond.And("namezh__icontains", namezh)
+	}
+	if mobile, ok := condArr["mobile"]; ok {
+		cond = cond.And("mobile__icontains", mobile)
+	}
+	if email, ok := condArr["email"]; ok {
+		cond = cond.And("email__icontains", email)
+	}
+	if qq, ok := condArr["qq"]; ok {
+		cond = cond.And("qq__icontains", qq)
+	}
+	if wechat, ok := condArr["wechat"]; ok {
+		cond = cond.And("wechat__icontains", wechat)
 	}
 	if departmentId, ok := condArr["departmentId"]; ok {
 		cond = cond.And("department__id", departmentId)

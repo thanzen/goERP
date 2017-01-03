@@ -2,20 +2,58 @@ $.fn.editable.defaults.mode = 'inline';
 //---------------------------------------款式中的属性列表----------------------------------
 //bootstrapTable
 $("#one-product-template-attribute").bootstrapTable({
+    method: "post",
+    dataType: "json",
+    locale: "zh-CN",
+    contentType: "application/x-www-form-urlencoded",
+    sidePagination: "server",
     url: "/product/template",
+    dataField: "data",
+    pagination: true,
+    pageNumber: 1,
+    pageSize: 20,
+    pageList: [10, 25, 50, 100, 500, 1000],
     queryParams: function(params) {
         var xsrf = $("input[name ='_xsrf']");
-        if (xsrf != undefined) {
+        if (xsrf.length > 0) {
             params._xsrf = xsrf[0].value;
         }
-        params.action = 'table';
+        var recordId = $("input[name='_recordId']");
+        if (recordId.length > 0) {
+            params.recordId = recordId[0].value;
+        }
+        params.action = 'attribute';
         return params;
     },
-
     columns: [
         { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
-        { title: "属性名称", field: 'name', sortable: true, order: "desc" },
-        { title: "属性值", field: 'attributes', sortable: true, order: "desc" },
+        {
+            title: "属性名称",
+            field: 'name',
+            sortable: true,
+            order: "desc",
+            formatter: function cellStyle(value, row, index) {
+                console.log(row);
+                var attribute = row.Attribute;
+                var html = "";
+                return attribute.name;
+            }
+        },
+        {
+            title: "属性值",
+            field: 'attributes',
+            sortable: true,
+            order: "desc",
+            formatter: function cellStyle(value, row, index) {
+                var html = "";
+                console.log(row);
+                var attributeValues = row.AttributeValues;
+                for (line in attributeValues) {
+
+                }
+                return html;
+            }
+        },
     ],
 });
 //x-editable

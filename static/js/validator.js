@@ -11,7 +11,7 @@ $(function() {
         submitButtons: 'button[type="submit"]',
         trigger: null,
         fields: {
-            username: {
+            name: {
                 message: "该值无效",
                 validators: {
                     notEmpty: {
@@ -68,7 +68,7 @@ $(function() {
                             return {
                                 _xsrf: xsrf,
                                 action: "validator",
-                                username: $('input[name="mobile"]').val()
+                                name: $('input[name="mobile"]').val()
                             }
                         },
                     },
@@ -91,7 +91,7 @@ $(function() {
                             return {
                                 _xsrf: xsrf,
                                 action: "validator",
-                                username: $('input[name="email"]').val()
+                                name: $('input[name="email"]').val()
                             }
                         },
                     },
@@ -153,7 +153,6 @@ $(function() {
                     notEmpty: {
                         message: "产品类别不能为空"
                     },
-
                     remote: {
                         url: "/product/category/",
                         message: "该类别已经存在",
@@ -166,7 +165,6 @@ $(function() {
                             res = {
                                 _xsrf: xsrf,
                                 action: "validator",
-
                             }
                             if (recordId != undefined && recordId[0]) {
                                 recordId = recordId[0].value;
@@ -197,7 +195,6 @@ $(function() {
                     notEmpty: {
                         message: "属性名称不能为空"
                     },
-
                     remote: {
                         url: "/product/attribute/",
                         message: "该属性名称已经存在",
@@ -240,7 +237,6 @@ $(function() {
                     notEmpty: {
                         message: "属性值不能为空"
                     },
-
                     remote: {
                         url: "/product/attributevalue/",
                         message: "该属性值已经存在",
@@ -251,7 +247,6 @@ $(function() {
                             var xsrf = $("input[name ='_xsrf']")[0].value;
                             var recordId = $("input[name ='_recordId']");
                             var attributeId = $("select[name='productAttributeID']");
-
                             res = {
                                 _xsrf: xsrf,
                                 action: "validator",
@@ -289,7 +284,6 @@ $(function() {
                     notEmpty: {
                         message: "计量单位分类不能为空"
                     },
-
                     remote: {
                         url: "/product/uomcateg/",
                         message: "该计量单位分类已经存在",
@@ -340,7 +334,6 @@ $(function() {
                     notEmpty: {
                         message: "计量单位名称不能为空"
                     },
-
                     remote: {
                         url: "/product/uom/",
                         message: "该计量单位名称已经存在",

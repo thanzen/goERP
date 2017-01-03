@@ -15,8 +15,6 @@ $(document).ready(function() {
     $(".form-disabled textarea.form-control").attr("disabled", "disabled");
     $(".form-disabled .form-control").hide();
     $(".form-disabled span.select2").hide();
-
-
     //编辑删除readonly属性，输入框变成可编辑状态
     $(".form-edit-btn").on("click", function(e) {
         e.preventDefault();
@@ -29,8 +27,6 @@ $(document).ready(function() {
         $(".form-disabled .p-form-control").hide();
         $(".form-disabled .form-control").show();
         $(".form-disabled span.select2").show();
-
-
     });
     $(".form-cancel-btn").on("click", function(e) {
         e.preventDefault();
@@ -43,9 +39,6 @@ $(document).ready(function() {
         $(".form-disabled .p-form-control").show();
         $(".form-disabled .form-control").hide();
         $(".form-disabled span.select2").hide();
-
-
-
     });
     $(".select-product-uom-category-type").on("change", function(e) {
         if (e.currentTarget.value == "1") {
@@ -63,21 +56,36 @@ $(document).ready(function() {
     //如果搜索添加不为空，增加提示样式
     $("#listViewSearch input").change(function(e) {
         e.currentTarget.value = e.currentTarget.value.trim();
-        $("#listViewSearch input").each(function() {
-            if (this.value != "") {
-                $("button[id^='clearListSearchCond']").removeClass("hide");
-                //退出循环
-                return false;
+        nums = $.grep($("#listViewSearch input"), function(el, index) {
+            if (el.value != "") {
+                return true
+            } else {
+                return false
             }
         });
-    });
-    $("#listViewSearch input").each(function() {
-        if (this.value != "") {
-            $("button[id^='clearListSearchCond']").removeClass("hide");
-            //退出循环
-            return false;
+        if (nums.length > 0) {
+            if ($("button[id^='clearListSearchCond']:first").hasClass("hide")) {
+                $("button[id^='clearListSearchCond']").toggleClass("hide");
+            }
+        } else {
+            if (!$("button[id^='clearListSearchCond']:first").hasClass("hide")) {
+                $("button[id^='clearListSearchCond']").toggleClass("hide");
+            }
         }
     });
+    // 若过滤条件不为空， 显示清空条件按钮
+    (function() {
+        nums = $.grep($("#listViewSearch input"), function(el, index) {
+            if (el.value != "") {
+                return true
+            } else {
+                return false
+            }
+        });
+        if (nums.length < 1) {
+            $("button[id^='clearListSearchCond']").toggleClass("hide");
+        }
+    })();
     $("button[id^='clearListSearchCond']").click(function(e) {
         $("#listViewSearch input").each(function() {
             this.value = "";

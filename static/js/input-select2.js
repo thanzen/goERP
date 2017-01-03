@@ -7,7 +7,6 @@ var selectStaticData = function(selectClass, data) {
         if (el.id != undefined && el.id != "") {
             var $selectNode = $("#" + el.id);
             $selectNode.select2({
-
                 data: data,
                 initSelection: function(element, callback) {
                     var node = $("#" + el.id);
@@ -17,7 +16,6 @@ var selectStaticData = function(selectClass, data) {
                 },
                 escapeMarkup: function(markup) { return markup; },
                 // minimumInputLength: 1,
-
                 templateResult: function(repo) {
                     if (repo.loading) { return repo.text; }
                     return repo.name;
@@ -26,7 +24,6 @@ var selectStaticData = function(selectClass, data) {
                     return repo.name;
                 }
             });
-
         }
     });
 };
@@ -38,12 +35,9 @@ var select2AjaxData = function(selectClass, ajaxUrl) {
             Nodeselect2(el.id, ajaxUrl);
         }
     });
-
 };
 var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
-
     $("#" + nodeId).select2({
-
         //初始化数据
         initSelection: function(element, callback) {
             var node = $("#" + nodeId);
@@ -66,10 +60,8 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
                     offset: params.page || 0,
                     _xsrf: xsrf,
                     limit: LIMIT,
-
                 };
             },
-
             processResults: function(data, params) {
                 params.page = params.page || 0;
                 var result = {
@@ -78,14 +70,12 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
                         more: (params.page * 2) < data.total
                     }
                 };
-
                 return result;
             },
             cache: true
         },
         escapeMarkup: function(markup) { return markup; },
         // minimumInputLength: 1,
-
         templateResult: function(repo) {
             if (repo.loading) { return repo.text; }
             return repo.name;
