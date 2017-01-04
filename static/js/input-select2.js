@@ -40,7 +40,6 @@ var select2AjaxData = function(selectClass, ajaxUrl, tags) {
     });
 };
 var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
-    console.log(nodeId);
     $("#" + nodeId).select2({
         width: "off",
         ajax: {
@@ -50,7 +49,7 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
             type: "POST",
             data: function(params) {
                 var selectParams = {
-                    name: params.term, // search term
+                    name: params.term || "", // search term
                     offset: params.page || 0,
                     limit: LIMIT,
                 };
@@ -63,14 +62,20 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
                 }
                 return selectParams
             },
-            processResults: function(data, page) {
+            processResults: function(data, params) {
                 // parse the results into the format expected by Select2.
                 // since we are using custom formatting functions we do not need to
                 // alter the remote JSON data
+                params.page = params.page || 0;
+                var paginator = JSON.parse(data.paginator);
                 return {
-                    results: data.data
+                    results: data.data,
+                    pagination: {
+                        more: paginator.totalPage > paginator.currentPage
+                    }
                 };
             },
+
             // cache: true
         },
         escapeMarkup: function(markup) {
