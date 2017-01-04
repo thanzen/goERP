@@ -118,9 +118,17 @@ func (ctl *GroupController) PostList() {
 	length := ctl.Input().Get("limit")
 	name := ctl.Input().Get("name")
 	name = strings.TrimSpace(name)
-	excludeId := ctl.GetString("exclude")
-	if excludeId != "" {
-		excludeArr["id__in"] = strings.Split(excludeId, ",")
+	excludeIdsStr := ctl.GetStrings("exclude[]")
+	var excludeIds []int64
+	for _, el := range excludeIdsStr {
+		if int64, err := strconv.ParseInt(el, 10, 64); err == nil {
+			excludeIds = append(excludeIds, int64)
+
+		}
+	}
+	// fmt.Println(reflect.TypeOf(excludeIds))
+	if len(excludeIds) > 0 {
+		excludeArr["id__in"] = excludeIds
 	}
 	if name != "" {
 		condArr["name"] = name

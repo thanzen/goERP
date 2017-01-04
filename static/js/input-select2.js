@@ -64,13 +64,7 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
                     selectParams._xsrf = xsrf[0].value;
                 }
                 if ($(this).length > 0 && $(this)[0].nodeName == "SELECT") {
-                    var options = $(this)[0].options;
-                    var exclude = [];
-                    var opLen = options.length;
-                    for (var i = 0; i < opLen; i++) {
-                        exclude[i] = options[i].value;
-                    }
-                    selectParams.exclude = exclude.join(",");
+                    selectParams.exclude = $(this).val();
                 }
                 console.log(selectParams);
                 return selectParams
