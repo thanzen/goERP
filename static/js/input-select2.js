@@ -63,9 +63,6 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
                 return selectParams
             },
             processResults: function(data, params) {
-                // parse the results into the format expected by Select2.
-                // since we are using custom formatting functions we do not need to
-                // alter the remote JSON data
                 params.page = params.page || 0;
                 var paginator = JSON.parse(data.paginator);
                 return {
@@ -75,8 +72,6 @@ var Nodeselect2 = function(nodeId, ajaxUrl, tags) {
                     }
                 };
             },
-
-            // cache: true
         },
         escapeMarkup: function(markup) {
             return markup;

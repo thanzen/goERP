@@ -122,5 +122,26 @@ a[aria-expanded="false"]>.icon-minus {
     display: none;
 }
 
+.form-disabled input,
+.form-disabled .select2-selection {
+    display: none;
+}
+
+.form-edit .form-tree-disabled {
+    display: none;
+}
+
+.form-edit .form-tree-edit {
+    display: block;
+}
+
+.form-disabled .form-tree-disabled {
+    display: block;
+}
+
+.form-disabled .form-tree-edit {
+    display: none;
+}
+
 
 /*默认情况下没有搜索条件，有条件提示隐藏*/

@@ -1,5 +1,17 @@
 $.fn.editable.defaults.mode = 'inline';
+$.fn.editable.defaults.emptytext = '无值';
+
+
 //---------------------------------------款式中的属性列表----------------------------------
+// 判断表单的状态
+var formState = function(formIdSle) {
+    var form = $(formIdSle);
+    if (form.hasClass("form-edit")) {
+        return "edit"
+    } else {
+        return "readonly"
+    }
+};
 //bootstrapTable
 $("#one-product-template-attribute").bootstrapTable({
     method: "post",
@@ -33,17 +45,17 @@ $("#one-product-template-attribute").bootstrapTable({
             sortable: true,
             order: "desc",
             formatter: function cellStyle(value, row, index) {
-
+                console.log(row);
                 var attribute = row.Attribute;
-                var html = "";
-                return attribute.name;
+                var html = "<p class='form-tree-disabled'>" + attribute.name + "</p>";
+
+                return html;
             }
         },
         {
             title: "属性值",
             field: 'attributes',
             sortable: true,
-            order: "desc",
             formatter: function cellStyle(value, row, index) {
                 var html = "";
 
@@ -57,3 +69,8 @@ $("#one-product-template-attribute").bootstrapTable({
     ],
 });
 //x-editable
+$(".form-table-add-line").on("click", function(e) {
+    console.log(e);
+    var formId = e.currentTarget.dataset["formid"];
+    console.log(formState("#" + formId));
+});
