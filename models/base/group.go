@@ -26,21 +26,15 @@ func CreateGroup(obj *Group, user User) (int64, error) {
 	group.UpdateUser = &user
 	id, err := o.Insert(group)
 	return id, err
+
 }
 
 //根据ID查询权限组
 func GetGroupByID(id int64) (Group, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var (
-		group Group
-		err   error
-	)
-	cond := orm.NewCondition()
-	cond = cond.And("id", id)
-	qs := o.QueryTable(new(Group))
-	qs = qs.RelatedSel()
-	err = qs.One(&group)
+	group := Group{Base: Base{Id: id}}
+	err := o.Read(&group)
 	return group, err
 }
 

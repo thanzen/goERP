@@ -2,7 +2,6 @@ package base
 
 import (
 	"encoding/json"
-	"fmt"
 	mb "pms/models/base"
 	"strconv"
 	"strings"
@@ -25,19 +24,20 @@ func (ctl *UserController) Put() {
 						upateField = append(upateField, "Department")
 					}
 				}
-				groupIds := ctl.GetStrings("group")
+				groupIdsStr := ctl.GetStrings("group")
+				var groupIds []int64
+				for _, el := range groupIdsStr {
+					if idInt64, err := strconv.ParseInt(el, 10, 64); err == nil {
+						groupIds = append(groupIds, idInt64)
+					}
+				}
 				if len(groupIds) > 0 {
 					var groups []*mb.Group
-					var err error
-					for groupId := range groupIds {
-						var group mb.Group
-						if group, err = mb.GetGroupByID(int64(groupId)); err == nil {
+					for _, groupId := range groupIds {
+						if group, err := mb.GetGroupByID(groupId); err == nil {
 							groups = append(groups, &group)
 						}
 					}
-					fmt.Println(groups[0])
-					fmt.Println(groups[1])
-
 					user.Groups = groups
 					upateField = append(upateField, "Groups")
 				}
@@ -47,7 +47,6 @@ func (ctl *UserController) Put() {
 						upateField = append(upateField, "Position")
 					}
 				}
-
 				if _, err := mb.UpdateUser(&user, ctl.User, upateField); err == nil {
 					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
 				}
@@ -278,7 +277,15 @@ func (ctl *UserController) Edit() {
 					department["Name"] = user.Department.Name
 					userInfo["Department"] = department
 				}
-
+				groups := make([]interface{}, 0, 4)
+				for _, group := range user.Groups {
+					oneLine := make(map[string]interface{})
+					oneLine["id"] = group.Id
+					oneLine["name"] = group.Name
+					oneLine["description"] = group.Description
+					groups = append(groups, oneLine)
+				}
+				userInfo["Groups"] = groups
 				position := make(map[string]string)
 				if user.Position != nil {
 					position["Id"] = strconv.FormatInt(user.Position.Id, 10)

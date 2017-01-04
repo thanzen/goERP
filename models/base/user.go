@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"pms/utils"
 
 	"github.com/astaxie/beego/orm"
@@ -121,15 +120,9 @@ func GetUserByID(id int64) (User, error) {
 	if user.Department != nil {
 		o.Read(user.Department)
 	}
-	if user.Groups != nil {
-		o.LoadRelated(&user, "Groups")
-	}
+	o.LoadRelated(&user, "Groups")
 	if user.Position != nil {
 		o.Read(user.Position)
-	}
-
-	for _, post := range user.Groups {
-		fmt.Println(post)
 	}
 	return user, err
 }
@@ -183,24 +176,10 @@ func UpdateUser(obj *User, user User, updateField []string) (int64, error) {
 	for _, field := range updateField {
 		if "Groups" == field {
 			m2m := o.QueryM2M(obj, "Groups")
-			fmt.Println("**************")
-			fmt.Println(obj.Groups)
-			fmt.Println(obj.Groups[0])
-			fmt.Println(obj.Groups[1])
-			lenGroup := len(obj.Groups)
-			for i := 0; i < lenGroup; i++ {
-				group := new(Group)
-				group = obj.Groups[i]
-				fmt.Println(group)
-			}
 			for _, group := range obj.Groups {
-				fmt.Println("------------")
-				fmt.Println(group)
+				// 不存在则添加
 				if !m2m.Exist(group) {
-					fmt.Println("+++++++++++++++++++++++")
-					fmt.Println(group)
-					fmt.Println(group.Id)
-					m2m.Add(&group)
+					m2m.Add(group)
 				}
 			}
 		}

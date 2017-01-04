@@ -121,8 +121,8 @@ func (ctl *GroupController) PostList() {
 	excludeIdsStr := ctl.GetStrings("exclude[]")
 	var excludeIds []int64
 	for _, el := range excludeIdsStr {
-		if int64, err := strconv.ParseInt(el, 10, 64); err == nil {
-			excludeIds = append(excludeIds, int64)
+		if idInt64, err := strconv.ParseInt(el, 10, 64); err == nil {
+			excludeIds = append(excludeIds, idInt64)
 
 		}
 	}

@@ -102,9 +102,9 @@
                     <label for="department" class="col-md-4 control-label label-start">部门<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control"> {{if .User}} {{if .User.Department}} {{.User.Department.Name}}{{end}} {{end}}</p>
-                        <select aria-hidden="true" name="department" id="department" class="form-control  select-department" {{if .User}} {{if .User.Department}} data-default-id="{{.User.Department.Id}}" data-default-name="{{.User.Department.Name}}" {{end}} {{end}}>
+                        <select aria-hidden="true" name="department" id="department" class="form-control select-department " {{if .User}} {{if .User.Department}} data-default-id="{{.User.Department.Id}}" data-default-name="{{.User.Department.Name}}" {{end}} {{end}}>
                             <!--option不能删除用于bootstrapValidator验证-->
-                            <option value="{{.User.Department.Id}}" selected></option>
+                            <option value="{{.User.Department.Id}}" selected="selected">{{.User.Department.Name}}</option>
                         </select>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                         <p class="p-form-control"> {{if .User}} {{if .User.Position}} {{.User.Position.Name}}{{end}} {{end}}</p>
                         <select name="position" id="position" class="form-control select-position" {{if .User}} {{if .User.Position}} data-default-id="{{.User.Position.Id}}" data-default-name="{{.User.Position.Name}}" {{end}} {{end}}>
                             <!--option不能删除用于bootstrapValidator验证-->
-                            <option value="{{.User.Position.Id}}" selected></option>
+                            <option value="{{.User.Position.Id}}" selected="selected">{{.User.Position.Name}}</option>
                         </select>
                     </div>
                 </div>
@@ -146,12 +146,18 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="group" class="col-md-4 control-label label-start" multiple="multiple">权限组<span class="required-input">&nbsp*</span></label>
+                    <label for="usergroup" class="col-md-4 control-label label-start">权限组<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
-                        <select name="group" id="group" multiple="multiple" class="form-control select-group"></select>
+                        <p class="p-form-control"> {{if .User}} {{if .User.Groups}} {{range .User.Groups}}<a class='display-block label label-primary'>{{.name}}</a>{{end}}{{end}} {{end}}</p>
+                        <select name="group" id="usergroup" multiple="multiple" class="form-control select-group">
+                            {{range  .User.Groups}}
+                            <option value="{{.id}}" selected="selected">{{.name}}</option>
+                            {{end}}
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
     </fieldset>
+
 </form>
