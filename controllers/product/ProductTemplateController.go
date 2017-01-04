@@ -142,12 +142,14 @@ func (ctl *ProductTemplateController) Edit() {
 			if template, err := mp.GetProductTemplateByID(idInt64); err == nil {
 				templateInfo["name"] = template.Name
 				templateInfo["defaultCode"] = template.DefaultCode
+				templateInfo["standardPrice"] = template.DefaultCode
 				templateInfo["sequence"] = template.Sequence
 				templateInfo["description"] = template.Description
 				templateInfo["descriptioPurchase"] = template.DescriptioPurchase
 				templateInfo["descriptioSale"] = template.DescriptioSale
 				templateInfo["productType"] = template.ProductType
 				templateInfo["productMethod"] = template.ProductMethod
+				// 款式类别
 				categ := template.Categ
 				categValues := make(map[string]string)
 				if categ != nil {
@@ -155,6 +157,38 @@ func (ctl *ProductTemplateController) Edit() {
 					categValues["name"] = categ.Name
 				}
 				templateInfo["category"] = categValues
+				// 销售第一单位
+				firstSaleUom := template.FirstSaleUom
+				firstSaleUomValues := make(map[string]string)
+				if firstSaleUom != nil {
+					firstSaleUomValues["id"] = strconv.FormatInt(firstSaleUom.Id, 10)
+					firstSaleUomValues["name"] = firstSaleUom.Name
+				}
+				templateInfo["firstSaleUom"] = firstSaleUomValues
+				// 销售第二单位
+				secondSaleUom := template.SecondSaleUom
+				secondSaleUomValues := make(map[string]string)
+				if secondSaleUom != nil {
+					secondSaleUomValues["id"] = strconv.FormatInt(secondSaleUom.Id, 10)
+					secondSaleUomValues["name"] = secondSaleUom.Name
+				}
+				templateInfo["secondSaleUom"] = secondSaleUomValues
+				// 采购第一单位
+				firstPurchaseUom := template.FirstPurchaseUom
+				firstPurchaseUomValues := make(map[string]string)
+				if firstPurchaseUom != nil {
+					firstPurchaseUomValues["id"] = strconv.FormatInt(firstPurchaseUom.Id, 10)
+					firstPurchaseUomValues["name"] = firstPurchaseUom.Name
+				}
+				templateInfo["firstPurchaseUom"] = firstSaleUomValues
+				// 采购第二单位
+				secondPurchaseUom := template.SecondPurchaseUom
+				secondPurchaseUomValues := make(map[string]string)
+				if secondSaleUom != nil {
+					secondPurchaseUomValues["id"] = strconv.FormatInt(secondPurchaseUom.Id, 10)
+					secondPurchaseUomValues["name"] = secondPurchaseUom.Name
+				}
+				templateInfo["secondPurchaseUom"] = secondPurchaseUomValues
 			}
 		}
 	}

@@ -47,7 +47,9 @@ $("#one-product-template-attribute").bootstrapTable({
             formatter: function cellStyle(value, row, index) {
                 console.log(row);
                 var attribute = row.Attribute;
-                var html = "<p class='form-tree-disabled'>" + attribute.name + "</p>";
+                var html = "<p class='p-form-tree-disabled'>" + attribute.name + "</p>";
+                html += '<select name="productAttributeID" id="productAttributeID" class="form-control select-product-attribute">' +
+                    '</select>';
 
                 return html;
             }

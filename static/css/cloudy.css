@@ -46,6 +46,9 @@ fieldset legend {
     margin: 2px;
 }
 
+
+/*table表头颜色*/
+
 .table-diplay-info thead,
 .fix-sticky thead {
     background-color: #5bc0de;
@@ -55,6 +58,9 @@ fieldset legend {
     margin-top: 20px;
 }
 
+
+/*table中勾选红色*/
+
 td>.fa-check {
     color: green;
 }
@@ -62,6 +68,9 @@ td>.fa-check {
 td>.fa-remove {
     color: red;
 }
+
+
+/*radio选择项字体*/
 
 .input-radio-label {
     font-weight: normal;
@@ -73,13 +82,22 @@ td>.fa-remove {
     border-bottom-color: #ccccff;
 }
 
-.form-table-add-line {
-    margin-top: 5px;
-}
+
+/*输入项必填“*”红色*/
 
 .required-input {
     color: red;
 }
+
+
+/*form中tree增加一行边距*/
+
+.form-table-add-line {
+    margin-top: 5px;
+}
+
+
+/*form中的tree添加一行隐藏*/
 
 .form-disabled .form-table-add-line {
     display: none;
@@ -96,9 +114,15 @@ td>.fa-remove {
     margin-bottom: 1px;
 }
 
+
+/*过滤条件图标+隐藏*/
+
 a[aria-expanded="true"]>.icon-plus {
     display: none;
 }
+
+
+/*过滤条件图标-隐藏*/
 
 a[aria-expanded="false"]>.icon-minus {
     display: none;
@@ -107,6 +131,9 @@ a[aria-expanded="false"]>.icon-minus {
 .iradio_square-green.checked+label {
     color: green;
 }
+
+
+/*form表单中只读时显示p标签样式，此时input/select等标签隐藏*/
 
 .p-form-control {
     font-size: 14px;
@@ -118,30 +145,51 @@ a[aria-expanded="false"]>.icon-minus {
     margin-bottom: 0px;
 }
 
-.form-edit .p-form-control {
-    display: none;
-}
+
+/*form表单中只读时input/select等标签隐藏
+form表单中可编辑时input/select等标签隐藏，form表单只读是保存编辑按钮隐藏
+*/
 
 .form-disabled input,
-.form-disabled .select2-selection {
+.form-disabled select,
+.form-disabled .select2-selection,
+.form-disabled .form-tree-edit,
+.form-disabled .form-cancel-btn,
+.form-disabled .form-save-btn {
     display: none;
 }
 
-.form-edit .form-tree-disabled {
-    display: none;
-}
 
-.form-edit .form-tree-edit {
+/*form表单中可编辑时p标签显示*/
+
+.form-disabled .p-form-tree-disabled,
+.form-disabled .form-edit-btn {
     display: block;
 }
 
-.form-disabled .form-tree-disabled {
+
+/*form表单中可编辑时input/select等标签显示
+form表单中可编辑时input/select等标签显示
+*/
+
+.form-edit input,
+.form-edit select,
+.form-edit .select2-selection,
+.form-edit .form-tree-edit,
+.form-edit .form-cancel-btn,
+.form-edit .form-save-btn {
     display: block;
 }
 
-.form-disabled .form-tree-edit {
+
+/*form表单中可编辑时p标签隐藏
+form表单中可编辑时隐藏p标签样式，此时input/select等标签显示
+form表单中可编辑时input/select等标签显示
+*/
+
+.form-edit .p-form-tree-disabled,
+.form-edit .p-form-control,
+.form-edit .form-tree-edit,
+.form-edit .form-edit-btn {
     display: none;
 }
-
-
-/*默认情况下没有搜索条件，有条件提示隐藏*/

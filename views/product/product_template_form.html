@@ -59,20 +59,23 @@
                     <label for="parent" class="col-md-4 control-label label-start">款式类别<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control">{{if .Tp}} {{.Tp.category.name}} {{end}}</p>
-                        <select name="parent" id="parent" class="form-control select-product-category" {{if .Tp}} {{if .Tp.category}} data-default-id="{{.Tp.category.id}}" data-default-name="{{.Tp.category.name}}" {{end}} {{end}}>
+                        <select name="parent" id="parent" class="form-control select-product-category">
+                            <option value="{{.Tp.category.id}}" selected="selected">{{.Tp.category.name}}</option>
                         </select>
                     </div>
                 </div>
             </div>
         </div>
     </fieldset>
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs" role="tablist" id="product-template-tab">
         <li role="presentation" class="active"><a data-toggle="tab" href="#generalInfo">基本信息</a></li>
         <li role="presentation"><a data-toggle="tab" href="#attributeInfo">款式属性</a></li>
         <li role="presentation"><a data-toggle="tab" href="#inventory">库存</a></li>
         <li role="presentation"><a data-toggle="tab" href="#supplier">供应商</a></li>
         <li role="presentation"><a data-toggle="tab" href="#description">描述</a></li>
+        {{if .RecordId}}
         <li role="presentation"><a data-toggle="tab" href="#images">图片</a></li>
+        {{end}}
     </ul>
     <div class="tab-content">
         <div class="tab-pane fade in active" id="generalInfo">
@@ -97,13 +100,19 @@
                         <div class="form-group">
                             <label for="firstSaleUom" class="col-md-4 control-label label-start">销售单位1<span class="required-input">&nbsp*</span></label>
                             <div class="col-md-8">
-                                <select name="firstSaleUom" id="firstSaleUom" class="form-control select-product-uom"></select>
+                                <p class="p-form-control">{{if .Tp}} {{.Tp.firstSaleUom.name}} {{end}}</p>
+                                <select name="firstSaleUom" id="firstSaleUom" class="form-control select-product-uom">
+                                     <option value="{{.Tp.firstSaleUom.id}}" selected="selected">{{.Tp.firstSaleUom.name}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="secondSaleUom" class="col-md-4 control-label label-start">销售单位2<span>&nbsp</span></label>
                             <div class="col-md-8">
-                                <select name="secondSaleUom" id="secondSaleUom" class="form-control select-product-uom"></select>
+                                <p class="p-form-control">{{if .Tp}} {{.Tp.secondSaleUom.name}} {{end}}</p>
+                                <select name="secondSaleUom" id="secondSaleUom" class="form-control select-product-uom">
+                                     <option value="{{.Tp.secondSaleUom.id}}" selected="selected">{{.Tp.secondSaleUom.name}}</option>
+                                </select>
                             </div>
                         </div>
                     </fieldset>
@@ -114,13 +123,19 @@
                         <div class="form-group">
                             <label for="firstPurchaseUom" class="col-md-4 control-label label-start">采购单位1<span class="required-input">&nbsp*</span></label>
                             <div class="col-md-8">
-                                <select name="firstPurchaseUom" id="firstPurchaseUom" class="form-control select-product-uom"></select>
+                                <p class="p-form-control">{{if .Tp}} {{.Tp.firstPurchaseUom.name}} {{end}}</p>
+                                <select name="firstPurchaseUom" id="firstPurchaseUom" class="form-control select-product-uom">
+                                     <option value="{{.Tp.firstSaleUom.id}}" selected="selected">{{.Tp.firstSaleUom.name}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="secondPurchaseUom" class="col-md-4 control-label label-start">采购单位2<span>&nbsp</span></label>
                             <div class="col-md-8">
-                                <select name="secondPurchaseUom" id="secondPurchaseUom" class="form-control select-product-uom"></select>
+                                <p class="p-form-control">{{if .Tp}} {{.Tp.secondPurchaseUom.name}} {{end}}</p>
+                                <select name="secondPurchaseUom" id="secondPurchaseUom" class="form-control select-product-uom">
+                                     <option value="{{.Tp.secondPurchaseUom.id}}" selected="selected">{{.Tp.secondPurchaseUom.name}}</option>
+                                </select>
                             </div>
                         </div>
                     </fieldset>
@@ -131,7 +146,8 @@
                         <legend>价格信息</legend>
                         <label for="standardPrice" class="col-md-4 control-label label-start">成本价格<span>&nbsp</span></label>
                         <div class="col-md-8">
-                            <input class="form-control" name="standardPrice" type="text" {{if .Tp}} value="{{.Tp.defaultCode}}" {{end}} />
+                            <p class="p-form-control">{{if .Tp}} {{.Tp.standardPrice}} {{end}}</p>
+                            <input class="form-control" name="standardPrice" type="text" {{if .Tp}} value="{{.Tp.standardPrice}}" {{end}} />
                         </div>
                     </fieldset>
                 </div>
@@ -184,6 +200,9 @@
         </div>
 
 
-        <div class="tab-pane fade" id="images">图片</div>
+        <div class="tab-pane fade" id="images">
+            <!--显示已经有的图片-->
+            <input id="product-template-images" name="productTemplateImages" type="file" multiple>
+        </div>
     </div>
 </form>
