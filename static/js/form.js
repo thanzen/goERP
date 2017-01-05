@@ -8,7 +8,7 @@ $(".form-save-btn").on("click", function(e) {
     // e.preventDefault();
 });
 // 图片上传处理
-$('#product-template-images').fileinput({
+$('#product-images').fileinput({
     language: 'zh',
     uploadUrl: '#',
     uploadExtraData: (function() {
@@ -32,8 +32,22 @@ $("#productTemplateForm .form-save-btn,#productTemplateForm .form-cancel-btn").b
 });
 // 单击图片悬浮
 $(".click-modal-view").dblclick(function(e) {
-    var imageSrc = e.currentTarget.src;
-    $("#productImage").attr("src", imageSrc);
+    var images = $(".click-modal-view");
+    var imagesLen = images.length;
+    var indicatorsHtml = "";
+    var carouselInnerHtml = "";
+    for (var i = 0; i < imagesLen; i++) {
+        if (i == 0) {
+            indicatorsHtml += ' <li data-target="#productImagesCarousel" data-slide-to=' + i + ' class="active"></li>';
+            carouselInnerHtml += '<div class="item active"> <img src="' + images[i].src + '" alt=""> </div>';
+        } else {
+            indicatorsHtml += ' <li data-target="#productImagesCarousel" data-slide-to=' + i + '></li>';
+            carouselInnerHtml += '<div class="item "> <img src="' + images[i].src + '" alt=""> </div>';
+        }
+    }
+    console.log(indicatorsHtml);
+    $("#productImagesCarousel .carousel-indicators").append(indicatorsHtml);
+    $("#productImagesCarousel .carousel-inner").append(carouselInnerHtml);
     $('#productImagesModal').modal('show');
 });
 // 款式form中图片懒加载
@@ -44,5 +58,4 @@ $('a[href="#productImages"]').on('shown.bs.tab', function(e) {
             $(el).attr("src", $(el)[0].dataset["src"]);
         }
     });
-
-})
+});

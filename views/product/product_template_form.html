@@ -201,34 +201,37 @@
                 </div>
             </div>
         </div>
+        {{if .RecordId}}
         <div class="tab-pane fade" id="productImages">
             <!--显示已经有的图片-->
             <div class="row">
                 <div class="col-xs-6 col-md-3">
                     <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/bao/uploaded/i3/TB1srsOOVXXXXXxXVXXXXXXXXXX_!!0-item_pic.jpg_430x430q90.jpg" alt="产品款式图片">
                     </a>
                 </div>
                 <div class="col-xs-6 col-md-3">
                     <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="产品款式图片">
                     </a>
                 </div>
                 <div class="col-xs-6 col-md-3">
                     <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                        <img class="click-modal-view" src="" data-src="https://gd3.alicdn.com/imgextra/i1/102689592/TB2Go_DaSCI.eBjy1XbXXbUBFXa_!!102689592.jpg_400x400.jpg" alt="产品款式图片">
                     </a>
                 </div>
                 <div class="col-xs-6 col-md-3">
                     <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                        <img class="click-modal-view" src="" data-src="https://gd3.alicdn.com/imgextra/i3/102689592/TB2j46raH1J.eBjSszcXXbFzVXa_!!102689592.jpg" alt="产品款式图片">
                     </a>
                 </div>
             </div>
             <input id="product-images" name="productImages" type="file" multiple>
         </div>
+        {{end}}
     </div>
 </form>
+{{if .RecordId}}
 <div class="file-zoom-dialog modal fade" id="productImagesModal" tabindex="-1" role="dialog" aria-labelledby="productImagesModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -242,13 +245,19 @@
                 <h3 class="modal-title"> <small><span class="kv-zoom-title text-primary" >[{{.Tp.defaultCode}}]{{.Tp.name}}</span></small></h3>
             </div>
             <div class="modal-body">
-                <div class="floating-buttons"></div>
-                <div class="kv-zoom-body file-zoom-content">
-                    <img id="productImage" src="" alt="款式图片">
+                <div id="productImagesCarousel" class="carousel slide">
+                    <!-- 轮播（Carousel）指标 -->
+                    <ol class="carousel-indicators">
+                    </ol>
+                    <!-- 轮播（Carousel）项目 -->
+                    <div class="carousel-inner">
+                    </div>
+                    <!-- 轮播（Carousel）导航 -->
+                    <a type="button" class="carousel-control btn-navigate left" data-slide="prev" href="#productImagesCarousel" title="预览上一个文件"><i class="glyphicon glyphicon-triangle-left"></i></a>
+                    <a type="button" class="carousel-control  btn-navigate right" data-slide="next" href="#productImagesCarousel" title="预览上一个文件"><i class="glyphicon glyphicon-triangle-right"></i></a>
                 </div>
             </div>
-            <button type="button" class="btn btn-navigate btn-prev" title="预览上一个文件" disabled="disabled"><i class="glyphicon glyphicon-triangle-left"></i></button>
-            <button type="button" class="btn btn-navigate btn-next" title="预览下一个文件" disabled="disabled"><i class="glyphicon glyphicon-triangle-right"></i></button>
         </div>
     </div>
 </div>
+{{end}}
