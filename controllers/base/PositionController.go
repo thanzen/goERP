@@ -38,11 +38,23 @@ func (ctl *PositionController) Get() {
 func (ctl *PositionController) Validator() {
 	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
+	recordID, _ := ctl.GetInt64("recordId")
 	result := make(map[string]bool)
-	if _, err := mb.GetPositionByName(name); err != nil {
+	obj, err := mb.GetPositionByName(name)
+	if err != nil {
 		result["valid"] = true
 	} else {
-		result["valid"] = false
+		if obj.Name == name {
+			if recordID == obj.Id {
+				result["valid"] = true
+			} else {
+				result["valid"] = false
+			}
+
+		} else {
+			result["valid"] = true
+		}
+
 	}
 	ctl.Data["json"] = result
 	ctl.ServeJSON()

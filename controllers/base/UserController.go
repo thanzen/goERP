@@ -115,7 +115,7 @@ func (ctl *UserController) GetList() {
 }
 func (ctl *UserController) Validator() {
 	name := ctl.GetString("name")
-	recordId := ctl.GetString("recordId")
+	recordID, _ := ctl.GetInt64("recordId")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	obj, err := mb.GetUserByName(name)
@@ -123,7 +123,7 @@ func (ctl *UserController) Validator() {
 		result["valid"] = true
 	} else {
 		if obj.Name == name {
-			if recordId != "" {
+			if recordID == obj.Id {
 				result["valid"] = true
 			} else {
 				result["valid"] = false

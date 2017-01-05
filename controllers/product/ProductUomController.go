@@ -56,9 +56,10 @@ func (ctl *ProductUomController) Put() {
 	}
 	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 }
+
 func (ctl *ProductUomController) Validator() {
 	name := ctl.GetString("name")
-	recordId := ctl.GetString("recordId")
+	recordID, _ := ctl.GetInt64("recordId")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	obj, err := mp.GetProductUomByName(name)
@@ -66,7 +67,7 @@ func (ctl *ProductUomController) Validator() {
 		result["valid"] = true
 	} else {
 		if obj.Name == name {
-			if recordId != "" {
+			if recordID == obj.Id {
 				result["valid"] = true
 			} else {
 				result["valid"] = false

@@ -121,7 +121,7 @@ func (ctl *ProductProductController) Edit() {
 	}
 	ctl.Data["Action"] = "edit"
 	ctl.Data["RecordId"] = id
-	ctl.Data["Tp"] = productInfo
+	ctl.Data["Product"] = productInfo
 	ctl.Layout = "base/base.html"
 	ctl.TplName = "product/product_product_form.html"
 }
@@ -133,11 +133,23 @@ func (ctl *ProductProductController) Detail() {
 func (ctl *ProductProductController) Validator() {
 	name := ctl.GetString("name")
 	name = strings.TrimSpace(name)
+	recordID, _ := ctl.GetInt64("recordId")
 	result := make(map[string]bool)
-	if _, err := mp.GetProductProductByName(name); err != nil {
+	obj, err := mp.GetProductProductByName(name)
+	if err != nil {
 		result["valid"] = true
 	} else {
-		result["valid"] = false
+		if obj.Name == name {
+			if recordID == obj.Id {
+				result["valid"] = true
+			} else {
+				result["valid"] = false
+			}
+
+		} else {
+			result["valid"] = true
+		}
+
 	}
 	ctl.Data["json"] = result
 	ctl.ServeJSON()

@@ -1,6 +1,7 @@
 package product
 
 import (
+	"fmt"
 	"pms/models/base"
 	"pms/utils"
 
@@ -72,4 +73,25 @@ func GetProductTag(id int64) (ProductTag, error) {
 	productTag := ProductTag{Base: base.Base{Id: id}}
 	err := o.Read(&productTag)
 	return productTag, err
+}
+func GetProductTagByName(name string) (ProductTag, error) {
+	o := orm.NewOrm()
+	o.Using("default")
+	var (
+		obj ProductTag
+		err error
+	)
+	cond := orm.NewCondition()
+	qs := o.QueryTable(new(ProductTag))
+
+	if name != "" {
+		cond = cond.And("name", name)
+		qs = qs.SetCond(cond)
+		qs = qs.RelatedSel()
+		err = qs.One(&obj)
+	} else {
+		err = fmt.Errorf("%s", "查询条件不成立")
+	}
+
+	return obj, err
 }

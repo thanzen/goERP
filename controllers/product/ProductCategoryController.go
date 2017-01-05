@@ -122,7 +122,7 @@ func (ctl *ProductCategoryController) Create() {
 }
 func (ctl *ProductCategoryController) Validator() {
 	name := ctl.GetString("name")
-	recordId := ctl.GetString("recordId")
+	recordID, _ := ctl.GetInt64("recordId")
 	name = strings.TrimSpace(name)
 	result := make(map[string]bool)
 	obj, err := mp.GetProductCategoryByName(name)
@@ -130,7 +130,7 @@ func (ctl *ProductCategoryController) Validator() {
 		result["valid"] = true
 	} else {
 		if obj.Name == name {
-			if recordId != "" {
+			if recordID == obj.Id {
 				result["valid"] = true
 			} else {
 				result["valid"] = false
