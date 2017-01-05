@@ -33,13 +33,13 @@ $("#productTemplateForm .form-save-btn,#productTemplateForm .form-cancel-btn").b
 // 单击图片悬浮
 $(".click-modal-view").dblclick(function(e) {
     var imageSrc = e.currentTarget.src;
-    $("#productTempalteImage").attr("src", imageSrc);
-    $('#productTempalteImagesModal').modal('show');
+    $("#productImage").attr("src", imageSrc);
+    $('#productImagesModal').modal('show');
 });
 // 款式form中图片懒加载
-$('a[href="#productTmlimages"]').on('shown.bs.tab', function(e) {
+$('a[href="#productImages"]').on('shown.bs.tab', function(e) {
     // 图片加载
-    $("#productTmlimages .click-modal-view").each(function(index, el) {
+    $("#productImages .click-modal-view").each(function(index, el) {
         if ($(el).attr("src") == "") {
             $(el).attr("src", $(el)[0].dataset["src"]);
         }

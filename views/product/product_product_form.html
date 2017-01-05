@@ -67,13 +67,13 @@
             </div>
         </div>
     </fieldset>
-    <ul class="nav nav-tabs" role="tablist" id="product-template-tab">
+    <ul class="nav nav-tabs" role="tablist" id="product-tab">
         <li role="presentation" class="active"><a data-toggle="tab" href="#generalInfo">基本信息</a></li>
         <li role="presentation"><a data-toggle="tab" href="#inventory">库存</a></li>
         <li role="presentation"><a data-toggle="tab" href="#supplier">供应商</a></li>
         <li role="presentation"><a data-toggle="tab" href="#description">描述</a></li>
         {{if .RecordId}}
-        <li role="presentation"><a data-toggle="tab" href="#productTmlimages">图片</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#productImages">图片</a></li>
         {{end}}
     </ul>
     <div class="tab-content">
@@ -179,7 +179,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="productTmlimages">
+        <div class="tab-pane fade" id="productImages">
             <!--显示已经有的图片-->
             <div class="row">
                 <div class="col-xs-6 col-md-3">
@@ -203,11 +203,11 @@
                     </a>
                 </div>
             </div>
-            <input id="product-template-images" name="productTemplateImages" type="file" multiple>
+            <input id="product-images" name="productImages" type="file" multiple>
         </div>
     </div>
 </form>
-<div class="file-zoom-dialog modal fade" id="productTempalteImagesModal" tabindex="-1" role="dialog" aria-labelledby="productTempalteImagesModal" aria-hidden="true">
+<div class="file-zoom-dialog modal fade" id="productImagesModal" tabindex="-1" role="dialog" aria-labelledby="productImagesModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -222,7 +222,7 @@
             <div class="modal-body">
                 <div class="floating-buttons"></div>
                 <div class="kv-zoom-body file-zoom-content">
-                    <img id="productTempalteImage" src="" alt="规格图片">
+                    <img id="productImage" src="" alt="规格图片">
                 </div>
             </div>
             <button type="button" class="btn btn-navigate btn-prev" title="预览上一个文件" disabled="disabled"><i class="glyphicon glyphicon-triangle-left"></i></button>
