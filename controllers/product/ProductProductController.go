@@ -19,17 +19,116 @@ func (ctl *ProductProductController) Post() {
 		ctl.Validator()
 	case "table": //bootstrap table的post请求
 		ctl.PostList()
+
 	default:
 		ctl.PostList()
 	}
 }
 func (ctl *ProductProductController) Get() {
-
-	ctl.Data["listName"] = "产品规格管理"
+	ctl.URL = "/product/product/"
+	ctl.Data["URL"] = ctl.URL
+	action := ctl.Input().Get("action")
+	switch action {
+	case "create":
+		ctl.Create()
+	case "edit":
+		ctl.Edit()
+	case "detail":
+		ctl.Detail()
+	default:
+		ctl.GetList()
+	}
 	ctl.URL = "/product/product/"
 	ctl.Data["URL"] = ctl.URL
 	ctl.Data["MenuProductProductActive"] = "active"
-	ctl.GetList()
+
+}
+func (ctl *ProductProductController) Put() {
+	id := ctl.Ctx.Input.Param(":id")
+	ctl.URL = "/product/product/"
+	//需要判断文件上传时页面不用跳转的情况
+	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+		if product, err := mp.GetProductProductByID(idInt64); err == nil {
+			if err := ctl.ParseForm(&product); err == nil {
+
+				if _, err := mp.UpdateProductProduct(&product, ctl.User); err == nil {
+					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
+				}
+			}
+		}
+	}
+	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
+}
+func (ctl *ProductProductController) Create() {
+	ctl.Data["Action"] = "create"
+	ctl.Data["Readonly"] = false
+	ctl.Data["listName"] = "创建规格"
+	ctl.Layout = "base/base.html"
+	ctl.TplName = "product/product_product_form.html"
+}
+func (ctl *ProductProductController) Edit() {
+	id := ctl.Ctx.Input.Param(":id")
+	productInfo := make(map[string]interface{})
+	if id != "" {
+		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+			if product, err := mp.GetProductProductByID(idInt64); err == nil {
+				productInfo["name"] = product.Name
+				productInfo["defaultCode"] = product.DefaultCode
+				productInfo["standardPrice"] = product.DefaultCode
+
+				// 款式类别
+				categ := product.Categ
+				categValues := make(map[string]string)
+				if categ != nil {
+					categValues["id"] = strconv.FormatInt(categ.Id, 10)
+					categValues["name"] = categ.Name
+				}
+				productInfo["category"] = categValues
+				// 销售第一单位
+				firstSaleUom := product.FirstSaleUom
+				firstSaleUomValues := make(map[string]string)
+				if firstSaleUom != nil {
+					firstSaleUomValues["id"] = strconv.FormatInt(firstSaleUom.Id, 10)
+					firstSaleUomValues["name"] = firstSaleUom.Name
+				}
+				productInfo["firstSaleUom"] = firstSaleUomValues
+				// 销售第二单位
+				secondSaleUom := product.SecondSaleUom
+				secondSaleUomValues := make(map[string]string)
+				if secondSaleUom != nil {
+					secondSaleUomValues["id"] = strconv.FormatInt(secondSaleUom.Id, 10)
+					secondSaleUomValues["name"] = secondSaleUom.Name
+				}
+				productInfo["secondSaleUom"] = secondSaleUomValues
+				// 采购第一单位
+				firstPurchaseUom := product.FirstPurchaseUom
+				firstPurchaseUomValues := make(map[string]string)
+				if firstPurchaseUom != nil {
+					firstPurchaseUomValues["id"] = strconv.FormatInt(firstPurchaseUom.Id, 10)
+					firstPurchaseUomValues["name"] = firstPurchaseUom.Name
+				}
+				productInfo["firstPurchaseUom"] = firstSaleUomValues
+				// 采购第二单位
+				secondPurchaseUom := product.SecondPurchaseUom
+				secondPurchaseUomValues := make(map[string]string)
+				if secondSaleUom != nil {
+					secondPurchaseUomValues["id"] = strconv.FormatInt(secondPurchaseUom.Id, 10)
+					secondPurchaseUomValues["name"] = secondPurchaseUom.Name
+				}
+				productInfo["secondPurchaseUom"] = secondPurchaseUomValues
+			}
+		}
+	}
+	ctl.Data["Action"] = "edit"
+	ctl.Data["RecordId"] = id
+	ctl.Data["Tp"] = productInfo
+	ctl.Layout = "base/base.html"
+	ctl.TplName = "product/product_product_form.html"
+}
+func (ctl *ProductProductController) Detail() {
+	ctl.Edit()
+	ctl.Data["Readonly"] = true
+	ctl.Data["Action"] = "detail"
 }
 func (ctl *ProductProductController) Validator() {
 	name := ctl.GetString("name")

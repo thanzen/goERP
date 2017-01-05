@@ -2,7 +2,6 @@ package product
 
 import (
 	"encoding/json"
-	"fmt"
 	"pms/controllers/base"
 	mp "pms/models/product"
 	"strconv"
@@ -45,7 +44,7 @@ func (ctl *ProductTemplateController) Get() {
 	ctl.Data["MenuProductTemplateActive"] = "active"
 }
 func (ctl *ProductTemplateController) Put() {
-	fmt.Println("enter ProductTemplateController put")
+
 	id := ctl.Ctx.Input.Param(":id")
 	ctl.URL = "/product/template/"
 	//需要判断文件上传时页面不用跳转的情况
