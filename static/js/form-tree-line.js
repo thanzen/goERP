@@ -45,7 +45,6 @@ $("#one-product-template-attribute").bootstrapTable({
             sortable: true,
             order: "desc",
             formatter: function cellStyle(value, row, index) {
-                console.log(row);
                 var attribute = row.Attribute;
                 var html = "<p class='p-form-tree-disabled'>" + attribute.name + "</p>";
                 html += '<select name="productAttributeID" id="productAttributeID" class="form-control select-product-attribute">' +
@@ -72,7 +71,5 @@ $("#one-product-template-attribute").bootstrapTable({
 });
 //x-editable
 $(".form-table-add-line").on("click", function(e) {
-    console.log(e);
     var formId = e.currentTarget.dataset["formid"];
-    console.log(formState("#" + formId));
 });

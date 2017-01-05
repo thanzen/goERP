@@ -78,7 +78,6 @@ td>.fa-remove {
 
 .tab-content legend {
     font-size: 1em;
-    text-align: center;
     border-bottom-color: #ccccff;
 }
 
@@ -151,6 +150,7 @@ form表单中可编辑时input/select等标签隐藏，form表单只读是保存
 */
 
 .form-disabled input,
+.form-disabled textarea,
 .form-disabled select,
 .form-disabled .select2-selection,
 .form-disabled .form-tree-edit,
@@ -177,6 +177,7 @@ form表单中可编辑时input/select等标签显示
 .form-edit .select2-selection,
 .form-edit .form-tree-edit,
 .form-edit .form-cancel-btn,
+.form-edit textarea,
 .form-edit .form-save-btn {
     display: block;
 }
@@ -192,4 +193,20 @@ form表单中可编辑时input/select等标签显示
 .form-edit .form-tree-edit,
 .form-edit .form-edit-btn {
     display: none;
+}
+
+
+/*图片modal预览翻页*/
+
+.file-zoom-dialog .btn-navigate {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    color: #1c94c4;
+    font-size: 4em;
+    margin: 0;
+    opacity: 0.7;
+    outline: 0 none;
+    padding: 0;
+    position: absolute;
+    text-decoration: none;
+    top: 45%;
 }

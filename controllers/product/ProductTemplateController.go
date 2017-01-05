@@ -2,6 +2,7 @@ package product
 
 import (
 	"encoding/json"
+	"fmt"
 	"pms/controllers/base"
 	mp "pms/models/product"
 	"strconv"
@@ -44,8 +45,10 @@ func (ctl *ProductTemplateController) Get() {
 	ctl.Data["MenuProductTemplateActive"] = "active"
 }
 func (ctl *ProductTemplateController) Put() {
+	fmt.Println("enter ProductTemplateController put")
 	id := ctl.Ctx.Input.Param(":id")
 	ctl.URL = "/product/template/"
+	//需要判断文件上传时页面不用跳转的情况
 	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
 		if template, err := mp.GetProductTemplateByID(idInt64); err == nil {
 			if err := ctl.ParseForm(&template); err == nil {

@@ -6,7 +6,7 @@
     <div class="row">
         {{if .RecordId}} {{if .Readonly}}
         <button type="button" class="btn btn-success fa fa-pencil pull-left form-edit-btn">&nbsp编辑</button> {{end}}{{end}}
-        <button type="submit" form="productTemplateForm" id="productTemplateForm" class="btn btn-primary fa fa-save pull-left form-save-btn">&nbsp保存</button> {{if .Readonly}}
+        <button type="submit" form="productTemplateForm" class="btn btn-primary fa fa-save pull-left form-save-btn">&nbsp保存</button> {{if .Readonly}}
         <button type="button" class="btn btn-danger fa fa-remove  pull-left form-cancel-btn">&nbsp取消</button> {{else}}
         <a href="{{.URL}}" class="btn btn-danger fa fa-remove  pull-left">&nbsp取消</a> {{end}}
 
@@ -47,10 +47,11 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="defaultCode" class="col-md-4 control-label label-start">款式编码<span class="required-input">&nbsp*</span></label>
+                    <label for="defaultCode" class="col-md-4 control-label label-start">款式编码</label>
                     <div class="col-md-8">
-                        <p class="p-form-control">{{if .Tp}} {{.Tp.defaultCode}} {{end}}</p>
-                        <input class="form-control" name="defaultCode" type="text" {{if .Tp}} value="{{.Tp.defaultCode}}" {{end}} />
+                        <p>{{if .Tp}} {{.Tp.defaultCode}} {{end}}</p>
+
+                        <!--<input class="form-control" name="defaultCode" type="text" {{if .Tp}} value="{{.Tp.defaultCode}}" {{end}} />-->
                     </div>
                 </div>
             </div>
@@ -74,7 +75,7 @@
         <li role="presentation"><a data-toggle="tab" href="#supplier">供应商</a></li>
         <li role="presentation"><a data-toggle="tab" href="#description">描述</a></li>
         {{if .RecordId}}
-        <li role="presentation"><a data-toggle="tab" href="#images">图片</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#productTmlimages">图片</a></li>
         {{end}}
     </ul>
     <div class="tab-content">
@@ -181,28 +182,74 @@
                 <div class="col-md-4">
                     <fieldset>
                         <legend>一般描述</legend>
+                        <p class="p-form-control">{{if .Tp}} {{.Tp.description}} {{end}}</p>
                         <textarea class="form-control" name="description" rows="5" placeholder="请输入一般描述信息">{{if .Tp}}  {{.Tp.description}} {{end}}</textarea>
                     </fieldset>
                 </div>
                 <div class="col-md-4">
                     <fieldset>
                         <legend>采购描述</legend>
+                        <p class="p-form-control">{{if .Tp}} {{.Tp.descriptioPurchase}} {{end}}</p>
                         <textarea class="form-control" name="descriptioPurchase" rows="5" placeholder="请输入采购描述信息">{{if .Tp}}  {{.Tp.descriptioPurchase}} {{end}}</textarea>
                     </fieldset>
                 </div>
                 <div class="col-md-4">
                     <fieldset>
                         <legend>销售描述</legend>
+                        <p class="p-form-control">{{if .Tp}} {{.Tp.descriptioSale}} {{end}}</p>
                         <textarea class="form-control" name="descriptioSale" rows="5" placeholder="请输入销售描述信息">{{if .Tp}}  {{.Tp.descriptioSale}} {{end}}</textarea>
                     </fieldset>
                 </div>
             </div>
         </div>
-
-
-        <div class="tab-pane fade" id="images">
+        <div class="tab-pane fade" id="productTmlimages">
             <!--显示已经有的图片-->
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail">
+                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail">
+                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail">
+                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail">
+                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                    </a>
+                </div>
+            </div>
             <input id="product-template-images" name="productTemplateImages" type="file" multiple>
         </div>
     </div>
 </form>
+<div class="file-zoom-dialog modal fade" id="productTempalteImagesModal" tabindex="-1" role="dialog" aria-labelledby="productTempalteImagesModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="kv-zoom-actions pull-right">
+                    <!--<button type="button" class="btn btn-default btn-header-toggle btn-toggleheader" title="缩放" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-vertical"></i></button>
+                    <button type="button" class="btn btn-default btn-fullscreen" title="全屏" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-fullscreen"></i></button>
+                    <button type="button" class="btn btn-default btn-borderless" title="无边界模式" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-full"></i></button>-->
+                    <button type="button" class="btn btn-default btn-close" title="关闭当前预览" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+                <h3 class="modal-title"> <small><span class="kv-zoom-title text-primary" >[{{.Tp.defaultCode}}]{{.Tp.name}}</span></small></h3>
+            </div>
+            <div class="modal-body">
+                <div class="floating-buttons"></div>
+                <div class="kv-zoom-body file-zoom-content">
+                    <img id="productTempalteImage" src="" alt="款式图片">
+                </div>
+            </div>
+            <button type="button" class="btn btn-navigate btn-prev" title="预览上一个文件" disabled="disabled"><i class="glyphicon glyphicon-triangle-left"></i></button>
+            <button type="button" class="btn btn-navigate btn-next" title="预览下一个文件" disabled="disabled"><i class="glyphicon glyphicon-triangle-right"></i></button>
+        </div>
+    </div>
+</div>

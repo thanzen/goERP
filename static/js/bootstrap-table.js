@@ -141,7 +141,6 @@ displayTable("#table-user", "/user/", [
         async: false,
         data: params,
         success: function(data) {
-            console.log(data);
             html = "ok";
             $detail.html(data.total);
         },
@@ -201,7 +200,6 @@ displayTable("#table-record", "/record/", [
         order: "desc",
         formatter: function cellStyle(value, row, index) {
             var html = "";
-            console.log(row.end_time);
             if (row.end_time == "0001-01-01 00:00:00") {
                 html = "<small>非正常退出</small>";
             } else {

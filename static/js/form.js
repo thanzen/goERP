@@ -11,15 +11,38 @@ $(".form-save-btn").on("click", function(e) {
 $('#product-template-images').fileinput({
     language: 'zh',
     uploadUrl: '#',
+    uploadExtraData: (function() {
+        var params = {};
+        var xsrf = $("input[name ='_xsrf']");
+        if (xsrf.length > 0) {
+            params._xsrf = xsrf[0].value;
+        }
+        params.action = "uploadFile";
+        params._method = "PUT";
+        return params;
+    })(),
     allowedFileExtensions: ['jpg', 'png', 'gif'],
-    initialPreview: [
-        "<img src='https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg' class='file-preview-image' alt='Desert' title='Desert'>",
-    ],
-
+});
+$(".form-disabled .file-input").hide();
+$("#productTemplateForm .form-edit-btn").bind("click.images", function() {
+    $(".file-input").show();
+});
+$("#productTemplateForm .form-save-btn,#productTemplateForm .form-cancel-btn").bind("click.images", function() {
+    $(".file-input").hide();
+});
+// 单击图片悬浮
+$(".click-modal-view").dblclick(function(e) {
+    var imageSrc = e.currentTarget.src;
+    $("#productTempalteImage").attr("src", imageSrc);
+    $('#productTempalteImagesModal').modal('show');
 });
 // 款式form中图片懒加载
-$('a[href="#images"]').on('shown.bs.tab', function(e) {
+$('a[href="#productTmlimages"]').on('shown.bs.tab', function(e) {
     // 图片加载
-    $("#images");
-    console.log(e);
+    $("#productTmlimages .click-modal-view").each(function(index, el) {
+        if ($(el).attr("src") == "") {
+            $(el).attr("src", $(el)[0].dataset["src"]);
+        }
+    });
+
 })
