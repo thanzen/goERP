@@ -174,6 +174,7 @@ func (ctl *ProductUomController) Edit() {
 				uomInfo["active"] = uom.Active
 				uomInfo["factorInv"] = uom.FactorInv
 				uomInfo["rounding"] = uom.Rounding
+				uomInfo["symbol"] = uom.Symbol
 				typeUom := make(map[string]interface{})
 				switch uom.Type {
 				case 1:

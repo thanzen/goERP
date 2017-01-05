@@ -439,6 +439,7 @@ displayTable("#table-product-uom", "/product/uom/", [
     { title: "全选", field: 'id', checkbox: true, align: "center", valign: "middle" },
     { title: "计量单位类别", field: 'category', sortable: true, order: "desc" },
     { title: "计量单位", field: 'name', align: "center", sortable: true, order: "desc" },
+    { title: "符号", field: 'symbol', align: "center", },
     { title: "类型", field: 'type', align: "center", sortable: true, order: "desc" },
     {
         title: "有效",
