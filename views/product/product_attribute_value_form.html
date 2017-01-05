@@ -24,8 +24,10 @@
                     <div class="col-md-8">
                         <p class="p-form-control">{{if .ProductAttValue}} {{.ProductAttValue.attribute.name}} {{end}}</p>
 
-                        <select name="productAttributeID" id="productAttributeID" {{if not .Readonly}}autofocus{{end}} class="form-control select-product-attribute" {{if .ProductAttValue}} {{if .ProductAttValue.attribute}} data-default-id="{{.ProductAttValue.attribute.id}}"
-                            data-default-name="{{.ProductAttValue.attribute.name}}" {{end}} {{end}}>
+                        <select name="productAttributeID" id="productAttributeID" autofocus class="form-control select-product-attribute">
+                            {{if .ProductAttValue}}
+                            <option value="{{.ProductAttValue.attribute.id}}" selected="selected">{{.ProductAttValue.attribute.name}}</option> 
+                            {{end}}
                         </select>
                     </div>
                 </div>

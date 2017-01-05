@@ -254,7 +254,8 @@ func (ctl *UserController) PostCreate() {
 			}
 		}
 		if id, err := mb.CreateUser(user, ctl.User); err == nil {
-			ctl.Redirect("/user/"+strconv.FormatInt(id, 10), 302)
+			ctl.Redirect(ctl.URL+strconv.FormatInt(id, 10)+"?action=detail", 302)
+
 		}
 	}
 

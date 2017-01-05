@@ -17,6 +17,7 @@ type ProductUom struct {
 	FactorInv float64          `form:"factorInv"`                  //更大比率
 	Rounding  float64          `form:"rounding"`                   //舍入精度
 	Type      int64            `form:"type"`                       //类型
+	Symbol    string           `form:"symbol"`                     //符号，后置
 }
 
 //列出记录

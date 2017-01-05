@@ -182,28 +182,15 @@
         {{if .RecordId}}
         <div class="tab-pane fade" id="productImages">
             <!--显示已经有的图片-->
+            {{if .Product.Images}} {{range .Product.Images}}
             <div class="row">
                 <div class="col-xs-6 col-md-3">
                     <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-md-3">
-                    <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-md-3">
-                    <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-md-3">
-                    <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="...">
+                        <img class="click-modal-view" src="" data-src="{{.imgSrc}}" alt="...">
                     </a>
                 </div>
             </div>
+            {{end}} {{end}}
             <input id="product-images" name="productImages" type="file" multiple>
         </div>
         {{end}}

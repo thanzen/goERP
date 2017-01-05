@@ -204,28 +204,15 @@
         {{if .RecordId}}
         <div class="tab-pane fade" id="productImages">
             <!--显示已经有的图片-->
+            {{if .Tp.Images}} {{range .Tp.Images}}
             <div class="row">
                 <div class="col-xs-6 col-md-3">
                     <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/bao/uploaded/i3/TB1srsOOVXXXXXxXVXXXXXXXXXX_!!0-item_pic.jpg_430x430q90.jpg" alt="产品款式图片">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-md-3">
-                    <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://img.alicdn.com/tps/i4/TB1DK8cNpXXXXXCXXXXSutbFXXX.jpg_490x490Q80S0.jpg" alt="产品款式图片">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-md-3">
-                    <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://gd3.alicdn.com/imgextra/i1/102689592/TB2Go_DaSCI.eBjy1XbXXbUBFXa_!!102689592.jpg_400x400.jpg" alt="产品款式图片">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-md-3">
-                    <a href="#" class="thumbnail">
-                        <img class="click-modal-view" src="" data-src="https://gd3.alicdn.com/imgextra/i3/102689592/TB2j46raH1J.eBjSszcXXbFzVXa_!!102689592.jpg" alt="产品款式图片">
+                        <img class="click-modal-view" src="" data-src="{{.imgSrc}}" alt="...">
                     </a>
                 </div>
             </div>
+            {{end}} {{end}}
             <input id="product-images" name="productImages" type="file" multiple>
         </div>
         {{end}}

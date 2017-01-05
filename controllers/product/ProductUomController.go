@@ -112,6 +112,7 @@ func (ctl *ProductUomController) productUomList(start, length int64, condArr map
 			oneLine["id"] = line.Id
 			oneLine["active"] = line.Active
 			oneLine["rounding"] = line.Rounding
+			oneLine["symbol"] = line.Symbol
 			switch line.Type {
 			case 1:
 				oneLine["type"] = "小于参考计量单位"

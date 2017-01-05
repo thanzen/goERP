@@ -23,7 +23,10 @@
                     <label for="category" class="col-md-4 control-label label-start">计量单位类别<span class="required-input">&nbsp*</span></label>
                     <div class="col-md-8">
                         <p class="p-form-control">{{if .Uom}} {{.Uom.category.name}} {{end}}</p>
-                        <select name="category" id="category" {{if not .Readonly}}autofocus{{end}} class="form-control select-product-uom-category" {{if .Uom}} {{if .Uom.category}} data-default-id="{{.Uom.category.id}}" data-default-name="{{.Uom.category.name}}" {{end}} {{end}}>
+                        <select name="category" id="category" autofocus class="form-control select-product-uom-category">
+                            {{if .Uom}} {{if .Uom.category}} 
+                            <option value="{{.Uom.category.id}}}" selected="selected">{{.Uom.category.name}}</option> 
+                             {{end}} {{end}}
                         </select>
                     </div>
                 </div>
@@ -58,10 +61,13 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="type" class="col-md-4 control-label">类型<span class="required-input">&nbsp*</span></label>
-                    <div class="col-md-8 ">
-                        <p class="p-form-control">{{if .Uom}} {{.Uom.type.name}} {{end}}</p>
-                        <select name="type" id="type" class="form-control select-product-uom-category-type" {{if .Uom}} {{if .Uom.type}}data-default-id="{{.Uom.type.id}}" data-default-name="{{.Uom.type.name}}" {{end}} {{else}}data-default-id="2" data-default-name="参考计量单位" {{end}}>
+                    <label for="position" class="col-md-4 control-label label-start">类型<span class="required-input">&nbsp*</span></label>
+                    <div class="col-md-8">
+                        <p class="p-form-control"> {{if .Uom}} {{if .Uom.type}} {{.Uom.type.Name}}{{end}} {{end}}</p>
+                        <select name="position" id="position" class="form-control select-product-uom-category-type">
+                             {{if .Uom}}
+                            <option value="{{.Uom.type.id}}" selected="selected">{{.Uom.type.name}}</option>
+                            {{else}}<option value="2" selected="selected">参考计量单位</option>{{end}}
                         </select>
                     </div>
                 </div>
@@ -79,6 +85,14 @@
                     <label for="factorInv" class="col-md-4 control-label ">更大比率</label>
                     <div class="col-md-8 ">
                         <input name="factorInv" id="factorInv" type="number" step="0.01" {{if .Uom}}value="{{.Uom.factorInv}}" {{else}} value="10" {{end}} class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div id="symbol" class="col-md-3">
+                <div class="form-group">
+                    <label for="symbol" class="col-md-4 control-label ">符号</label>
+                    <div class="col-md-8 ">
+                        <input name="symbol" id="symbol" type="text" step="0.01" {{if .Uom}}value="{{.Uom.symbol}}" {{else}} value="10" {{end}} class="form-control" />
                     </div>
                 </div>
             </div>

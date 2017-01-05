@@ -3,6 +3,22 @@
 }
 
 
+/*bootstrapvalidator验证符号位置*/
+
+.form-horizontal .has-feedback .form-control-feedback {
+    top: 0;
+    right: -15px;
+}
+
+
+/*bootstrapvalidator验证符号位置*/
+
+.form-horizontal .has-feedback .input-group .form-control-feedback {
+    top: 0;
+    right: -30px;
+}
+
+
 /*#display-table {
     margin-top: 5px;
 }*/
@@ -78,6 +94,7 @@ td>.fa-remove {
 
 .tab-content legend {
     font-size: 1em;
+    font-weight: 700;
     border-bottom-color: #ccccff;
 }
 
