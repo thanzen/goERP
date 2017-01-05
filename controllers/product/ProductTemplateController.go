@@ -44,21 +44,26 @@ func (ctl *ProductTemplateController) Get() {
 	ctl.Data["MenuProductTemplateActive"] = "active"
 }
 func (ctl *ProductTemplateController) Put() {
-
 	id := ctl.Ctx.Input.Param(":id")
+	upload := ctl.GetString("upload")
 	ctl.URL = "/product/template/"
-	//需要判断文件上传时页面不用跳转的情况
-	if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
-		if template, err := mp.GetProductTemplateByID(idInt64); err == nil {
-			if err := ctl.ParseForm(&template); err == nil {
+	//判断文件上传时页面不用跳转的情况
+	if upload == "uploadFile" {
+		ctl.Data["json"] = map[string]interface{}{"code": 0, "message": "测试成功"}
+		ctl.ServeJSON()
+	} else {
+		if idInt64, e := strconv.ParseInt(id, 10, 64); e == nil {
+			if template, err := mp.GetProductTemplateByID(idInt64); err == nil {
+				if err := ctl.ParseForm(&template); err == nil {
 
-				if _, err := mp.UpdateProductTemplate(&template, ctl.User); err == nil {
-					ctl.Redirect(ctl.URL+id+"?action=detail", 302)
+					if _, err := mp.UpdateProductTemplate(&template, ctl.User); err == nil {
+						ctl.Redirect(ctl.URL+id+"?action=detail", 302)
+					}
 				}
 			}
 		}
+		ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 	}
-	ctl.Redirect(ctl.URL+id+"?action=edit", 302)
 
 }
 func (ctl *ProductTemplateController) ProductTemplateAttributes() {

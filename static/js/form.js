@@ -17,7 +17,8 @@ $('#product-images').fileinput({
         if (xsrf.length > 0) {
             params._xsrf = xsrf[0].value;
         }
-        params.action = "uploadFile";
+        params.upload = "uploadFile";
+        params.action = "upload";
         params._method = "PUT";
         return params;
     })(),
