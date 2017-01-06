@@ -7,6 +7,24 @@ $(".form-save-btn").on("click", function(e) {
     console.log(e);
     // e.preventDefault();
 });
+//文件导入
+$('#import-file-excel').fileinput({
+    language: 'zh',
+    uploadUrl: '#',
+    multiple: false,
+    minFileCount: 1,
+    uploadExtraData: (function() {
+        var params = {};
+        var xsrf = $("input[name ='_xsrf']");
+        if (xsrf.length > 0) {
+            params._xsrf = xsrf[0].value;
+        }
+        params.upload = "uploadFile";
+        params.action = "upload";
+        return params;
+    })(),
+    allowedFileExtensions: ['xlsx', 'csv', 'xls'],
+});
 // 图片上传处理
 $('#product-images').fileinput({
     language: 'zh',
