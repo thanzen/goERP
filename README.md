@@ -1,4 +1,5 @@
 # pms
+##本版本不再更新，重构版本：[https://github.com/hexiaoyun128/ERP.git](https://github.com/hexiaoyun128/ERP.git "重构版本")页面和逻辑不变修改了大部分*.go文件
 基于beego的进销存系统
 
 数据库的结构参考了odoo的设计
